@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e1f30d900b20e8c40b52e4fb59726f6a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158707
+  packageName: 'Text Animator for Unity [Legacy]'
+  packageVersion: 1.3.4
+  assetPath: Assets/Plugins/Febucci/Text Animator/Scripts/Editor/AboutWindow.cs
+  uploadId: 593800

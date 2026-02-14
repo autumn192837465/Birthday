@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d4926f3dbd96a4c4088cb85200cb67e9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158707
+  packageName: 'Text Animator for Unity [Legacy]'
+  packageVersion: 1.3.4
+  assetPath: Assets/Plugins/Febucci/Text Animator/Scripts/Runtime/Core/EffectsDefaultValues.cs
+  uploadId: 593800

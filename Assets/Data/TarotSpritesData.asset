@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17486a0732fcd4e5a9c6b56a0fcf58c0, type: 3}
+  m_Name: TarotSpritesData
+  m_EditorClassIdentifier: Assembly-CSharp::TarotSpritesData
+  entries:
+  - Type: 1
+    Sprite: {fileID: 5582538922163030596, guid: 5d2a8341fcaf045d28c1cce682344e55, type: 3}
+  - Type: 2
+    Sprite: {fileID: 5716527379724214676, guid: 83e80192af5b045329e287e48d5aa665, type: 3}
+  - Type: 3
+    Sprite: {fileID: 5716527379724214676, guid: 83e80192af5b045329e287e48d5aa665, type: 3}
+  - Type: 4
+    Sprite: {fileID: 693195512843694964, guid: ed81821c5757b4e43bedf31ba18aed0d, type: 3}
+  - Type: 5
+    Sprite: {fileID: 4626540226026732118, guid: b500692c68e864e3fbf5bfdafd4223a4, type: 3}
+  - Type: 6
+    Sprite: {fileID: -8172750967290911234, guid: 1920f84765a9649e290f7a936a42e032, type: 3}
+  - Type: 7
+    Sprite: {fileID: 6800298464817200478, guid: 12b32890a32254680a48a77360875005, type: 3}
+  - Type: 8
+    Sprite: {fileID: 8557490359680179024, guid: 980ec672fb2aa4cceb0f9b4422f557f5, type: 3}
+  - Type: 9
+    Sprite: {fileID: 6931650692401310986, guid: 8b1cae51521b648559abb3dc2f58cec0, type: 3}
+  - Type: 10
+    Sprite: {fileID: -2179831516796529827, guid: 9279a008aa29c4a77b5967e2b40bbcba, type: 3}
+  - Type: 10
+    Sprite: {fileID: 7160320624361502491, guid: 501ca010916fb4572b7c17dc46eeeac5, type: 3}

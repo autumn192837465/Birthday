@@ -1,0 +1,51 @@
+# =============== Unity generated ===============
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Unity cache
+# (If you use Unity Accelerator / Cache Server locally)
+**/[Cc]ache/
+
+# =============== Visual Studio / Rider / VSCode ===============
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# =============== Unity auto-generated (often huge / noisy) ===============
+sysinfo.txt
+
+# Addressables (optional; uncomment if you don't want to commit generated addressables build output)
+# [Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# StreamingAssets Addressables (optional; uncomment if you generate locally and don't want to commit)
+# [Aa]ssets/[Ss]treamingAssets/aa/
+# [Aa]ssets/[Ss]treamingAssets/aa.meta
+
+# =============== OS files ===============
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =============== Gradle / Android (optional) ===============
+.gradle/

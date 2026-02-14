@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0306e69412d8fbf41a94465bbaf34341
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158707
+  packageName: 'Text Animator for Unity [Legacy]'
+  packageVersion: 1.3.4
+  assetPath: Assets/Plugins/Febucci/Text Animator/Scripts/Editor/Febucci.TextAnimator.Editor.asmdef
+  uploadId: 593800

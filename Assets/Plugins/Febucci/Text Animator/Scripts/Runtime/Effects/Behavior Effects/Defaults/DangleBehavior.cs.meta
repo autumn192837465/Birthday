@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 01a91f0b9c670b242ae5c34286409cd9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158707
+  packageName: 'Text Animator for Unity [Legacy]'
+  packageVersion: 1.3.4
+  assetPath: Assets/Plugins/Febucci/Text Animator/Scripts/Runtime/Effects/Behavior
+    Effects/Defaults/DangleBehavior.cs
+  uploadId: 593800

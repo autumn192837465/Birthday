@@ -1,0 +1,208 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
+using UnityEngine.Serialization;
+
+/// <summary>
+/// Handles HUD updates, screen transitions, and toast messages.
+/// </summary>
+public class UIManager : MonoBehaviour
+{
+    public enum PanelType
+    {
+        Home,
+        Work,
+        Tarot,
+        Game,
+        Shop
+    }
+    
+    [Serializable]
+    public struct PanelInfo
+    {
+        public PanelType Type;
+        public MainViewIcon MainViewIcon;
+        public GameObject PanelObject;
+    }
+    
+    public static UIManager Instance { get; private set; }
+
+    [Header("HUD Elements")]
+    [SerializeField] private HudView hudView;
+
+    [Header("Message Toast")]
+    [SerializeField] private CanvasGroup messagePanel;
+    [SerializeField] private TextMeshProUGUI messageText;
+
+    [Header("Screen Fade")]
+    [SerializeField] private CanvasGroup fadeOverlay;
+
+    [Header("Panels")]
+    [SerializeField] private PanelInfo homePanelInfo;
+    [SerializeField] private PanelInfo workPanelInfo;
+    [SerializeField] private PanelInfo tarotPanelInfo;
+    [FormerlySerializedAs("slotPanelInfo")] [SerializeField] private PanelInfo gamePanelInfo;
+    [SerializeField] private PanelInfo molePanelInfo;
+    [SerializeField] private PanelInfo shopPanelInfo;
+    [SerializeField] private GameObject gameClearPanel;
+    
+    private PanelInfo? _currentPanelInfo;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        
+        homePanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Home);
+        workPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Work);
+        tarotPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Tarot);
+        gamePanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Game);
+        shopPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Shop);
+    }
+
+    private void OnEnable()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnStatsChanged += RefreshHUD;
+            GameManager.Instance.OnShowMessage += ShowToast;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnStatsChanged -= RefreshHUD;
+            GameManager.Instance.OnShowMessage -= ShowToast;
+        }
+    }
+
+    private void Start()
+    {
+        // Initialize fade overlay to transparent
+        if (fadeOverlay != null)
+        {
+            fadeOverlay.alpha = 0f;
+            fadeOverlay.blocksRaycasts = false;
+        }
+
+        // Initialize message panel hidden
+        if (messagePanel != null)
+        {
+            messagePanel.alpha = 0f;
+            messagePanel.blocksRaycasts = false;
+        }
+
+        // Hide game clear panel
+        if (gameClearPanel != null)
+            gameClearPanel.SetActive(false);
+
+        RefreshHUD();
+        ShowPanel(PanelType.Home);
+    }
+
+    /// <summary>
+    /// Refresh all HUD text elements to current values.
+    /// </summary>
+    public void RefreshHUD()
+    {
+        var gm = GameManager.Instance;
+        if (gm == null) return;
+
+        hudView.SetMoney(gm.Money);
+        hudView.SetFatigue(gm.Fatigue, gm.Settings.MaxFatigue);
+        hudView.SetDay(gm.DayCount);
+    }
+
+    /// <summary>
+    /// Show a panel by name, hiding all others.
+    /// </summary>
+    public void ShowPanel(PanelType panelType)
+    {
+        if (_currentPanelInfo != null)
+        {
+            _currentPanelInfo.Value.PanelObject.SetActive(false);
+        }
+        
+        _currentPanelInfo = panelType switch
+        {
+            PanelType.Home => homePanelInfo,
+            PanelType.Work => workPanelInfo,
+            PanelType.Tarot => tarotPanelInfo,
+            PanelType.Game => gamePanelInfo,
+            PanelType.Shop => shopPanelInfo,
+            _ => null
+        };
+       
+        if (_currentPanelInfo != null)
+        {
+            _currentPanelInfo.Value.PanelObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Play a fade-out then fade-in transition using DOTween.
+    /// </summary>
+    public Sequence PlayFadeTransition(float fadeDuration = 0.5f)
+    {
+        if (fadeOverlay == null) return DOTween.Sequence();
+
+        fadeOverlay.blocksRaycasts = true;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(fadeOverlay.DOFade(1f, fadeDuration));
+        seq.AppendInterval(0.3f);
+        seq.Append(fadeOverlay.DOFade(0f, fadeDuration));
+        seq.OnComplete(() => fadeOverlay.blocksRaycasts = false);
+
+        return seq;
+    }
+
+    /// <summary>
+    /// Display a toast message that auto-fades.
+    /// </summary>
+    public void ShowToast(string message)
+    {
+        if (messagePanel == null || messageText == null) return;
+
+        // Kill any existing toast animation
+        DOTween.Kill(messagePanel);
+
+        messageText.text = message;
+        messagePanel.alpha = 0f;
+        messagePanel.blocksRaycasts = false;
+
+        Sequence seq = DOTween.Sequence().SetId(messagePanel);
+        seq.Append(messagePanel.DOFade(1f, 0.3f));
+        seq.AppendInterval(2f);
+        seq.Append(messagePanel.DOFade(0f, 0.3f));
+    }
+
+    /// <summary>
+    /// Show the Game Clear panel with celebration.
+    /// </summary>
+    public void ShowGameClear(string giftName)
+    {
+        if (gameClearPanel == null) return;
+
+        gameClearPanel.SetActive(true);
+
+        var clearText = gameClearPanel.GetComponentInChildren<TextMeshProUGUI>();
+        if (clearText != null)
+        {
+            clearText.text = $"Happy Birthday!\nYou gifted: {giftName}";
+        }
+
+        // Punch scale animation
+        gameClearPanel.transform.localScale = Vector3.zero;
+        gameClearPanel.transform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutBack);
+    }
+}
