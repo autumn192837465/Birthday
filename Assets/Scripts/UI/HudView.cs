@@ -6,8 +6,7 @@ public class HudView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI fatigueText;
     [SerializeField] private TextMeshProUGUI dayText;
-    [SerializeField] private TextMeshProUGUI buffText;
-    
+
     public void SetMoney(int amount)
     {
         moneyText.text = amount.ToString();

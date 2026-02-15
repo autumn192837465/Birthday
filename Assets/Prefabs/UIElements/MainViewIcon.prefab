@@ -546,7 +546,7 @@ MonoBehaviour:
         Mode: 0
         AnimateScaleTarget: {fileID: 8683891077629970127}
         MovementMode: 0
-        AnimateScaleDuration: 0.1
+        AnimateScaleDuration: 0.05
         AnimatePositionSpeed: 1
         RemapCurveZero: 1
         RemapCurveOne: 1.1
@@ -734,7 +734,7 @@ MonoBehaviour:
   pointerUpFeedback: {fileID: 7808562566675044302}
   uiEffect: {fileID: 3126272114162393654}
   tooltips: {fileID: 8373592520202965690}
-  button: {fileID: 0}
+  button: {fileID: 1957948814005591693}
 --- !u!1 &3264786749645826253
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,7 +963,7 @@ MonoBehaviour:
         Mode: 0
         AnimateScaleTarget: {fileID: 8683891077629970127}
         MovementMode: 0
-        AnimateScaleDuration: 0.1
+        AnimateScaleDuration: 0.05
         AnimatePositionSpeed: 1
         RemapCurveZero: 1.1
         RemapCurveOne: 1

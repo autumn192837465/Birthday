@@ -7,7 +7,7 @@ using DG.Tweening;
 /// Shop system: buy gifts to trigger the "Game Clear" ending.
 /// 3 gift buttons with different prices.
 /// </summary>
-public class ShopSystem : MonoBehaviour
+public class ShopSystem : PanelBase
 {
     [Header("Gift Button References")]
     [SerializeField] private Button[] giftButtons;

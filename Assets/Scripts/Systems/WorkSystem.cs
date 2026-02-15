@@ -1,14 +1,15 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Work system: earn money at the cost of fatigue.
 /// Respects tarot card modifiers: TheHermit (blocks work), TheMagician (no fatigue),
 /// TheFool (salary penalty), TheMoon (chaotic button).
 /// </summary>
-public class WorkSystem : MonoBehaviour
+public class WorkSystem : PanelBase
 {
     [Header("UI References")]
     [SerializeField] private Button workButton;
@@ -22,7 +23,7 @@ public class WorkSystem : MonoBehaviour
     private bool isWorking = false;
     private Vector2 originalButtonPos;
     private bool hasStoredOriginalPos = false;
-
+    
     private void Start()
     {
         // Store original button position for TheMoon reset
@@ -31,6 +32,8 @@ public class WorkSystem : MonoBehaviour
             originalButtonPos = workButtonRect.anchoredPosition;
             hasStoredOriginalPos = true;
         }
+        
+        workButton.onClick.AddListener(OnWorkButtonClicked);
     }
 
     private void Update()
@@ -44,8 +47,7 @@ public class WorkSystem : MonoBehaviour
         else if (hasStoredOriginalPos && workButtonRect != null && !isWorking)
         {
             // Smoothly return to original position when TheMoon is not active
-            workButtonRect.anchoredPosition = Vector2.Lerp(
-                workButtonRect.anchoredPosition, originalButtonPos, Time.deltaTime * 5f);
+            workButtonRect.anchoredPosition = Vector2.Lerp(workButtonRect.anchoredPosition, originalButtonPos, Time.deltaTime * 5f);
         }
     }
 
@@ -54,43 +56,7 @@ public class WorkSystem : MonoBehaviour
     /// </summary>
     public void OnWorkButtonClicked()
     {
-        var gm = GameManager.Instance;
-        if (gm == null || isWorking) return;
-
-        // TheHermit: cannot work today
-        if (gm.HasBlocksWork())
-        {
-            gm.ShowMessage("The Hermit says: rest today. No work allowed!");
-            return;
-        }
-
-        // Check fatigue limit
-        if (gm.IsTooTired())
-        {
-            gm.ShowMessage("Too tired! Go home and sleep first.");
-            return;
-        }
-
-        // Try to add fatigue (TheMagician may block fatigue cost)
-        if (!gm.AddFatigue(gm.Settings.WorkFatigueCost))
-        {
-            return;
-        }
-
-        isWorking = true;
-
-        // Play a simple work animation
-        PlayWorkAnimation(() =>
-        {
-            // Earn salary with all tarot modifiers applied
-            int earned = gm.EarnWorkSalary(gm.Settings.WorkSalary);
-            gm.ShowMessage($"Worked hard! Earned ${earned}");
-
-            // Notify tarot effects about work completion
-            gm.NotifyWorkPerformed();
-
-            isWorking = false;
-        });
+        _ = GameManager.Instance.TryWork();
     }
 
     /// <summary>

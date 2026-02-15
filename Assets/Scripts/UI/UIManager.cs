@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     {
         public PanelType Type;
         public MainViewIcon MainViewIcon;
-        public GameObject PanelObject;
+        public PanelBase PanelObject;
     }
     
     public static UIManager Instance { get; private set; }
@@ -43,10 +43,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PanelInfo homePanelInfo;
     [SerializeField] private PanelInfo workPanelInfo;
     [SerializeField] private PanelInfo tarotPanelInfo;
-    [FormerlySerializedAs("slotPanelInfo")] [SerializeField] private PanelInfo gamePanelInfo;
-    [SerializeField] private PanelInfo molePanelInfo;
+    [SerializeField] private PanelInfo gamePanelInfo;
     [SerializeField] private PanelInfo shopPanelInfo;
     [SerializeField] private GameObject gameClearPanel;
+    
+    
     
     private PanelInfo? _currentPanelInfo;
 
@@ -65,6 +66,20 @@ public class UIManager : MonoBehaviour
         tarotPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Tarot);
         gamePanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Game);
         shopPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Shop);
+        
+        homePanelInfo.PanelObject.Hide();
+        workPanelInfo.PanelObject.Hide();
+        tarotPanelInfo.PanelObject.Hide();
+        gamePanelInfo.PanelObject.Hide();
+        shopPanelInfo.PanelObject.Hide();
+
+
+        
+        homePanelInfo.PanelObject.SetBackAction(ToMainView);
+        workPanelInfo.PanelObject.SetBackAction(ToMainView);
+        tarotPanelInfo.PanelObject.SetBackAction(ToMainView);
+        gamePanelInfo.PanelObject.SetBackAction(ToMainView);
+        shopPanelInfo.PanelObject.SetBackAction(ToMainView);
     }
 
     private void OnEnable()
@@ -106,7 +121,6 @@ public class UIManager : MonoBehaviour
             gameClearPanel.SetActive(false);
 
         RefreshHUD();
-        ShowPanel(PanelType.Home);
     }
 
     /// <summary>
@@ -129,7 +143,7 @@ public class UIManager : MonoBehaviour
     {
         if (_currentPanelInfo != null)
         {
-            _currentPanelInfo.Value.PanelObject.SetActive(false);
+            _currentPanelInfo.Value.PanelObject.Hide();
         }
         
         _currentPanelInfo = panelType switch
@@ -144,26 +158,24 @@ public class UIManager : MonoBehaviour
        
         if (_currentPanelInfo != null)
         {
-            _currentPanelInfo.Value.PanelObject.SetActive(true);
+            _currentPanelInfo.Value.PanelObject.Show();
         }
     }
-
-    /// <summary>
-    /// Play a fade-out then fade-in transition using DOTween.
-    /// </summary>
-    public Sequence PlayFadeTransition(float fadeDuration = 0.5f)
+    
+    public async Awaitable FadeIn(float duration = 0.5f)
     {
-        if (fadeOverlay == null) return DOTween.Sequence();
-
         fadeOverlay.blocksRaycasts = true;
-
         Sequence seq = DOTween.Sequence();
-        seq.Append(fadeOverlay.DOFade(1f, fadeDuration));
-        seq.AppendInterval(0.3f);
-        seq.Append(fadeOverlay.DOFade(0f, fadeDuration));
+        seq.Append(fadeOverlay.DOFade(0f, duration));
+        await seq.AsyncWaitForCompletion();
+    }
+    
+    public async Awaitable FadeOut(float duration = 0.5f)
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(fadeOverlay.DOFade(1f, duration));
         seq.OnComplete(() => fadeOverlay.blocksRaycasts = false);
-
-        return seq;
+        await seq.AsyncWaitForCompletion();
     }
 
     /// <summary>
@@ -204,5 +216,14 @@ public class UIManager : MonoBehaviour
         // Punch scale animation
         gameClearPanel.transform.localScale = Vector3.zero;
         gameClearPanel.transform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutBack);
+    }
+
+    public void ToMainView()
+    {
+        if (_currentPanelInfo != null)
+        {
+            _currentPanelInfo.Value.PanelObject.Hide();
+            _currentPanelInfo = null;
+        }
     }
 }

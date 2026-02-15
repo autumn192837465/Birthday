@@ -15,11 +15,15 @@ public class GameManager : MonoBehaviour
     public GameSettings Settings;
 
     [SerializeField] private DataManager dataManager;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private GameObject raycastBlocker;
 
     // === Player Stats ===
     public int Money { get; private set; } = 1000;
     public int Fatigue { get; private set; } = 0;
     public int DayCount { get; private set; } = 1;
+    
+    public DataManager DataManager => dataManager;
 
     // === Active Tarot Effects ===
     private readonly List<ITarotEffect> activeEffects = new List<ITarotEffect>();
@@ -54,7 +58,6 @@ public class GameManager : MonoBehaviour
     {
         NotifyStatsChanged();
     }
-
     // =============================================
     // Money Operations
     // =============================================
@@ -154,6 +157,45 @@ public class GameManager : MonoBehaviour
         Fatigue += amount;
         NotifyStatsChanged();
         return true;
+    }
+
+    public async Awaitable Sleep()
+    {
+        EnableInput(false);
+        await uiManager.FadeOut(2);
+        uiManager.ToMainView();
+        ResetFatigue();
+        AdvanceDay();
+        await Awaitable.WaitForSecondsAsync(1);
+        await uiManager.FadeIn(2);
+        EnableInput(true);
+    }
+    
+    public async Awaitable TryWork()
+    {
+        if (HasBlocksWork())
+        {
+            ShowMessage("The Hermit says: rest today. No work allowed!");
+        }
+        
+        if (IsTooTired())
+        {
+            ShowMessage("The Hermit says: rest today. No work allowed!");
+            return;
+        }
+        
+        if (!AddFatigue(Settings.WorkFatigueCost))
+        {
+            return;
+        }
+        
+        EnableInput(false);
+        await uiManager.FadeOut(1);
+        EarnWorkSalary(Settings.WorkSalary);
+        NotifyWorkPerformed();
+        uiManager.ToMainView();
+        await uiManager.FadeIn(1);
+        EnableInput(true);
     }
 
     /// <summary>
@@ -338,5 +380,10 @@ public class GameManager : MonoBehaviour
     private void NotifyStatsChanged()
     {
         OnStatsChanged?.Invoke();
+    }
+    
+    private void EnableInput(bool enable)
+    {
+        raycastBlocker.SetActive(!enable);
     }
 }
