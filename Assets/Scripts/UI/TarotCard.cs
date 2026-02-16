@@ -16,6 +16,7 @@ public class TarotCard : MonoBehaviour
     [SerializeField] private Image cardImage;
     [SerializeField] private TextMeshProUGUI symbolText;
     [SerializeField] private MMF_Player flipFeedback;
+    [SerializeField] private MMF_Player showFeedback;
 
     /// <summary>Fired when this card is selected. Passes the assigned TarotType.</summary>
     public event Action<TarotType> OnSelected;
@@ -48,6 +49,11 @@ public class TarotCard : MonoBehaviour
 
         var sprite = GameManager.Instance.DataManager.GetTarotSprite(type);
         cardImage.sprite = sprite;
+    }
+
+    public async Awaitable ShowCardAsync()
+    {
+        await showFeedback.PlayFeedbacksTask();
     }
 
     /// <summary>

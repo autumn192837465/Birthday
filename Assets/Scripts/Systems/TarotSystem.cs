@@ -133,7 +133,7 @@ public class TarotSystem : PanelBase
 
         if (tarotTable != null)
         {
-            tarotTable.InitializeTable(_drawPool);
+            tarotTable.InitializeTableAsync(_drawPool);
             tarotTable.OnCardSelected += OnCardSelected;
         }
         gm.EnableInput(true);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -21,17 +22,30 @@ public class TarotTable : MonoBehaviour
     /// 依 tarotTypes 在 cardRoot 下生成卡牌、設定牌面並設為可點選，並訂閱選取事件。
     /// 若已有舊卡牌會先清除再建立。
     /// </summary>
-    public void InitializeTable(List<TarotType> tarotTypes)
+    public async Awaitable InitializeTableAsync(List<TarotType> tarotTypes)
     {
-        int count = 0;
         ClearTable();
-        foreach (TarotType type in tarotTypes)
+
+        List<Awaitable> showTasks = new List<Awaitable>();
+        for (int i = 0; i < tarotTypes.Count; i++)
         {
-            TarotCard card = Instantiate(tarotCardPrefab, cardRoots[count / 2]);
+            TarotType type = tarotTypes[i];
+            // Use i as the index for cardRoots
+            if (i >= cardRoots.Length)
+                break; // Prevent out-of-bounds
+
+            TarotCard card = Instantiate(tarotCardPrefab, cardRoots[i]);
             card.SetCard(type);
             card.SetInteractable(true);
             tarotCards.Add(card);
-            count++;
+            showTasks.Add(card.ShowCardAsync());
+
+            await Awaitable.WaitForSecondsAsync(0.2f);
+        }
+
+        for (int i = 0; i < showTasks.Count; i++)
+        {
+            await showTasks[i];
         }
         SubscribeCards();
     }
