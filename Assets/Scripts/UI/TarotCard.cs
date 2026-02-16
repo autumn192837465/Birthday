@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using MoreMountains.Feedbacks;
 using Unity.Android.Gradle.Manifest;
 
 /// <summary>
@@ -14,6 +15,7 @@ public class TarotCard : MonoBehaviour
     [SerializeField] private Button button;
     [SerializeField] private Image cardImage;
     [SerializeField] private TextMeshProUGUI symbolText;
+    [SerializeField] private MMF_Player flipFeedback;
 
     /// <summary>Fired when this card is selected. Passes the assigned TarotType.</summary>
     public event Action<TarotType> OnSelected;
@@ -82,4 +84,9 @@ public class TarotCard : MonoBehaviour
         
         OnSelected?.Invoke(_assignedType);
     }
+
+    public async Awaitable FlipCard()
+    {
+        await flipFeedback.PlayFeedbacksTask();
+    } 
 }

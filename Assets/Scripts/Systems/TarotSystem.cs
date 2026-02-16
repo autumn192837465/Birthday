@@ -23,8 +23,7 @@ public class TarotSystem : PanelBase
     [SerializeField] private TextMeshProUGUI resultNameText;
     [SerializeField] private TextMeshProUGUI resultDescriptionText;
     [SerializeField] private Button resultConfirmButton;
-
-    private bool _isDrawing;
+    
     private readonly List<TarotType> _drawPool = new List<TarotType>(3);
 
     private static readonly TarotWeightEntry[] DrawTable = new TarotWeightEntry[]
@@ -109,7 +108,7 @@ public class TarotSystem : PanelBase
     {
         var gm = GameManager.Instance;
         var ui = UIManager.Instance;
-        if (gm == null || ui == null || _isDrawing)
+        if (gm == null || ui == null)
         {
             return;
         }
@@ -118,9 +117,8 @@ public class TarotSystem : PanelBase
         {
             return;
         }
-
-        _isDrawing = true;
-
+        
+        gm.EnableInput(false);
         await ui.FadeOut();
         ShowTarotTableOnly();
         await ui.FadeIn();
@@ -138,6 +136,7 @@ public class TarotSystem : PanelBase
             tarotTable.InitializeTable(_drawPool);
             tarotTable.OnCardSelected += OnCardSelected;
         }
+        gm.EnableInput(true);
 
     }
 
@@ -162,8 +161,10 @@ public class TarotSystem : PanelBase
     private void OnResultConfirmClicked()
     {
         if (UIManager.Instance != null)
+        {
             UIManager.Instance.ToMainView();
-        _isDrawing = false;
+        }
+        
     }
 
     /// <summary>Weighted random from draw table, excluding already chosen types for this round.</summary>

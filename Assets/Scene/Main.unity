@@ -183,6 +183,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c7c813886fa4490ac7f2f752871309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainViewIcon
+--- !u!1 &89033227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 89033228}
+  - component: {fileID: 89033229}
+  m_Layer: 5
+  m_Name: TarotCardRoot (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &89033228
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89033227}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1844554326}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -400}
+  m_SizeDelta: {x: 1080, y: 600}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &89033229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89033227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1001 &103954052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,7 +271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMin.x
@@ -217,7 +279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_SizeDelta.x
@@ -257,11 +319,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 886.6666
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1199,6 +1261,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483774370}
   m_CullTransparentMesh: 1
+--- !u!1 &508608714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 508608715}
+  - component: {fileID: 508608716}
+  m_Layer: 5
+  m_Name: TarotCardRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &508608715
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508608714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1844554326}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 250}
+  m_SizeDelta: {x: 1080, y: 600}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &508608716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508608714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &567284151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,7 +1455,7 @@ MonoBehaviour:
   playButton: {fileID: 1239489949}
   costText: {fileID: 1722223386}
   tarotTableView: {fileID: 1844554325}
-  tarotTable: {fileID: 0}
+  tarotTable: {fileID: 1844554327}
   tarotResultView: {fileID: 0}
   resultNameText: {fileID: 0}
   resultDescriptionText: {fileID: 0}
@@ -1368,10 +1492,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1616664345}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 245, y: -25}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 50, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &665367128
 MonoBehaviour:
@@ -2236,7 +2360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2244,7 +2368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2284,11 +2408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3726,10 +3850,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1616664345}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -50}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1722223386
 MonoBehaviour:
@@ -3927,13 +4051,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1844554326}
+  - component: {fileID: 1844554327}
   m_Layer: 5
   m_Name: TarotTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1844554326
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3947,6 +4072,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1027442597}
+  - {fileID: 508608715}
+  - {fileID: 89033228}
   m_Father: {fileID: 577871797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3954,6 +4081,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1844554327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844554325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c86c59c4504e243b7f2a19c57d20b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TarotTable
+  tarotCardPrefab: {fileID: 2697405792200646534, guid: 1a801678d357548f89c23a79a952e38a, type: 3}
+  cardRoots:
+  - {fileID: 508608715}
+  - {fileID: 89033228}
 --- !u!1 &1906673926
 GameObject:
   m_ObjectHideFlags: 0
@@ -4667,7 +4810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMin.x
@@ -4675,7 +4818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_SizeDelta.x
@@ -4715,11 +4858,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 193.33333
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319638072827625138, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

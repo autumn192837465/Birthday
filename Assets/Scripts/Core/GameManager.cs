@@ -382,7 +382,7 @@ public class GameManager : MonoBehaviour
         OnStatsChanged?.Invoke();
     }
     
-    private void EnableInput(bool enable)
+    public void EnableInput(bool enable)
     {
         raycastBlocker.SetActive(!enable);
     }

@@ -9,7 +9,8 @@ public class TarotTable : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private TarotCard tarotCardPrefab;
-    [SerializeField] private Transform cardRoot;
+    
+    [SerializeField] private Transform[] cardRoots;
 
     private List<TarotCard> tarotCards = new List<TarotCard>();
 
@@ -22,16 +23,15 @@ public class TarotTable : MonoBehaviour
     /// </summary>
     public void InitializeTable(List<TarotType> tarotTypes)
     {
-        if (tarotCardPrefab == null || cardRoot == null || tarotTypes == null)
-            return;
-
+        int count = 0;
         ClearTable();
         foreach (TarotType type in tarotTypes)
         {
-            TarotCard card = Instantiate(tarotCardPrefab, cardRoot);
+            TarotCard card = Instantiate(tarotCardPrefab, cardRoots[count / 2]);
             card.SetCard(type);
             card.SetInteractable(true);
             tarotCards.Add(card);
+            count++;
         }
         SubscribeCards();
     }
