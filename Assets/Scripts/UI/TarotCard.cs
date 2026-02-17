@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
-using Unity.Android.Gradle.Manifest;
 
 /// <summary>
 /// Single tarot card in the selection table. Player clicks one of 3 cards to choose their fortune.

@@ -20,8 +20,7 @@ public class TarotSystem : PanelBase
 
     [Header("Result View (after pick)")]
     [SerializeField] private GameObject tarotResultView;
-    [SerializeField] private TextMeshProUGUI resultNameText;
-    [SerializeField] private TextMeshProUGUI resultDescriptionText;
+    [SerializeField] private TarotResultView tarotResultViewComponent;
     [SerializeField] private Button resultConfirmButton;
     
     private readonly List<TarotType> _drawPool = new List<TarotType>(3);
@@ -160,10 +159,10 @@ public class TarotSystem : PanelBase
         if (gm != null)
             gm.ApplyTarotCard(card.AssignedType);
 
-        if (resultNameText != null)
-            resultNameText.text = effect?.CardName ?? card.AssignedType.ToString();
-        if (resultDescriptionText != null)
-            resultDescriptionText.text = effect?.Description ?? "";
+        var resultView = tarotResultViewComponent != null
+            ? tarotResultViewComponent
+            : (tarotResultView != null ? tarotResultView.GetComponent<TarotResultView>() : null);
+        resultView?.InitializeUI(card.AssignedType);
 
         ShowResultOnly();
     }

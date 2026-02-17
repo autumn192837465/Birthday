@@ -75,12 +75,10 @@ public class GameManager : MonoBehaviour
         if (shift)
         {
             Time.timeScale = 1f / scale;
-            Debug.Log($"[Debug] Time scale: 1/{scale} = {Time.timeScale:F2}x");
         }
         else
         {
             Time.timeScale = scale;
-            Debug.Log($"[Debug] Time scale: {scale}x");
         }
 #endif
     }

@@ -8,8 +8,8 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     [Header("Data")]
-    [Tooltip("ScriptableObject that stores tarot card sprites. Used by DataManager.")]
-    public TarotSpritesData TarotSpritesData;
+    [Tooltip("ScriptableObject 儲存塔羅牌圖、名稱、敘述。由 DataManager 使用。")]
+    public TarotData TarotData;
 
     [Header("Fatigue")]
     [Tooltip("Maximum fatigue before the player must sleep.")]
