@@ -11,17 +11,26 @@ using Unity.Android.Gradle.Manifest;
 /// </summary>
 public class TarotCard : MonoBehaviour
 {
+    public enum Facing
+    {
+        Back,
+        Front
+    }
+    
     [Header("References")]
     [SerializeField] private Button button;
     [SerializeField] private Image cardImage;
-    [SerializeField] private TextMeshProUGUI symbolText;
     [SerializeField] private MMF_Player flipFeedback;
     [SerializeField] private MMF_Player showFeedback;
 
-    /// <summary>Fired when this card is selected. Passes the assigned TarotType.</summary>
-    public event Action<TarotType> OnSelected;
+    [SerializeField] private Transform cardRoot;
+    [SerializeField] private MMF_Player onPointerDownFeedback;
+    [SerializeField] private MMF_Player onPointerUpFeedback;
 
-    private TarotType _assignedType;
+    /// <summary>Fired when this card is selected. Passes the assigned TarotType.</summary>
+    public event Action<TarotCard> OnSelected;
+
+    public TarotType AssignedType { get; private set; }
     private bool _interactable = true;
 
     private void Awake()
@@ -44,11 +53,24 @@ public class TarotCard : MonoBehaviour
     /// </summary>
     public void SetCard(TarotType type)
     {
-        _assignedType = type;
+        AssignedType = type;
         _interactable = true;
 
         var sprite = GameManager.Instance.DataManager.GetTarotSprite(type);
         cardImage.sprite = sprite;
+    }
+
+    public void SetFacing(Facing facing)
+    {
+        switch (facing)
+        {
+            case Facing.Back:
+                cardRoot.transform.localScale = new Vector3(-1, 1, 0);
+                break;
+            case Facing.Front:
+                cardRoot.transform.localScale = new Vector3(1, 1, 0);
+                break;
+        }
     }
 
     public async Awaitable ShowCardAsync()
@@ -62,10 +84,7 @@ public class TarotCard : MonoBehaviour
     public void RevealFace(ITarotEffect effect)
     {
         if (effect == null) return;
-        if (symbolText != null)
-        {
-            symbolText.text = effect.Symbol;
-        }
+  
        
     }
 
@@ -76,6 +95,8 @@ public class TarotCard : MonoBehaviour
         {
             button.interactable = value;
         }
+        
+        onPointerUpFeedback.SkipToTheEnd();
     }
 
     private void OnCardClicked()
@@ -86,13 +107,41 @@ public class TarotCard : MonoBehaviour
         }
         
         _interactable = false;
-
-        
-        OnSelected?.Invoke(_assignedType);
+        OnSelected?.Invoke(this);
     }
 
-    public async Awaitable FlipCard()
+    public async Awaitable FlipCardAsync()
     {
         await flipFeedback.PlayFeedbacksTask();
     } 
+    
+    public void OnPointerDown()
+    {
+        if (!_interactable)
+        {
+            return;
+        }
+
+        if (onPointerUpFeedback.IsPlaying)
+        {
+            onPointerUpFeedback.StopFeedbacks();
+        }
+        
+        onPointerDownFeedback.PlayFeedbacks();
+    }
+    
+    public void OnPointerUp()
+    {
+        if (!_interactable)
+        {
+            return;
+        }
+
+        if (onPointerDownFeedback.IsPlaying)
+        {
+            onPointerDownFeedback.StopFeedbacks();
+        }
+        
+        onPointerUpFeedback.PlayFeedbacks();
+    }
 }

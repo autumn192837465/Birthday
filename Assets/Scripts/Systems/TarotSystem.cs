@@ -140,18 +140,28 @@ public class TarotSystem : PanelBase
 
     }
 
-    private void OnCardSelected(TarotType type)
+    private void OnCardSelected(TarotCard card)
     {
         if (tarotTable != null)
+        {
             tarotTable.OnCardSelected -= OnCardSelected;
+        }
 
-        ITarotEffect effect = TarotCardFactory.Create(type);
+        _ = ShowCardAsync(card);
+    }
+
+    private async Awaitable ShowCardAsync(TarotCard card)
+    {
+        await card.FlipCardAsync();
+        await Awaitable.WaitForSecondsAsync(1);
+        
+        ITarotEffect effect = TarotCardFactory.Create(card.AssignedType);
         var gm = GameManager.Instance;
         if (gm != null)
-            gm.ApplyTarotCard(type);
+            gm.ApplyTarotCard(card.AssignedType);
 
         if (resultNameText != null)
-            resultNameText.text = effect?.CardName ?? type.ToString();
+            resultNameText.text = effect?.CardName ?? card.AssignedType.ToString();
         if (resultDescriptionText != null)
             resultDescriptionText.text = effect?.Description ?? "";
 

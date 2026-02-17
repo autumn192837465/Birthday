@@ -58,6 +58,33 @@ public class GameManager : MonoBehaviour
     {
         NotifyStatsChanged();
     }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        int scale = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) scale = 1;
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) scale = 2;
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) scale = 3;
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) scale = 4;
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) scale = 5;
+
+        if (scale == 0) return;
+
+        if (shift)
+        {
+            Time.timeScale = 1f / scale;
+            Debug.Log($"[Debug] Time scale: 1/{scale} = {Time.timeScale:F2}x");
+        }
+        else
+        {
+            Time.timeScale = scale;
+            Debug.Log($"[Debug] Time scale: {scale}x");
+        }
+#endif
+    }
+
     // =============================================
     // Money Operations
     // =============================================

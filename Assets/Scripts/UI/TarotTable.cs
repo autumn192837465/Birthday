@@ -1,70 +1,84 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
-/// 塔羅牌桌：負責在 cardRoot 下動態生成卡牌、設定牌面、訂閱選取，並對外發出 OnCardSelected。
+/// Tarot table: uses pre-placed TarotCard references. Assigns card types, plays show animation, subscribes to selection, and raises OnCardSelected.
 /// </summary>
 public class TarotTable : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private TarotCard tarotCardPrefab;
-    
-    [SerializeField] private Transform[] cardRoots;
+    [SerializeField] private TarotCard[] tarotCards;
 
-    private List<TarotCard> tarotCards = new List<TarotCard>();
+    /// <summary>Fired when the player selects a card on the table.</summary>
+    public event Action<TarotCard> OnCardSelected;
 
-    /// <summary>當玩家在桌面上選中一張牌時觸發。</summary>
-    public event Action<TarotType> OnCardSelected;
+    private void Awake()
+    {
+        HideAllCards();
+    }
+
+    private void HideAllCards()
+    {
+        foreach(var card in tarotCards)
+        {
+            if (card != null)
+            {
+                card.gameObject.SetActive(false);
+            }
+        }
+    }
 
     /// <summary>
-    /// 依 tarotTypes 在 cardRoot 下生成卡牌、設定牌面並設為可點選，並訂閱選取事件。
-    /// 若已有舊卡牌會先清除再建立。
+    /// Assigns each pre-placed card with a type from tarotTypes, sets face-down and interactable, plays show animation, then subscribes to selection.
     /// </summary>
     public async Awaitable InitializeTableAsync(List<TarotType> tarotTypes)
     {
-        ClearTable();
+        if (tarotCards == null || tarotTypes == null)
+        {
+            return;
+        }
+
+        HideAllCards();
+        UnsubscribeCards();
+
+        int count = Mathf.Min(tarotCards.Length, tarotTypes.Count);
+        for (int i = 0; i < count; i++)
+        {
+            TarotCard card = tarotCards[i];
+            if (card == null) continue;
+
+            card.SetCard(tarotTypes[i]);
+            card.SetFacing(TarotCard.Facing.Back);
+            card.SetInteractable(true);
+        }
 
         List<Awaitable> showTasks = new List<Awaitable>();
-        for (int i = 0; i < tarotTypes.Count; i++)
+        for (int i = 0; i < count; i++)
         {
-            TarotType type = tarotTypes[i];
-            // Use i as the index for cardRoots
-            if (i >= cardRoots.Length)
-                break; // Prevent out-of-bounds
+            TarotCard card = tarotCards[i];
+            if (card == null)
+            {
+                continue;
+            }
 
-            TarotCard card = Instantiate(tarotCardPrefab, cardRoots[i]);
-            card.SetCard(type);
-            card.SetInteractable(true);
-            tarotCards.Add(card);
+            card.gameObject.SetActive(true);
             showTasks.Add(card.ShowCardAsync());
-
             await Awaitable.WaitForSecondsAsync(0.2f);
         }
 
-        for (int i = 0; i < showTasks.Count; i++)
+        foreach (var task in showTasks)
         {
-            await showTasks[i];
+            await task;
         }
+
         SubscribeCards();
     }
 
-    /// <summary>清除桌面上所有卡牌（銷毀實例）。</summary>
-    public void ClearTable()
-    {
-        UnsubscribeCards();
-        foreach (var card in tarotCards)
-        {
-            if (card != null && card.gameObject != null)
-                Destroy(card.gameObject);
-        }
-        tarotCards.Clear();
-    }
-
-    /// <summary>設定桌上所有卡牌是否可點選。</summary>
+    /// <summary>Sets whether all cards on the table are clickable.</summary>
     public void SetAllInteractable(bool interactable)
     {
+        if (tarotCards == null) return;
         foreach (var card in tarotCards)
         {
             if (card != null)
@@ -74,27 +88,33 @@ public class TarotTable : MonoBehaviour
 
     private void SubscribeCards()
     {
+        if (tarotCards == null) return;
         foreach (var card in tarotCards)
         {
             if (card != null)
+            {
                 card.OnSelected += OnCardSelectedInternal;
+            }
         }
     }
 
     private void UnsubscribeCards()
     {
+        if (tarotCards == null) return;
         foreach (var card in tarotCards)
         {
             if (card != null)
+            {
                 card.OnSelected -= OnCardSelectedInternal;
+            }
         }
     }
 
-    private void OnCardSelectedInternal(TarotType type)
+    private void OnCardSelectedInternal(TarotCard card)
     {
         UnsubscribeCards();
         SetAllInteractable(false);
-        OnCardSelected?.Invoke(type);
+        OnCardSelected?.Invoke(card);
     }
 
     private void OnDestroy()
