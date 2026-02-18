@@ -106,24 +106,6 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Earn work salary with both EarningsMultiplier and SalaryBonusPercent applied.
-    /// </summary>
-    public int EarnWorkSalary(int baseSalary)
-    {
-        float salaryBonus = GetTotalSalaryBonusPercent();
-        float earningsMultiplier = GetTotalEarningsMultiplier();
-
-        int adjustedSalary = Mathf.RoundToInt(baseSalary * (1f + salaryBonus));
-        int finalAmount = Mathf.RoundToInt(adjustedSalary * earningsMultiplier);
-        finalAmount = Mathf.Max(1, finalAmount); // Always earn at least 1
-
-        Money += finalAmount;
-        NotifyStatsChanged();
-
-        return finalAmount;
-    }
-
-    /// <summary>
     /// Add money directly without multipliers (used by instant card effects).
     /// </summary>
     public void AddMoney(int amount)
@@ -189,37 +171,19 @@ public class GameManager : MonoBehaviour
         EnableInput(false);
         await uiManager.FadeOutAsync(2);
         uiManager.ToMainView();
+
+        // Process nightly gallery market before advancing the day
+        if (MarketManager.Instance != null)
+        {
+            var result = MarketManager.Instance.ProcessDailyMarket();
+            string summary = MarketManager.FormatResult(result);
+            ShowMessage(summary);
+        }
+
         ResetFatigue();
         AdvanceDay();
         await Awaitable.WaitForSecondsAsync(1);
         await uiManager.FadeInAsync(2);
-        EnableInput(true);
-    }
-    
-    public async Awaitable TryWork()
-    {
-        if (HasBlocksWork())
-        {
-            ShowMessage("The Hermit says: rest today. No work allowed!");
-        }
-        
-        if (IsTooTired())
-        {
-            ShowMessage("The Hermit says: rest today. No work allowed!");
-            return;
-        }
-        
-        if (!AddFatigue(Settings.WorkFatigueCost))
-        {
-            return;
-        }
-        
-        EnableInput(false);
-        await uiManager.FadeOutAsync(1);
-        EarnWorkSalary(Settings.WorkSalary);
-        NotifyWorkPerformed();
-        uiManager.ToMainView();
-        await uiManager.FadeInAsync(1);
         EnableInput(true);
     }
 
@@ -288,26 +252,13 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Notify all active effects that a work action was performed, then clean up.
+    /// Notify all active effects that a painting was created, then clean up.
     /// </summary>
-    public void NotifyWorkPerformed()
+    public void NotifyPaintingCreated()
     {
         foreach (var effect in activeEffects)
         {
-            effect.OnWorkPerformed();
-        }
-
-        CleanupExpiredEffects();
-    }
-
-    /// <summary>
-    /// Notify all active effects that a mini-game was played, then clean up.
-    /// </summary>
-    public void NotifyMiniGamePlayed()
-    {
-        foreach (var effect in activeEffects)
-        {
-            effect.OnMiniGamePlayed();
+            effect.OnPaintingCreated();
         }
 
         CleanupExpiredEffects();
@@ -330,41 +281,38 @@ public class GameManager : MonoBehaviour
         return multiplier;
     }
 
-    /// <summary>
-    /// Sum of all active SalaryBonusPercent values.
-    /// </summary>
-    public float GetTotalSalaryBonusPercent()
-    {
-        float bonus = 0f;
-        foreach (var effect in activeEffects)
-        {
-            bonus += effect.SalaryBonusPercent;
-        }
-        return bonus;
-    }
-
-    /// <summary>True if any active effect blocks work.</summary>
-    public bool HasBlocksWork()
-    {
-        return activeEffects.Any(e => e.BlocksWork);
-    }
-
     /// <summary>True if any active effect blocks fatigue cost.</summary>
     public bool HasBlocksFatigue()
     {
         return activeEffects.Any(e => e.BlocksFatigue);
     }
 
-    /// <summary>True if any active effect guarantees a mini-game win.</summary>
-    public bool HasGuaranteedMiniGameWin()
+    /// <summary>True if any active effect blocks painting creation.</summary>
+    public bool HasBlocksCreation()
     {
-        return activeEffects.Any(e => e.GuaranteesMiniGameWin);
+        return activeEffects.Any(e => e.BlocksCreation);
     }
 
-    /// <summary>True if any active effect makes the work button chaotic.</summary>
-    public bool HasChaoticWorkButton()
+    /// <summary>Product of all active RentChanceMultiplier values.</summary>
+    public float GetTotalRentChanceMultiplier()
     {
-        return activeEffects.Any(e => e.MakesWorkButtonChaotic);
+        float multiplier = 1f;
+        foreach (var effect in activeEffects)
+        {
+            multiplier *= effect.RentChanceMultiplier;
+        }
+        return multiplier;
+    }
+
+    /// <summary>Product of all active PaintingValueMultiplier values.</summary>
+    public float GetTotalPaintingValueMultiplier()
+    {
+        float multiplier = 1f;
+        foreach (var effect in activeEffects)
+        {
+            multiplier *= effect.PaintingValueMultiplier;
+        }
+        return multiplier;
     }
 
     /// <summary>

@@ -13,9 +13,8 @@ public class UIManager : MonoBehaviour
     public enum PanelType
     {
         Home,
-        Work,
+        Gallery,
         Tarot,
-        Game,
         Shop
     }
     
@@ -41,9 +40,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Panels")]
     [SerializeField] private PanelInfo homePanelInfo;
-    [SerializeField] private PanelInfo workPanelInfo;
+    [SerializeField] private PanelInfo galleryPanelInfo;
     [SerializeField] private PanelInfo tarotPanelInfo;
-    [SerializeField] private PanelInfo gamePanelInfo;
     [SerializeField] private PanelInfo shopPanelInfo;
     [SerializeField] private GameObject gameClearPanel;
     
@@ -62,24 +60,19 @@ public class UIManager : MonoBehaviour
         Instance = this;
         
         homePanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Home);
-        workPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Work);
+        galleryPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Gallery);
         tarotPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Tarot);
-        gamePanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Game);
         shopPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Shop);
-        
+
         homePanelInfo.PanelObject.Hide();
-        workPanelInfo.PanelObject.Hide();
+        galleryPanelInfo.PanelObject.Hide();
         tarotPanelInfo.PanelObject.Hide();
-        gamePanelInfo.PanelObject.Hide();
         shopPanelInfo.PanelObject.Hide();
 
-
-        
-        homePanelInfo.PanelObject.SetBackAction(ToMainView);
-        workPanelInfo.PanelObject.SetBackAction(ToMainView);
-        tarotPanelInfo.PanelObject.SetBackAction(ToMainView);
-        gamePanelInfo.PanelObject.SetBackAction(ToMainView);
-        shopPanelInfo.PanelObject.SetBackAction(ToMainView);
+        homePanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
+        galleryPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
+        tarotPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
+        shopPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
     }
 
     private void OnEnable()
@@ -151,9 +144,8 @@ public class UIManager : MonoBehaviour
         _currentPanelInfo = panelType switch
         {
             PanelType.Home => homePanelInfo,
-            PanelType.Work => workPanelInfo,
+            PanelType.Gallery => galleryPanelInfo,
             PanelType.Tarot => tarotPanelInfo,
-            PanelType.Game => gamePanelInfo,
             PanelType.Shop => shopPanelInfo,
             _ => null
         };

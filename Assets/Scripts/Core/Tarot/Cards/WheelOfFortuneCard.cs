@@ -1,6 +1,6 @@
 /// <summary>
-/// Wheel of Fortune: The next mini-game is a guaranteed big win.
-/// Category: Positive (Money). One-shot trigger.
+/// Wheel of Fortune: The next displayed painting is instantly rented at premium rate.
+/// Category: Positive (Money). Consumed when a painting is created.
 /// </summary>
 public class WheelOfFortuneCard : TarotCardBase
 {
@@ -8,18 +8,22 @@ public class WheelOfFortuneCard : TarotCardBase
 
     public override TarotType Type => TarotType.WheelOfFortune;
     public override string CardName => "Wheel of Fortune";
-    public override string Description => "Next mini-game is a guaranteed BIG WIN!";
+    public override string Description => "Next painting you display will be rented instantly tonight!";
     public override string Symbol => "WIN";
 
     public override bool IsExpired => consumed;
-    public override bool GuaranteesMiniGameWin => !consumed;
+
+    /// <summary>
+    /// Doubles the rent chance, effectively guaranteeing rental for the next market cycle.
+    /// </summary>
+    public override float RentChanceMultiplier => consumed ? 1f : 2f;
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("Wheel of Fortune: Your next game is a guaranteed win!");
+        gm.ShowMessage("Wheel of Fortune: Your gallery is buzzing with interest!");
     }
 
-    public override void OnMiniGamePlayed()
+    public override void OnDayAdvanced()
     {
         consumed = true;
     }

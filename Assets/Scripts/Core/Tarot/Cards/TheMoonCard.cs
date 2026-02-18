@@ -1,5 +1,5 @@
 /// <summary>
-/// The Moon: Work button moves around chaotically for the rest of today.
+/// The Moon: Rent chance is halved for tonight's market processing.
 /// Category: Playful Debuff. Lasts until next day.
 /// </summary>
 public class TheMoonCard : TarotCardBase
@@ -8,15 +8,15 @@ public class TheMoonCard : TarotCardBase
 
     public override TarotType Type => TarotType.TheMoon;
     public override string CardName => "The Moon";
-    public override string Description => "Mischievous ghost! Work button is jumpy today.";
+    public override string Description => "Mischievous ghost! Rent chance halved tonight.";
     public override string Symbol => "BOO";
 
     public override bool IsExpired => dayPassed;
-    public override bool MakesWorkButtonChaotic => true;
+    public override float RentChanceMultiplier => 0.5f;
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("The Moon: A playful ghost is haunting the work button!");
+        gm.ShowMessage("The Moon: A playful ghost is scaring away customers tonight!");
     }
 
     public override void OnDayAdvanced()

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ce89ef570a5ac4bb1304440185eeff, type: 3}
+  m_Name: DrawingData
+  m_EditorClassIdentifier: Assembly-CSharp::DrawingData
+  entries:
+  - Type: 0
+    Name: 
+    Description: 
+    Sprite: {fileID: 0}
+    Price: 0
+  - Type: 1
+    Name: Memories from Honolulu
+    Description: 
+    Sprite: {fileID: -864253011640199798, guid: ee3c1daddc30d2b4bbb247b57737cc00, type: 3}
+    Price: 0
+  - Type: 2
+    Name: Just being with you
+    Description: 
+    Sprite: {fileID: -1399983992106746050, guid: cd9cfa75b92b85842ba4440df90ca55a, type: 3}
+    Price: 0
+  - Type: 3
+    Name: first day of spring
+    Description: 
+    Sprite: {fileID: -2065407220638996068, guid: d3eb6cfdaa17b424ba9102c98ee1bde8, type: 3}
+    Price: 0
+  - Type: 4
+    Name: Drawn to blue
+    Description: 
+    Sprite: {fileID: -3043690881562912698, guid: caabb499708cd4e43b56bb3589a35376, type: 3}
+    Price: 0

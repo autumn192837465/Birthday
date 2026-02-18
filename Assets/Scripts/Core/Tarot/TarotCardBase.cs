@@ -13,18 +13,16 @@ public abstract class TarotCardBase : ITarotEffect
     // === Lifecycle (override as needed) ===
     public virtual void OnApply(GameManager gm) { }
     public virtual void OnRemove(GameManager gm) { }
-    public virtual bool IsExpired => true; // Default: instant cards expire immediately
+    public virtual bool IsExpired => true;
 
     // === Event Hooks (override as needed) ===
     public virtual void OnDayAdvanced() { }
-    public virtual void OnWorkPerformed() { }
-    public virtual void OnMiniGamePlayed() { }
+    public virtual void OnPaintingCreated() { }
 
     // === Passive Modifiers (all default to neutral) ===
     public virtual float EarningsMultiplier => 1f;
-    public virtual float SalaryBonusPercent => 0f;
-    public virtual bool BlocksWork => false;
+    public virtual bool BlocksCreation => false;
     public virtual bool BlocksFatigue => false;
-    public virtual bool GuaranteesMiniGameWin => false;
-    public virtual bool MakesWorkButtonChaotic => false;
+    public virtual float RentChanceMultiplier => 1f;
+    public virtual float PaintingValueMultiplier => 1f;
 }

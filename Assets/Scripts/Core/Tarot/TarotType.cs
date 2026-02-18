@@ -8,21 +8,21 @@ public enum TarotType
     // === Positive: Money ===
     AceOfPentacles,   // Instant +100 coins
     TheEmpress,       // Earnings doubled for 3 days
-    TenOfPentacles,   // Base salary +10% for 3 days
-    WheelOfFortune,   // Next mini-game is a guaranteed big win
+    TenOfPentacles,   // Painting value +10% for 3 days
+    WheelOfFortune,   // Next displayed painting is instantly rented
 
-    // === Positive: Work ===
-    TheMagician,      // Work costs no fatigue (today only)
+    // === Positive: Gallery ===
+    TheMagician,      // Creating art costs no fatigue (today only)
 
     // === Positive: Health ===
     TheStar,          // Instantly reset fatigue to 0
 
     // === Neutral ===
     TwoOfPentacles,   // No effect (balanced, nothing happens)
-    TheHermit,        // Forced rest: cannot work today
+    TheHermit,        // Forced rest: cannot create art today
 
     // === Playful Debuffs ===
-    TheFool,          // Next 3 work sessions earn 10% less
+    TheFool,          // Next 3 paintings have -10% base value
     TheHangedMan,     // Instantly lose 20 coins
-    TheMoon           // Work button moves around chaotically (today only)
+    TheMoon           // Rent chance halved tonight
 }

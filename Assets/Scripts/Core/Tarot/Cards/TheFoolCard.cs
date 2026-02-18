@@ -1,26 +1,26 @@
 /// <summary>
-/// The Fool: Next 3 work sessions earn 10% less.
-/// Category: Playful Debuff. Action-count based.
+/// The Fool: Next 3 paintings have -10% base value.
+/// Category: Playful Debuff. Creation-count based.
 /// </summary>
 public class TheFoolCard : TarotCardBase
 {
-    private int remainingWorkSessions = 3;
+    private int remainingSessions = 3;
 
     public override TarotType Type => TarotType.TheFool;
     public override string CardName => "The Fool";
-    public override string Description => $"Clumsy! Salary -10% ({remainingWorkSessions} sessions left)";
+    public override string Description => $"Clumsy! Painting value -10% ({remainingSessions} paintings left)";
     public override string Symbol => "OOF";
 
-    public override bool IsExpired => remainingWorkSessions <= 0;
-    public override float SalaryBonusPercent => -0.10f;
+    public override bool IsExpired => remainingSessions <= 0;
+    public override float PaintingValueMultiplier => 0.9f;
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("The Fool: Oops! Salary -10% for the next 3 work sessions.");
+        gm.ShowMessage("The Fool: Oops! Next 3 paintings lose 10% value.");
     }
 
-    public override void OnWorkPerformed()
+    public override void OnPaintingCreated()
     {
-        remainingWorkSessions--;
+        remainingSessions--;
     }
 }

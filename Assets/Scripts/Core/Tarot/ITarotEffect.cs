@@ -34,29 +34,23 @@ public interface ITarotEffect
     /// <summary>Called when a new day begins. Use to decrement day counters.</summary>
     void OnDayAdvanced();
 
-    /// <summary>Called after each work action. Use to decrement work counters.</summary>
-    void OnWorkPerformed();
-
-    /// <summary>Called after a mini-game is played. Use for one-shot triggers.</summary>
-    void OnMiniGamePlayed();
+    /// <summary>Called after each painting creation. Use to decrement creation counters.</summary>
+    void OnPaintingCreated();
 
     // === Passive Modifiers (queried by systems) ===
 
     /// <summary>Multiplier for all earnings. 1.0 = normal, 2.0 = double.</summary>
     float EarningsMultiplier { get; }
 
-    /// <summary>Bonus percentage on base salary. 0.0 = none, 0.1 = +10%, -0.1 = -10%.</summary>
-    float SalaryBonusPercent { get; }
+    /// <summary>If true, the player cannot create art today.</summary>
+    bool BlocksCreation { get; }
 
-    /// <summary>If true, the player cannot work today.</summary>
-    bool BlocksWork { get; }
-
-    /// <summary>If true, work does not consume fatigue.</summary>
+    /// <summary>If true, creating art does not consume fatigue.</summary>
     bool BlocksFatigue { get; }
 
-    /// <summary>If true, the next mini-game is a guaranteed big win.</summary>
-    bool GuaranteesMiniGameWin { get; }
+    /// <summary>Multiplier on rent chance during nightly market. 1.0 = normal, 0.5 = halved.</summary>
+    float RentChanceMultiplier { get; }
 
-    /// <summary>If true, the work button moves around chaotically.</summary>
-    bool MakesWorkButtonChaotic { get; }
+    /// <summary>Multiplier on newly created painting base value. 1.0 = normal, 0.9 = -10%.</summary>
+    float PaintingValueMultiplier { get; }
 }

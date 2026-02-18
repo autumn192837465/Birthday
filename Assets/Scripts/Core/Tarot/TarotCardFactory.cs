@@ -17,7 +17,7 @@ public static class TarotCardFactory
             case TarotType.TenOfPentacles:  return new TenOfPentaclesCard();
             case TarotType.WheelOfFortune:  return new WheelOfFortuneCard();
 
-            // Positive: Work
+            // Positive: Gallery
             case TarotType.TheMagician:     return new TheMagicianCard();
 
             // Positive: Health
