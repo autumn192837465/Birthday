@@ -2231,7 +2231,7 @@ RectTransform:
   m_GameObject: {fileID: 795347057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1762324488}
@@ -2239,7 +2239,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 1022, y: 1471}
+  m_SizeDelta: {x: 715.4, y: 1029.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &795347059
 MonoBehaviour:
@@ -4870,7 +4870,7 @@ GameObject:
   - component: {fileID: 1758198555}
   - component: {fileID: 1758198556}
   m_Layer: 5
-  m_Name: TarotReview
+  m_Name: TarotResultView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
