@@ -12,23 +12,19 @@ public class TarotData : ScriptableObject
     [Serializable]
     public class TarotEntry
     {
-        [Tooltip("塔羅牌類型。")]
         public TarotType Type;
-
-        [Tooltip("顯示用圖片（牌面、圖示）。")]
+        
         public Sprite Sprite;
-
-        [Tooltip("顯示名稱（例如：女皇）。")]
+        
         public string Name;
 
         [Tooltip("效果說明。")]
-        [TextArea(2, 4)]
+        [TextArea(4, 8)]
         public string Description;
     }
 
-    [Header("塔羅牌資料")]
-    [Tooltip("每種牌一筆，順序不拘。")]
-    [SerializeField] private TarotEntry[] entries = new TarotEntry[0];
+    [Header("Tarot Data")]
+    [SerializeField] private TarotEntry[] entries;
 
     private Dictionary<TarotType, TarotEntry> _lookup;
 
@@ -59,7 +55,10 @@ public class TarotData : ScriptableObject
     private TarotEntry GetEntry(TarotType type)
     {
         if (_lookup == null)
+        {
             return null;
+        }
+        
         return _lookup.TryGetValue(type, out var entry) ? entry : null;
     }
 
@@ -70,7 +69,9 @@ public class TarotData : ScriptableObject
         foreach (var entry in entries)
         {
             if (entry != null)
+            {
                 _lookup[entry.Type] = entry;
+            }
         }
     }
 }

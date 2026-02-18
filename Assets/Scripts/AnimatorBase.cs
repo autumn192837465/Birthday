@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
@@ -44,6 +44,7 @@ public class AnimatorBase : MonoBehaviour
 
         currentState = State.Opening;
         OnOpen = action;
+        animator.ResetAllTriggers();
         animator.SetTrigger(openTrigger);
         openSoundFeedbacks?.PlayFeedbacks();    
     }
@@ -52,6 +53,7 @@ public class AnimatorBase : MonoBehaviour
         if (IsOpened) return;
         
         currentState = State.Opening;
+        animator.ResetAllTriggers();
         animator.SetTrigger(openTrigger);
         openSoundFeedbacks?.PlayFeedbacks();
     }
@@ -75,6 +77,7 @@ public class AnimatorBase : MonoBehaviour
         if(!IsOpened)    return;
         
         currentState = State.Closing;
+        animator.ResetAllTriggers();
         animator.SetTrigger(closeTrigger);
         closeSoundFeedbacks?.PlayFeedbacks();
     }
@@ -84,6 +87,7 @@ public class AnimatorBase : MonoBehaviour
         
         OnClosed = action;
         currentState = State.Closing;
+        animator.ResetAllTriggers();
         animator.SetTrigger(closeTrigger);
         closeSoundFeedbacks?.PlayFeedbacks();
             

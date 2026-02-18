@@ -18,7 +18,7 @@ public class TarotTable : MonoBehaviour
         HideAllCards();
     }
 
-    private void HideAllCards()
+    public void HideAllCards()
     {
         foreach(var card in tarotCards)
         {
@@ -38,8 +38,7 @@ public class TarotTable : MonoBehaviour
         {
             return;
         }
-
-        HideAllCards();
+        
         UnsubscribeCards();
 
         int count = Mathf.Min(tarotCards.Length, tarotTypes.Count);

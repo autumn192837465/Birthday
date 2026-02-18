@@ -8,4 +8,12 @@ AnimatorOverrideController:
   m_PrefabAsset: {fileID: 0}
   m_Name: TarotResultViewController
   m_Controller: {fileID: 9100000, guid: d0300d811ac2afc4882c5577bc61a8b5, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e94322407b3497e4794a5b5541aafbec, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ad617b2626187468f933316765d43133, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d70f4f5117173b347a96366941631b31, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f710622faf196704b8cda5cb6c5c2a94, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2cc49dbfe51c9b54a9ab42bd943425a7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: aee08a4af76164af0a9ba5c611eafb61, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7248fe60d52050d4c937b85927d7965e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f73968ac99b4241fcbd29a5f341b8e02, type: 2}

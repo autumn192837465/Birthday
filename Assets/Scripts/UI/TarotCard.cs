@@ -94,8 +94,8 @@ public class TarotCard : MonoBehaviour
         {
             button.interactable = value;
         }
-        
-        onPointerUpFeedback.SkipToTheEnd();
+
+        transform.localScale = Vector3.one;
     }
 
     private void OnCardClicked()

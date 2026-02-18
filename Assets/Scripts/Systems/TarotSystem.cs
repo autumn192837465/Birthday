@@ -19,8 +19,7 @@ public class TarotSystem : PanelBase
     [SerializeField] private TarotTable tarotTable;
 
     [Header("Result View (after pick)")]
-    [SerializeField] private GameObject tarotResultView;
-    [SerializeField] private TarotResultView tarotResultViewComponent;
+    [SerializeField] private TarotResultView tarotResultView;
     [SerializeField] private Button resultConfirmButton;
     
     private readonly List<TarotType> _drawPool = new List<TarotType>(3);
@@ -71,6 +70,31 @@ public class TarotSystem : PanelBase
         ShowEntryOnly();
     }
 
+    /// <summary>
+    /// Reset to initial entry view every time the panel is shown (e.g. when entering from main menu again).
+    /// </summary>
+    protected override void OnPanelShow()
+    {
+        ResetToEntryState();
+    }
+
+    /// <summary>
+    /// Cleans up any in-progress state and shows only the entry view (pay-to-play screen).
+    /// </summary>
+    private void ResetToEntryState()
+    {
+        RemoveTarotResultViewEvents();
+        if (tarotResultView != null && tarotResultView.IsOpened)
+        {
+            tarotResultView.Close();
+        }
+        if (tarotTable != null)
+        {
+            tarotTable.OnCardSelected -= OnCardSelected;
+        }
+        ShowEntryOnly();
+    }
+
     private void OnDestroy()
     {
         if (tarotTable != null)
@@ -83,21 +107,24 @@ public class TarotSystem : PanelBase
     {
         if (entryView != null) entryView.SetActive(true);
         if (tarotTableView != null) tarotTableView.SetActive(false);
-        if (tarotResultView != null) tarotResultView.SetActive(false);
     }
 
     private void ShowTarotTableOnly()
     {
         if (entryView != null) entryView.SetActive(false);
         if (tarotTableView != null) tarotTableView.SetActive(true);
-        if (tarotResultView != null) tarotResultView.SetActive(false);
     }
 
     private void ShowResultOnly()
     {
-        if (entryView != null) entryView.SetActive(false);
-        if (tarotTableView != null) tarotTableView.SetActive(false);
-        if (tarotResultView != null) tarotResultView.SetActive(true);
+        if (entryView != null)
+        {
+            entryView.SetActive(false);
+        }
+        if (tarotTableView != null)
+        {
+            tarotTableView.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -118,9 +145,10 @@ public class TarotSystem : PanelBase
         }
         
         gm.EnableInput(false);
-        await ui.FadeOut();
+        await ui.FadeOutAsync();
         ShowTarotTableOnly();
-        await ui.FadeIn();
+        tarotTable.HideAllCards();
+        await ui.FadeInAsync();
 
         // Assign 3 weighted-random types to the 3 cards (no duplicate in one draw)
         _drawPool.Clear();
@@ -152,28 +180,31 @@ public class TarotSystem : PanelBase
     private async Awaitable ShowCardAsync(TarotCard card)
     {
         await card.FlipCardAsync();
-        await Awaitable.WaitForSecondsAsync(1);
+        await Awaitable.WaitForSecondsAsync(0.5f);
         
         ITarotEffect effect = TarotCardFactory.Create(card.AssignedType);
         var gm = GameManager.Instance;
-        if (gm != null)
-            gm.ApplyTarotCard(card.AssignedType);
+        gm.ApplyTarotCard(card.AssignedType);
 
-        var resultView = tarotResultViewComponent != null
-            ? tarotResultViewComponent
-            : (tarotResultView != null ? tarotResultView.GetComponent<TarotResultView>() : null);
-        resultView?.InitializeUI(card.AssignedType);
+        tarotResultView.InitializeUI(card.AssignedType);
+        tarotResultView.Open();
+        AddTarotResultViewEvents();
+    }
+    
+    private void AddTarotResultViewEvents()
+    {
+        tarotResultView.OnConfirm += OnResultConfirmClicked;
+    }
 
-        ShowResultOnly();
+    private void RemoveTarotResultViewEvents()
+    {
+        tarotResultView.OnConfirm -= OnResultConfirmClicked;
     }
 
     private void OnResultConfirmClicked()
-    {
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ToMainView();
-        }
-        
+    { 
+        RemoveTarotResultViewEvents();
+        _ = UIManager.Instance.FadeToMainViewAsync();
     }
 
     /// <summary>Weighted random from draw table, excluding already chosen types for this round.</summary>

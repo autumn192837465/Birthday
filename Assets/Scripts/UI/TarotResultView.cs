@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,15 @@ public class TarotResultView : AnimatorBase
     [SerializeField] private TextMeshProUGUI tarotNameText;
     [SerializeField] private TextMeshProUGUI tarotDescriptionText;
     [SerializeField] private Image tarotImage;
+    [SerializeField] private Button confirmButton;
+
+    public Action OnConfirm;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        confirmButton.onClick.AddListener(() => OnConfirm?.Invoke());
+    }
 
     /// <summary>
     /// 依塔羅類型從 DataManager 取得圖、名稱、敘述並更新 UI。
@@ -21,11 +31,13 @@ public class TarotResultView : AnimatorBase
         var dm = GameManager.Instance != null ? GameManager.Instance.DataManager : null;
         if (dm == null) return;
 
-        if (tarotImage != null)
-            tarotImage.sprite = dm.GetTarotSprite(type);
-        if (tarotNameText != null)
-            tarotNameText.text = dm.GetTarotName(type);
-        if (tarotDescriptionText != null)
-            tarotDescriptionText.text = dm.GetTarotDescription(type);
+        tarotImage.sprite = dm.GetTarotSprite(type);
+        tarotNameText.text = dm.GetTarotName(type);
+        tarotDescriptionText.text = dm.GetTarotDescription(type);
+    }
+
+    private void OnDestroy()
+    {
+        confirmButton.onClick.RemoveAllListeners();
     }
 }

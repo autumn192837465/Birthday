@@ -187,12 +187,12 @@ public class GameManager : MonoBehaviour
     public async Awaitable Sleep()
     {
         EnableInput(false);
-        await uiManager.FadeOut(2);
+        await uiManager.FadeOutAsync(2);
         uiManager.ToMainView();
         ResetFatigue();
         AdvanceDay();
         await Awaitable.WaitForSecondsAsync(1);
-        await uiManager.FadeIn(2);
+        await uiManager.FadeInAsync(2);
         EnableInput(true);
     }
     
@@ -215,11 +215,11 @@ public class GameManager : MonoBehaviour
         }
         
         EnableInput(false);
-        await uiManager.FadeOut(1);
+        await uiManager.FadeOutAsync(1);
         EarnWorkSalary(Settings.WorkSalary);
         NotifyWorkPerformed();
         uiManager.ToMainView();
-        await uiManager.FadeIn(1);
+        await uiManager.FadeInAsync(1);
         EnableInput(true);
     }
 

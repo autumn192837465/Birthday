@@ -61,11 +61,11 @@ public class UIManager : MonoBehaviour
 
         Instance = this;
         
-        homePanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Home);
-        workPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Work);
-        tarotPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Tarot);
-        gamePanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Game);
-        shopPanelInfo.MainViewIcon.OnIconClicked += () => ShowPanel(PanelType.Shop);
+        homePanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Home);
+        workPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Work);
+        tarotPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Tarot);
+        gamePanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Game);
+        shopPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Shop);
         
         homePanelInfo.PanelObject.Hide();
         workPanelInfo.PanelObject.Hide();
@@ -139,8 +139,10 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Show a panel by name, hiding all others.
     /// </summary>
-    public void ShowPanel(PanelType panelType)
+    public async Awaitable ShowPanelAsync(PanelType panelType)
     {
+        GameManager.Instance.EnableInput(false);
+        await FadeOutAsync();
         if (_currentPanelInfo != null)
         {
             _currentPanelInfo.Value.PanelObject.Hide();
@@ -160,9 +162,12 @@ public class UIManager : MonoBehaviour
         {
             _currentPanelInfo.Value.PanelObject.Show();
         }
+        
+        await FadeInAsync();
+        GameManager.Instance.EnableInput(true);
     }
     
-    public async Awaitable FadeIn(float duration = 0.5f)
+    public async Awaitable FadeInAsync(float duration = 0.5f)
     {
         fadeOverlay.blocksRaycasts = true;
         Sequence seq = DOTween.Sequence();
@@ -170,7 +175,7 @@ public class UIManager : MonoBehaviour
         await seq.AsyncWaitForCompletion();
     }
     
-    public async Awaitable FadeOut(float duration = 0.5f)
+    public async Awaitable FadeOutAsync(float duration = 0.5f)
     {
         Sequence seq = DOTween.Sequence();
         seq.Append(fadeOverlay.DOFade(1f, duration));
@@ -225,5 +230,14 @@ public class UIManager : MonoBehaviour
             _currentPanelInfo.Value.PanelObject.Hide();
             _currentPanelInfo = null;
         }
+    }
+    
+    public async Awaitable FadeToMainViewAsync()
+    {
+        GameManager.Instance.EnableInput(false);
+        await FadeOutAsync();
+        ToMainView();
+        await FadeInAsync();
+        GameManager.Instance.EnableInput(true);
     }
 }

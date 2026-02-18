@@ -1597,8 +1597,7 @@ MonoBehaviour:
   costText: {fileID: 1722223386}
   tarotTableView: {fileID: 1844554325}
   tarotTable: {fileID: 1844554327}
-  tarotResultView: {fileID: 0}
-  tarotResultViewComponent: {fileID: 0}
+  tarotResultView: {fileID: 1758198554}
   resultConfirmButton: {fileID: 0}
 --- !u!1001 &635751689
 PrefabInstance:
@@ -4914,6 +4913,7 @@ MonoBehaviour:
   tarotNameText: {fileID: 2118329192}
   tarotDescriptionText: {fileID: 568396964}
   tarotImage: {fileID: 795347059}
+  confirmButton: {fileID: 1535373298}
 --- !u!95 &1758198555
 Animator:
   serializedVersion: 7
@@ -4924,7 +4924,7 @@ Animator:
   m_GameObject: {fileID: 1758198552}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ad404af12df1cef4ca2a103dd91ea9a0, type: 2}
+  m_Controller: {fileID: 22100000, guid: 49b7d82d102caed4db54bfb9e061d7db, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5339,7 +5339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6910cd5af1d04c21bb9966ce344a8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
-  tarotData: {fileID: 0}
+  tarotData: {fileID: 11400000, guid: 738b0feb2f0324dbe8f274136bbafc90, type: 2}
 --- !u!114 &2038622151 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3746030006796313178, guid: a062c34fe118f4b3f90533eea514bf62, type: 3}
