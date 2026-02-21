@@ -4,17 +4,16 @@ using TMPro;
 
 /// <summary>
 /// Gallery panel UI controller.
-/// Provides buttons for creating art, displaying/removing paintings, and buying promotions.
+/// Entry flow: Lobby View → (click enter) → Gallery View (create art, promotion, etc.)
+/// Similar to TarotSystem's entry → table flow.
 /// </summary>
 public class GallerySystem : PanelBase
 {
-    [Header("Create Art")]
-    [SerializeField] private Button createArtButton;
-    [SerializeField] private TextMeshProUGUI createCostText;
+    [Header("Lobby View (Entry)")]
+    [SerializeField] private GalleryLobby galleryLobby;
 
-    [Header("Promotion")]
-    [SerializeField] private Button promotionButton;
-    [SerializeField] private TextMeshProUGUI promotionText;
+    [Header("Gallery View (Main)")]
+    [SerializeField] private GalleryView galleryView;
 
     [Header("Info Display")]
     [SerializeField] private TextMeshProUGUI inventoryCountText;
@@ -28,21 +27,57 @@ public class GallerySystem : PanelBase
 
     private void Start()
     {
-        if (createArtButton != null)
-            createArtButton.onClick.AddListener(OnCreateArtClicked);
-
-        if (promotionButton != null)
-            promotionButton.onClick.AddListener(OnPromotionClicked);
+        if (galleryLobby != null)
+            galleryLobby.OnEnterClicked += OnEnterGalleryClicked;
+        if (galleryView != null)
+        {
+            galleryView.CreateArtClicked += CreateArtClicked;
+            galleryView.PromotionClicked += PromotionClicked;
+        }
 
         UpdateCostLabels();
+        ShowLobbyOnly();
     }
 
     protected override void OnPanelShow()
     {
-        RefreshUI();
+        ResetToLobbyState();
     }
 
-    private void OnCreateArtClicked()
+    private void ResetToLobbyState()
+    {
+        if (galleryLobby != null)
+            galleryLobby.ResetState();
+        ShowLobbyOnly();
+    }
+
+    private void ShowLobbyOnly()
+    {
+        if (galleryLobby != null) galleryLobby.gameObject.SetActive(true);
+        if (galleryView != null) galleryView.gameObject.SetActive(false);
+    }
+
+    private void ShowGalleryOnly()
+    {
+        if (galleryLobby != null) galleryLobby.gameObject.SetActive(false);
+        if (galleryView != null) galleryView.gameObject.SetActive(true);
+    }
+
+    private async void OnEnterGalleryClicked()
+    {
+        var gm = GameManager.Instance;
+        var ui = UIManager.Instance;
+        if (gm == null || ui == null) return;
+
+        gm.EnableInput(false);
+        await ui.FadeOutAsync();
+        ShowGalleryOnly();
+        RefreshUI();
+        await ui.FadeInAsync();
+        gm.EnableInput(true);
+    }
+
+    private void CreateArtClicked()
     {
         if (GalleryManager.Instance == null) return;
 
@@ -52,7 +87,7 @@ public class GallerySystem : PanelBase
         }
     }
 
-    private void OnPromotionClicked()
+    private void PromotionClicked()
     {
         var gm = GameManager.Instance;
         if (gm == null || MarketManager.Instance == null) return;
@@ -111,11 +146,11 @@ public class GallerySystem : PanelBase
         var gm = GameManager.Instance;
         if (gm == null) return;
 
-        if (createCostText != null)
-            createCostText.text = $"Create Art (Fatigue +{gm.Settings.PaintingFatigueCost})";
-
-        if (promotionText != null)
-            promotionText.text = $"Promote (${gm.Settings.PromotionCost})";
+        if (galleryView != null)
+        {
+            galleryView.SetCreateArtCost($"Create Art (Fatigue +{gm.Settings.PaintingFatigueCost})");
+            galleryView.SetPromotionCost($"Promote (${gm.Settings.PromotionCost})");
+        }
     }
 
     private void UpdateCounts()
@@ -182,6 +217,16 @@ public class GallerySystem : PanelBase
                 else
                     button.onClick.AddListener(() => OnRemoveFromDisplayClicked(id));
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (galleryLobby != null) galleryLobby.OnEnterClicked -= OnEnterGalleryClicked;
+        if (galleryView != null)
+        {
+            galleryView.CreateArtClicked -= CreateArtClicked;
+            galleryView.PromotionClicked -= PromotionClicked;
         }
     }
 }

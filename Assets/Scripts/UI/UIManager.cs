@@ -44,10 +44,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PanelInfo tarotPanelInfo;
     [SerializeField] private PanelInfo shopPanelInfo;
     [SerializeField] private GameObject gameClearPanel;
-    
-    
-    
+
     private PanelInfo? _currentPanelInfo;
+
+    // 儲存委派參考以便正確取消訂閱
+    private Action _onHomeClicked;
+    private Action _onGalleryClicked;
+    private Action _onTarotClicked;
+    private Action _onShopClicked;
 
     private void Awake()
     {
@@ -58,11 +62,14 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
-        
-        homePanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Home);
-        galleryPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Gallery);
-        tarotPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Tarot);
-        shopPanelInfo.MainViewIcon.OnIconClicked += () => _ = ShowPanelAsync(PanelType.Shop);
+
+        // 初始化委派
+        _onHomeClicked = () => _ = ShowPanelAsync(PanelType.Home);
+        _onGalleryClicked = () => _ = ShowPanelAsync(PanelType.Gallery);
+        _onTarotClicked = () => _ = ShowPanelAsync(PanelType.Tarot);
+        _onShopClicked = () => _ = ShowPanelAsync(PanelType.Shop);
+
+        AddUIEvents();
 
         homePanelInfo.PanelObject.Hide();
         galleryPanelInfo.PanelObject.Hide();
@@ -73,6 +80,28 @@ public class UIManager : MonoBehaviour
         galleryPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
         tarotPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
         shopPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
+    }
+
+    /// <summary>
+    /// 註冊主畫面圖示點擊事件（回到 MainView 時呼叫）。
+    /// </summary>
+    public void AddUIEvents()
+    {
+        if (homePanelInfo.MainViewIcon != null) homePanelInfo.MainViewIcon.OnIconClicked += _onHomeClicked;
+        if (galleryPanelInfo.MainViewIcon != null) galleryPanelInfo.MainViewIcon.OnIconClicked += _onGalleryClicked;
+        if (tarotPanelInfo.MainViewIcon != null) tarotPanelInfo.MainViewIcon.OnIconClicked += _onTarotClicked;
+        if (shopPanelInfo.MainViewIcon != null) shopPanelInfo.MainViewIcon.OnIconClicked += _onShopClicked;
+    }
+
+    /// <summary>
+    /// 移除主畫面圖示點擊事件（切換面板時呼叫，防止玩家重複按）。
+    /// </summary>
+    public void RemoveUIEvents()
+    {
+        if (homePanelInfo.MainViewIcon != null) homePanelInfo.MainViewIcon.OnIconClicked -= _onHomeClicked;
+        if (galleryPanelInfo.MainViewIcon != null) galleryPanelInfo.MainViewIcon.OnIconClicked -= _onGalleryClicked;
+        if (tarotPanelInfo.MainViewIcon != null) tarotPanelInfo.MainViewIcon.OnIconClicked -= _onTarotClicked;
+        if (shopPanelInfo.MainViewIcon != null) shopPanelInfo.MainViewIcon.OnIconClicked -= _onShopClicked;
     }
 
     private void OnEnable()
@@ -91,6 +120,8 @@ public class UIManager : MonoBehaviour
             GameManager.Instance.OnStatsChanged -= RefreshHUD;
             GameManager.Instance.OnShowMessage -= ShowToast;
         }
+
+        RemoveUIEvents();
     }
 
     private void Start()
@@ -134,6 +165,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public async Awaitable ShowPanelAsync(PanelType panelType)
     {
+        RemoveUIEvents();
         GameManager.Instance.EnableInput(false);
         await FadeOutAsync();
         if (_currentPanelInfo != null)
@@ -231,5 +263,6 @@ public class UIManager : MonoBehaviour
         ToMainView();
         await FadeInAsync();
         GameManager.Instance.EnableInput(true);
+        AddUIEvents();
     }
 }

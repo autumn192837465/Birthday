@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 982c963d9a58da443ba8262537e2f6ac
+guid: ce8b81971bb21f34bb5d99595fe8aa7a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3568535257734686570
-    second: TarotTable (2)_0
+      213: 7867220957510817951
+    second: Fortune_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TarotTable (2)_0
+      name: Fortune_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a67abb5f8ebf58130800000000000000
-      internalID: 3568535257734686570
+      spriteID: f98d0fd47cbfd2d60800000000000000
+      internalID: 7867220957510817951
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TarotTable (2)_0: 3568535257734686570
+      Fortune_0: 7867220957510817951
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
