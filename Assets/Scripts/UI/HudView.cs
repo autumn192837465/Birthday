@@ -21,5 +21,15 @@ public class HudView : MonoBehaviour
     {
         dayText.text = $"Day {day}";
     }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 }
     

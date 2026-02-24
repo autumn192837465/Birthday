@@ -13,11 +13,7 @@ public class PromotionCell : MonoBehaviour
     [SerializeField] private DrawingType drawingType;
 
     [Header("UI References")]
-    [SerializeField] private Image paintingImage;
-    [SerializeField] private TextMeshProUGUI titleText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private Button promotionButton;
-    [SerializeField] private TextMeshProUGUI promotionButtonText;
+    [SerializeField] private CostButton promotionButton;
 
     public DrawingType DrawingType => drawingType;
     public event Action<DrawingType> OnPromotionClicked;
@@ -26,14 +22,12 @@ public class PromotionCell : MonoBehaviour
 
     private void Awake()
     {
-        if (promotionButton != null)
-            promotionButton.onClick.AddListener(HandlePromotionClick);
+        promotionButton.OnClick += HandlePromotionClick;
     }
 
     private void OnDestroy()
-    {
-        if (promotionButton != null)
-            promotionButton.onClick.RemoveListener(HandlePromotionClick);
+    {        
+        promotionButton.OnClick -= HandlePromotionClick;
     }
 
     private void HandlePromotionClick()
@@ -44,17 +38,8 @@ public class PromotionCell : MonoBehaviour
     /// <summary>
     /// 設定 Cell 的顯示內容。
     /// </summary>
-    public void SetData(Sprite image, string title, string description, bool isPromoted)
+    public void SetData(bool isPromoted)
     {
-        if (paintingImage != null)
-            paintingImage.sprite = image;
-
-        if (titleText != null)
-            titleText.text = title;
-
-        if (descriptionText != null)
-            descriptionText.text = description;
-
         _isPromoted = isPromoted;
         UpdatePromotionButtonState();
     }
@@ -70,11 +55,10 @@ public class PromotionCell : MonoBehaviour
 
     private void UpdatePromotionButtonState()
     {
-        if (promotionButtonText != null)
-            promotionButtonText.text = _isPromoted ? "已推廣" : "推廣";
-
-        if (promotionButton != null)
-            promotionButton.interactable = !_isPromoted;
+        promotionButton.SetInteractable(!_isPromoted);
+        promotionButton.ShowCost(!_isPromoted);
+        promotionButton.SetText(_isPromoted ? "プロモーション済み" : "プロモーション");
+            
     }
 
     /// <summary>

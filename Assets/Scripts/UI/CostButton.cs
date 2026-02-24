@@ -10,7 +10,10 @@ using TMPro;
 public class CostButton : MonoBehaviour
 {
     [SerializeField] private Button button;
+    [SerializeField] private TextMeshProUGUI buttonText;
+    [SerializeField] private GameObject costRoot;
     [SerializeField] private TextMeshProUGUI costText;
+    
 
     public bool Interactable => button.interactable;
 
@@ -32,6 +35,11 @@ public class CostButton : MonoBehaviour
         OnClick?.Invoke();
     }
 
+    public void SetText(string text)
+    {
+        buttonText.text = text;
+    }
+    
     /// <summary>Set the full button label (e.g. "Create Art (Fatigue +5)" or "Promote ($100)").</summary>
     public void SetCostText(string text)
     {
@@ -43,5 +51,10 @@ public class CostButton : MonoBehaviour
     public void SetInteractable(bool interactable)
     {
         button.interactable = interactable;            
+    }
+    
+    public void ShowCost(bool show)
+    {
+        costRoot.SetActive(show);
     }
 }

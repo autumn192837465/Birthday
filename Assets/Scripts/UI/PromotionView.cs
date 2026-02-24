@@ -26,8 +26,7 @@ public class PromotionView : MonoBehaviour
 
         foreach (var cell in cells)
         {
-            if (cell != null)
-                cell.OnPromotionClicked += HandleCellPromotionClick;
+            cell.OnPromotionClicked += HandleCellPromotionClick;
         }
     }
 
@@ -38,8 +37,7 @@ public class PromotionView : MonoBehaviour
 
         foreach (var cell in cells)
         {
-            if (cell != null)
-                cell.OnPromotionClicked -= HandleCellPromotionClick;
+            cell.OnPromotionClicked -= HandleCellPromotionClick;
         }
     }
 
@@ -92,15 +90,7 @@ public class PromotionView : MonoBehaviour
 
             if (paintingsByType.TryGetValue(cell.DrawingType, out var painting))
             {
-                var entry = dm?.GetDrawingEntryByType(cell.DrawingType);
-                string description = entry?.Description ?? "";
-
-                cell.SetData(
-                    painting.Image,
-                    painting.Title,
-                    description,
-                    painting.IsPromoted
-                );
+                cell.SetData(painting.IsPromoted);
                 cell.Show();
             }
             else
@@ -109,8 +99,8 @@ public class PromotionView : MonoBehaviour
             }
         }
 
-        if (scrollRect != null)
-            scrollRect.verticalNormalizedPosition = 1f;
+        scrollRect.horizontalNormalizedPosition = 0f;
+            
     }
 
     /// <summary>
