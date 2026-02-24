@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CreateArtAnimationViewController
+  m_Controller: {fileID: 9100000, guid: d0300d811ac2afc4882c5577bc61a8b5, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e94322407b3497e4794a5b5541aafbec, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ff6abd6a5ae39ca4ba9d855b55e2bbb0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d70f4f5117173b347a96366941631b31, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ab71eec15e0cc3345b7b00a580af3880, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2cc49dbfe51c9b54a9ab42bd943425a7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: bfa3ae1ed4e2a444fbfb6e8f924baa2e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7248fe60d52050d4c937b85927d7965e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6e6683ecf9609044bb4d2d8becc1e767, type: 2}

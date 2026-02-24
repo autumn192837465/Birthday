@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum PaintingState
 {
+    InProgress,
     Inventory,
     Displayed,
     Rented,
@@ -16,19 +17,25 @@ public enum PaintingState
 public class Painting
 {
     public string ID;
+    public DrawingType DrawingType;
     public string Title;
     public Sprite Image;
     public int BasePrice;
     public PaintingState State;
     public int RentDaysLeft;
+    public float Progress;
+    public bool IsPromoted;
 
-    public Painting(string id, string title, Sprite image, int basePrice)
+    public Painting(string id, DrawingType drawingType, string title, Sprite image, int basePrice)
     {
         ID = id;
+        DrawingType = drawingType;
         Title = title;
         Image = image;
         BasePrice = basePrice;
-        State = PaintingState.Inventory;
+        State = PaintingState.InProgress;
         RentDaysLeft = 0;
+        Progress = 0f;
+        IsPromoted = false;
     }
 }

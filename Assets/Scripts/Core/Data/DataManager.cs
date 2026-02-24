@@ -40,15 +40,21 @@ public class DataManager : MonoBehaviour
     /// <summary>取得畫作資料筆數。</summary>
     public int DrawingCount => drawingData != null ? drawingData.Count : 0;
 
-    /// <summary>依索引取得畫作條目，超出範圍回傳 null。</summary>
+    /// <summary>依索引取得畫作條目。</summary>
     public DrawingData.DrawingEntry GetDrawingEntry(int index)
     {
-        return drawingData != null ? drawingData.GetEntry(index) : null;
+        return drawingData.GetEntry(index);
     }
 
-    /// <summary>隨機取得一筆畫作條目，無資料時回傳 null。</summary>
+    /// <summary>隨機取得一筆畫作條目。</summary>
     public DrawingData.DrawingEntry GetRandomDrawingEntry()
     {
-        return drawingData != null ? drawingData.GetRandomEntry() : null;
+        return drawingData.GetRandomEntry();
+    }
+
+    /// <summary>依 DrawingType 取得畫作條目。</summary>
+    public DrawingData.DrawingEntry GetDrawingEntryByType(DrawingType type)
+    {
+        return drawingData != null ? drawingData.GetEntryByType(type) : null;
     }
 }

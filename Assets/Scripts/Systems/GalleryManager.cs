@@ -1,6 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+
+public enum CreateResult
+{
+    InProgress, 
+    Completed
+}
 
 /// <summary>
 /// Manages the player's painting collection: creation, inventory, and display slots.
@@ -10,7 +15,7 @@ public class GalleryManager : MonoBehaviour
 {
     public static GalleryManager Instance { get; private set; }
 
-    private readonly List<Painting> _paintings = new List<Painting>();
+    private readonly Dictionary<string, Painting> _paintings = new Dictionary<string, Painting>();
     private int _nextPaintingId = 1;
 
     private void Awake()
@@ -20,30 +25,55 @@ public class GalleryManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        
         Instance = this;
     }
 
+    public Painting GetInProgressPainting()
+    {
+        foreach (var p in _paintings.Values)
+        {
+            if (p.State == PaintingState.InProgress)
+                return p;
+        }
+        return null;
+    }
+
     /// <summary>
-    /// Attempt to create a new painting. Costs fatigue.
-    /// Returns true if successful.
+    /// Progress-based painting creation. If no painting is in progress, starts a new one.
+    /// Otherwise continues the existing one. Always succeeds — caller is responsible
+    /// for checking fatigue/block conditions before calling.
     /// </summary>
-    public bool TryCreatePainting()
+    public (CreateResult result, Painting painting) CreatePainting()
     {
         var gm = GameManager.Instance;
-        if (gm == null) return false;
 
-        if (gm.HasBlocksCreation())
+        var existing = GetInProgressPainting();
+        Painting painting = existing ?? CreateNewPainting(gm);
+
+        float progressGain = Random.Range(gm.Settings.MinPaintingProgress, gm.Settings.MaxPaintingProgress);
+        painting.Progress = Mathf.Min(painting.Progress + progressGain, 100f);
+
+        gm.NotifyPaintingCreated();
+
+        if (painting.Progress >= 100f)
         {
-            gm.ShowMessage("The Hermit says: rest today. No creating allowed!");
-            return false;
+            painting.Progress = 100f;
+            painting.State = PaintingState.Inventory;
+            gm.ShowMessage($"Completed \"{painting.Title}\" (Value: ${painting.BasePrice})!");
+            return (CreateResult.Completed, painting);
         }
 
-        if (!gm.AddFatigue(gm.Settings.PaintingFatigueCost))
-            return false;
+        gm.ShowMessage($"Painting \"{painting.Title}\" in progress... {painting.Progress:F0}%");
+        return (CreateResult.InProgress, painting);
+    }
 
+    private Painting CreateNewPainting(GameManager gm)
+    {
         string title;
         Sprite sprite = null;
         int basePrice;
+        DrawingType drawingType = default;
 
         var entry = gm.DataManager != null ? gm.DataManager.GetRandomDrawingEntry() : null;
         if (entry != null)
@@ -51,6 +81,7 @@ public class GalleryManager : MonoBehaviour
             title = string.IsNullOrEmpty(entry.Name) ? $"Untitled #{_nextPaintingId}" : entry.Name;
             sprite = entry.Sprite;
             basePrice = Mathf.Max(1, entry.Price);
+            drawingType = entry.Type;
         }
         else
         {
@@ -64,13 +95,30 @@ public class GalleryManager : MonoBehaviour
         basePrice = Mathf.Max(1, basePrice);
 
         string id = $"painting_{_nextPaintingId++}";
-        var painting = new Painting(id, title, sprite, basePrice);
-        _paintings.Add(painting);
+        var painting = new Painting(id, drawingType, title, sprite, basePrice);
+        _paintings.Add(id, painting);
+        return painting;
+    }
 
-        gm.NotifyPaintingCreated();
-        gm.ShowMessage($"Created \"{title}\" (Value: ${basePrice})");
-
-        return true;
+    /// <summary>
+    /// Returns one (DrawingType, Sprite) per completed painting type for refreshing the gallery wall.
+    /// </summary>
+    public List<(DrawingType drawingType, Sprite sprite)> GetCompletedPaintingsForWall()
+    {
+        var seen = new HashSet<DrawingType>();
+        var result = new List<(DrawingType, Sprite)>();
+        foreach (var p in _paintings.Values)
+        {
+            if (p.State == PaintingState.Sold || p.State == PaintingState.InProgress)
+                continue;
+            if (seen.Contains(p.DrawingType))
+                continue;
+            if (p.Image == null)
+                continue;
+            seen.Add(p.DrawingType);
+            result.Add((p.DrawingType, p.Image));
+        }
+        return result;
     }
 
     /// <summary>
@@ -78,13 +126,15 @@ public class GalleryManager : MonoBehaviour
     /// </summary>
     public bool DisplayPainting(string paintingId)
     {
-        var painting = _paintings.FirstOrDefault(p => p.ID == paintingId && p.State == PaintingState.Inventory);
-        if (painting == null) return false;
+        if (!_paintings.TryGetValue(paintingId, out var painting) || painting.State != PaintingState.Inventory)
+            return false;
 
         var settings = GameManager.Instance?.Settings;
         if (settings == null) return false;
 
-        int displayedCount = _paintings.Count(p => p.State == PaintingState.Displayed);
+        int displayedCount = 0;
+        foreach (var p in _paintings.Values)
+            if (p.State == PaintingState.Displayed) displayedCount++;
         if (displayedCount >= settings.MaxDisplaySlots)
         {
             GameManager.Instance.ShowMessage("Display wall is full!");
@@ -100,31 +150,111 @@ public class GalleryManager : MonoBehaviour
     /// </summary>
     public bool RemoveFromDisplay(string paintingId)
     {
-        var painting = _paintings.FirstOrDefault(p => p.ID == paintingId && p.State == PaintingState.Displayed);
-        if (painting == null) return false;
+        if (!_paintings.TryGetValue(paintingId, out var painting) || painting.State != PaintingState.Displayed)
+            return false;
 
         painting.State = PaintingState.Inventory;
         return true;
     }
 
+    /// <summary>
+    /// Toggle promotion on a displayed painting. Returns true if toggled successfully.
+    /// </summary>
+    public bool TogglePaintingPromotion(string paintingId)
+    {
+        if (!_paintings.TryGetValue(paintingId, out var painting) || painting.State != PaintingState.Displayed)
+            return false;
+
+        painting.IsPromoted = !painting.IsPromoted;
+        return true;
+    }
+
+    /// <summary>
+    /// Reset all paintings' promotion flags. Called after nightly market processing.
+    /// </summary>
+    public void ResetAllPromotions()
+    {
+        foreach (var p in _paintings.Values)
+            p.IsPromoted = false;
+    }
+
     public List<Painting> GetInventoryPaintings()
     {
-        return _paintings.Where(p => p.State == PaintingState.Inventory).ToList();
+        var list = new List<Painting>();
+        foreach (var p in _paintings.Values)
+            if (p.State == PaintingState.Inventory) list.Add(p);
+        return list;
     }
 
     public List<Painting> GetDisplayedPaintings()
     {
-        return _paintings.Where(p => p.State == PaintingState.Displayed).ToList();
+        var list = new List<Painting>();
+        foreach (var p in _paintings.Values)
+            if (p.State == PaintingState.Displayed) list.Add(p);
+        return list;
     }
 
     public List<Painting> GetRentedPaintings()
     {
-        return _paintings.Where(p => p.State == PaintingState.Rented).ToList();
+        var list = new List<Painting>();
+        foreach (var p in _paintings.Values)
+            if (p.State == PaintingState.Rented) list.Add(p);
+        return list;
     }
 
     public List<Painting> GetAllPaintings()
     {
-        return _paintings.Where(p => p.State != PaintingState.Sold).ToList();
+        var list = new List<Painting>();
+        foreach (var p in _paintings.Values)
+            if (p.State != PaintingState.Sold) list.Add(p);
+        return list;
+    }
+
+    /// <summary>
+    /// 取得所有已完成的畫作（不含 InProgress、Sold）。
+    /// </summary>
+    public List<Painting> GetCompletedPaintings()
+    {
+        var list = new List<Painting>();
+        foreach (var p in _paintings.Values)
+        {
+            if (p.State != PaintingState.InProgress && p.State != PaintingState.Sold)
+                list.Add(p);
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// 依 DrawingType 切換推廣狀態（允許對已完成的畫作進行推廣）。
+    /// </summary>
+    public bool TogglePaintingPromotionByType(DrawingType drawingType)
+    {
+        foreach (var p in _paintings.Values)
+        {
+            if (p.DrawingType == drawingType && 
+                p.State != PaintingState.InProgress && 
+                p.State != PaintingState.Sold)
+            {
+                p.IsPromoted = !p.IsPromoted;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 依 DrawingType 取得畫作（第一筆符合的）。
+    /// </summary>
+    public Painting GetPaintingByType(DrawingType drawingType)
+    {
+        foreach (var p in _paintings.Values)
+        {
+            if (p.DrawingType == drawingType && 
+                p.State != PaintingState.InProgress && 
+                p.State != PaintingState.Sold)
+                return p;
+        }
+        return null;
     }
 
     /// <summary>
@@ -133,6 +263,13 @@ public class GalleryManager : MonoBehaviour
     /// </summary>
     public void PurgeSoldPaintings()
     {
-        _paintings.RemoveAll(p => p.State == PaintingState.Sold);
+        var toRemove = new List<string>();
+        foreach (var kv in _paintings)
+        {
+            if (kv.Value.State == PaintingState.Sold)
+                toRemove.Add(kv.Key);
+        }
+        foreach (var id in toRemove)
+            _paintings.Remove(id);
     }
 }

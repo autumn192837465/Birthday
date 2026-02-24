@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8eb19a540ca45c59144480f5bafa0b, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
+  TarotData: {fileID: 0}
   MaxFatigue: 100
-  WorkSalary: 500
-  WorkFatigueCost: 30
+  PaintingFatigueCost: 1
+  PaintingBasePriceMin: 80
+  PaintingBasePriceMax: 250
+  MaxDisplaySlots: 5
+  BaseRentChance: 0.3
+  BaseSellChance: 0.05
+  RentIncomeMultiplier: 0.1
+  MinRentDays: 2
+  MaxRentDays: 5
+  SellPriceMultiplier: 10
+  PromotionCost: 300
   FortuneCost: 200
-  SlotMachineCost: 50
-  SlotWinRate: 0.7
-  SlotRewards: 640000002c010000
-  MoleGameDuration: 20
-  MoleHitReward: 30
-  GoldMoleHitReward: 100
-  BombSpawnRate: 0.12
-  GoldMoleSpawnRate: 0.35
-  MoleGameCost: 50
   GiftNames:
   - Teddy Bear
   - Music Box

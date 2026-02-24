@@ -21,8 +21,6 @@ public class MarketManager : MonoBehaviour
 {
     public static MarketManager Instance { get; private set; }
 
-    [HideInInspector] public bool IsPromotionActive;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,7 +33,7 @@ public class MarketManager : MonoBehaviour
 
     /// <summary>
     /// Run the nightly market simulation on all displayed and rented paintings.
-    /// Returns a summary of what happened for the player toast.
+    /// Per-painting promotion is read from painting.IsPromoted and reset after processing.
     /// </summary>
     public MarketResult ProcessDailyMarket()
     {
@@ -52,30 +50,29 @@ public class MarketManager : MonoBehaviour
 
         var settings = gm.Settings;
         float rentChanceMultiplier = gm.GetTotalRentChanceMultiplier();
-        float promotionMultiplier = IsPromotionActive ? 2f : 1f;
 
-        ProcessDisplayedPaintings(gallery, settings, promotionMultiplier, rentChanceMultiplier, gm, ref result);
+        ProcessDisplayedPaintings(gallery, settings, rentChanceMultiplier, gm, ref result);
         ProcessRentedPaintings(gallery, settings, gm, ref result);
 
         gallery.PurgeSoldPaintings();
-        IsPromotionActive = false;
+        gallery.ResetAllPromotions();
 
         return result;
     }
 
     private void ProcessDisplayedPaintings(
         GalleryManager gallery, GameSettings settings,
-        float promotionMultiplier, float rentChanceMultiplier,
+        float rentChanceMultiplier,
         GameManager gm, ref MarketResult result)
     {
         var displayed = gallery.GetDisplayedPaintings();
 
         foreach (var painting in displayed)
         {
+            float promotionMultiplier = painting.IsPromoted ? 2f : 1f;
             float sellChance = settings.BaseSellChance * promotionMultiplier;
             float rentChance = settings.BaseRentChance * promotionMultiplier * rentChanceMultiplier;
 
-            // Sell check first (rare but lucrative)
             if (Random.value < sellChance)
             {
                 int sellPrice = Mathf.RoundToInt(painting.BasePrice * settings.SellPriceMultiplier);
@@ -86,7 +83,6 @@ public class MarketManager : MonoBehaviour
                 continue;
             }
 
-            // Rent check (common passive income)
             if (Random.value < rentChance)
             {
                 painting.State = PaintingState.Rented;

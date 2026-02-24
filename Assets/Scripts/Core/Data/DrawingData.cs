@@ -66,4 +66,16 @@ public class DrawingData : ScriptableObject
     {
         return GetEntry(index)?.Price ?? 0;
     }
+
+    /// <summary>Get entry by DrawingType. Returns null if not found.</summary>
+    public DrawingEntry GetEntryByType(DrawingType type)
+    {
+        if (_entries == null) return null;
+        foreach (var entry in _entries)
+        {
+            if (entry.Type == type)
+                return entry;
+        }
+        return null;
+    }
 }

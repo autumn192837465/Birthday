@@ -27,6 +27,10 @@ public class GameSettings : ScriptableObject
 
     [Tooltip("Maximum number of paintings that can be displayed on the wall at once.")]
     public int MaxDisplaySlots = 5;
+    
+    [Tooltip("Max and Minimum progress gain when creating/upgrading a painting.")]
+    public int MaxPaintingProgress = 60;
+    public int MinPaintingProgress = 30;
 
     [Header("Market")]
     [Tooltip("Base probability a displayed painting gets rented each night (0-1).")]

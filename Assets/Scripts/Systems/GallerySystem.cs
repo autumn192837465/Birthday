@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// Gallery panel UI controller.
-/// Entry flow: Lobby View → (click enter) → Gallery View (create art, promotion, etc.)
-/// Similar to TarotSystem's entry → table flow.
+/// Entry flow: Lobby View -> (click enter) -> Gallery View (create art, settings, etc.)
+/// Settings panel allows per-painting promotion management.
 /// </summary>
 public class GallerySystem : PanelBase
 {
@@ -25,14 +27,27 @@ public class GallerySystem : PanelBase
     [SerializeField] private Transform displayListParent;
     [SerializeField] private GameObject paintingEntryPrefab;
 
+    [Header("Promotion View")]
+    [SerializeField] private PromotionView promotionView;
+
+    [SerializeField] private CreateArtAnimationView createArtAnimationView;
+
     private void Start()
     {
         if (galleryLobby != null)
             galleryLobby.OnEnterClicked += OnEnterGalleryClicked;
+        
         if (galleryView != null)
         {
-            galleryView.CreateArtClicked += CreateArtClicked;
-            galleryView.PromotionClicked += PromotionClicked;
+            galleryView.CreateArtClicked += OnCreateArtClickedAsync;
+            galleryView.SettingsClicked += OnSettingsClicked;
+        }
+
+        if (promotionView != null)
+        {
+            promotionView.OnCloseClicked += HidePromotionView;
+            promotionView.OnPromotionClicked += OnPromotePaintingByType;
+            promotionView.Hide();
         }
 
         UpdateCostLabels();
@@ -55,12 +70,14 @@ public class GallerySystem : PanelBase
     {
         if (galleryLobby != null) galleryLobby.gameObject.SetActive(true);
         if (galleryView != null) galleryView.gameObject.SetActive(false);
+        if (promotionView != null) promotionView.Hide();
     }
 
     private void ShowGalleryOnly()
     {
         if (galleryLobby != null) galleryLobby.gameObject.SetActive(false);
         if (galleryView != null) galleryView.gameObject.SetActive(true);
+        if (promotionView != null) promotionView.Hide();
     }
 
     private async void OnEnterGalleryClicked()
@@ -77,39 +94,94 @@ public class GallerySystem : PanelBase
         gm.EnableInput(true);
     }
 
-    private void CreateArtClicked()
-    {
-        if (GalleryManager.Instance == null) return;
+    // =============================================
+    // Create Art (progress-based)
+    // =============================================
 
-        if (GalleryManager.Instance.TryCreatePainting())
-        {
-            RefreshUI();
-        }
-    }
-
-    private void PromotionClicked()
+    private async void OnCreateArtClickedAsync()
     {
         var gm = GameManager.Instance;
-        if (gm == null || MarketManager.Instance == null) return;
+        var ui = UIManager.Instance;
+        if (gm == null || GalleryManager.Instance == null || galleryView == null || ui == null)
+            return;
 
-        if (MarketManager.Instance.IsPromotionActive)
+        if (gm.HasBlocksCreation())
         {
-            gm.ShowMessage("Promotion already active for tonight!");
+            gm.ShowMessage("The Hermit says: rest today. No creating allowed!");
+            return;
+        }
+
+        if (!gm.AddFatigue(gm.Settings.PaintingFatigueCost))
+            return;
+
+        gm.EnableInput(false);
+        
+        createArtAnimationView.Open();
+        var (result, painting) = GalleryManager.Instance.CreatePainting();
+
+        
+        
+        await UniTask.WaitForSeconds(2);
+        createArtAnimationView.Close();
+
+        await UniTask.WaitUntil(() => createArtAnimationView.IsClosed);
+        
+        gm.EnableInput(true);
+        
+        if (result == CreateResult.Completed)
+        {
+            galleryView.RevealPainting(painting.DrawingType, painting.Image);
+            galleryView.ShowCompletionPopup(painting);
+        }
+        RefreshUI();
+    }
+
+    // =============================================
+    // Promotion View
+    // =============================================
+
+    private void OnSettingsClicked()
+    {
+        if (promotionView == null || GalleryManager.Instance == null) return;
+
+        var completed = GalleryManager.Instance.GetCompletedPaintings();
+        promotionView.Refresh(completed);
+        promotionView.Show();
+    }
+
+    private void HidePromotionView()
+    {
+        if (promotionView != null)
+            promotionView.Hide();
+    }
+
+    private void OnPromotePaintingByType(DrawingType drawingType)
+    {
+        var gm = GameManager.Instance;
+        var gallery = GalleryManager.Instance;
+        if (gm == null || gallery == null || promotionView == null) return;
+
+        var painting = gallery.GetPaintingByType(drawingType);
+        if (painting == null) return;
+
+        if (painting.IsPromoted)
+        {
+            gm.ShowMessage($"\"{painting.Title}\" 今晚已經推廣過了！");
             return;
         }
 
         if (!gm.SpendMoney(gm.Settings.PromotionCost))
             return;
 
-        MarketManager.Instance.IsPromotionActive = true;
-        gm.ShowMessage("Promotion active! Rent & sell chances doubled tonight!");
-        RefreshUI();
+        gallery.TogglePaintingPromotionByType(drawingType);
+        gm.ShowMessage($"\"{painting.Title}\" 推廣成功！租售機率加倍！");
+        promotionView.UpdatePromotionState(drawingType, true);
     }
 
-    /// <summary>
-    /// Display a painting from inventory onto the gallery wall.
-    /// Called by painting entry buttons.
-    /// </summary>
+    // =============================================
+    // Display / Remove from wall
+    // =============================================
+
     public void OnDisplayPaintingClicked(string paintingId)
     {
         if (GalleryManager.Instance == null) return;
@@ -120,10 +192,6 @@ public class GallerySystem : PanelBase
         }
     }
 
-    /// <summary>
-    /// Remove a painting from the gallery wall back to inventory.
-    /// Called by displayed painting entry buttons.
-    /// </summary>
     public void OnRemoveFromDisplayClicked(string paintingId)
     {
         if (GalleryManager.Instance == null) return;
@@ -134,11 +202,25 @@ public class GallerySystem : PanelBase
         }
     }
 
+    // =============================================
+    // UI Refresh
+    // =============================================
+
     private void RefreshUI()
     {
         UpdateCostLabels();
         UpdateCounts();
+        UpdateProgress();
+        RefreshPaintingWall();
         RebuildPaintingLists();
+    }
+
+    private void RefreshPaintingWall()
+    {
+        if (galleryView == null || GalleryManager.Instance == null) return;
+
+        var completed = GalleryManager.Instance.GetCompletedPaintingsForWall();
+        galleryView.RefreshPaintingWall(completed);
     }
 
     private void UpdateCostLabels()
@@ -148,9 +230,16 @@ public class GallerySystem : PanelBase
 
         if (galleryView != null)
         {
-            galleryView.SetCreateArtCost($"Create Art (Fatigue +{gm.Settings.PaintingFatigueCost})");
-            galleryView.SetPromotionCost($"Promote (${gm.Settings.PromotionCost})");
+            galleryView.SetCreateArtCost(gm.Settings.PaintingFatigueCost.ToString());
         }
+    }
+
+    private void UpdateProgress()
+    {
+        if (galleryView == null || GalleryManager.Instance == null) return;
+
+        var inProgress = GalleryManager.Instance.GetInProgressPainting();
+        galleryView.UpdateProgress(inProgress);
     }
 
     private void UpdateCounts()
@@ -182,15 +271,12 @@ public class GallerySystem : PanelBase
         RebuildList(displayListParent, GalleryManager.Instance.GetDisplayedPaintings(), false);
     }
 
-    private void RebuildList(Transform parent, System.Collections.Generic.List<Painting> paintings, bool isInventory)
+    private void RebuildList(Transform parent, List<Painting> paintings, bool isInventory)
     {
         if (parent == null) return;
 
-        // Clear existing entries
         for (int i = parent.childCount - 1; i >= 0; i--)
-        {
             Destroy(parent.GetChild(i).gameObject);
-        }
 
         foreach (var painting in paintings)
         {
@@ -225,8 +311,13 @@ public class GallerySystem : PanelBase
         if (galleryLobby != null) galleryLobby.OnEnterClicked -= OnEnterGalleryClicked;
         if (galleryView != null)
         {
-            galleryView.CreateArtClicked -= CreateArtClicked;
-            galleryView.PromotionClicked -= PromotionClicked;
+            galleryView.CreateArtClicked -= OnCreateArtClickedAsync;
+            galleryView.SettingsClicked -= OnSettingsClicked;
+        }
+        if (promotionView != null)
+        {
+            promotionView.OnCloseClicked -= HidePromotionView;
+            promotionView.OnPromotionClicked -= OnPromotePaintingByType;
         }
     }
 }

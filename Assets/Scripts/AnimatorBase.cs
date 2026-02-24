@@ -25,6 +25,7 @@ public class AnimatorBase : MonoBehaviour
     public Action OnClosed;
     public bool IsIdle => currentState == State.Idle;
     public bool IsOpened => currentState != State.Closed && currentState != State.Closing;
+    public bool IsClosed => currentState == State.Closed;
 
 
     [HideInInspector] private string openTrigger = "open";

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DrawingData
   entries:
   - Type: 0
-    Name: 
+    Name: Winter Dusk
     Description: 
     Sprite: {fileID: 0}
     Price: 0
