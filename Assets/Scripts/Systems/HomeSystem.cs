@@ -11,8 +11,6 @@ public class HomeSystem : PanelBase
 {
     [SerializeField] private Button sleepButton;
     
-    private Action _onSleepClicked;
-
     protected override void Awake()
     {
         base.Awake();
@@ -24,7 +22,6 @@ public class HomeSystem : PanelBase
     /// </summary>
     public void OnSleepButtonClicked()
     {
-        _onSleepClicked?.Invoke();
         var gm = GameManager.Instance;
         _ = gm.Sleep();
     }

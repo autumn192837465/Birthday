@@ -82,15 +82,21 @@ public class UIManager : MonoBehaviour
         shopPanelInfo.PanelObject.SetBackAction(() => _ = FadeToMainViewAsync());
     }
 
+    private void OnDestroy()
+    {
+        RemoveUIEvents();
+    }
+
     /// <summary>
     /// 註冊主畫面圖示點擊事件（回到 MainView 時呼叫）。
     /// </summary>
     public void AddUIEvents()
     {
-        if (homePanelInfo.MainViewIcon != null) homePanelInfo.MainViewIcon.OnIconClicked += _onHomeClicked;
-        if (galleryPanelInfo.MainViewIcon != null) galleryPanelInfo.MainViewIcon.OnIconClicked += _onGalleryClicked;
-        if (tarotPanelInfo.MainViewIcon != null) tarotPanelInfo.MainViewIcon.OnIconClicked += _onTarotClicked;
-        if (shopPanelInfo.MainViewIcon != null) shopPanelInfo.MainViewIcon.OnIconClicked += _onShopClicked;
+        RemoveUIEvents();
+        homePanelInfo.MainViewIcon.OnIconClicked += _onHomeClicked;
+        galleryPanelInfo.MainViewIcon.OnIconClicked += _onGalleryClicked;
+        tarotPanelInfo.MainViewIcon.OnIconClicked += _onTarotClicked;
+        shopPanelInfo.MainViewIcon.OnIconClicked += _onShopClicked;
     }
 
     /// <summary>
@@ -98,10 +104,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void RemoveUIEvents()
     {
-        if (homePanelInfo.MainViewIcon != null) homePanelInfo.MainViewIcon.OnIconClicked -= _onHomeClicked;
-        if (galleryPanelInfo.MainViewIcon != null) galleryPanelInfo.MainViewIcon.OnIconClicked -= _onGalleryClicked;
-        if (tarotPanelInfo.MainViewIcon != null) tarotPanelInfo.MainViewIcon.OnIconClicked -= _onTarotClicked;
-        if (shopPanelInfo.MainViewIcon != null) shopPanelInfo.MainViewIcon.OnIconClicked -= _onShopClicked;
+        homePanelInfo.MainViewIcon.OnIconClicked -= _onHomeClicked;
+        galleryPanelInfo.MainViewIcon.OnIconClicked -= _onGalleryClicked;
+        tarotPanelInfo.MainViewIcon.OnIconClicked -= _onTarotClicked;
+        shopPanelInfo.MainViewIcon.OnIconClicked -= _onShopClicked;
     }
 
     private void OnEnable()
@@ -115,13 +121,8 @@ public class UIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnStatsChanged -= RefreshHUD;
-            GameManager.Instance.OnShowMessage -= ShowToast;
-        }
-
-        RemoveUIEvents();
+        GameManager.Instance.OnStatsChanged -= RefreshHUD;
+        GameManager.Instance.OnShowMessage -= ShowToast;
     }
 
     private void Start()
@@ -254,6 +255,8 @@ public class UIManager : MonoBehaviour
             _currentPanelInfo.Value.PanelObject.Hide();
             _currentPanelInfo = null;
         }
+        
+        AddUIEvents();
     }
     
     public async Awaitable FadeToMainViewAsync()
@@ -263,7 +266,6 @@ public class UIManager : MonoBehaviour
         ToMainView();
         await FadeInAsync();
         GameManager.Instance.EnableInput(true);
-        AddUIEvents();
     }
     
     public void ShowHudView()
