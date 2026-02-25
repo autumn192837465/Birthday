@@ -1,3 +1,2 @@
-Assets/Font/* filter=lfs diff=lfs merge=lfs -text
-Assets/Font/**~ filter=lfs diff=lfs merge=lfs -text
 Assets/Font/** filter=lfs diff=lfs merge=lfs -text
+Assets/Art/** filter=lfs diff=lfs merge=lfs -text

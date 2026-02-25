@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Gallery main view: create art button, settings button, progress display,
@@ -10,7 +11,7 @@ using TMPro;
 /// </summary>
 public class GalleryView : MonoBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public class PaintingInfo
     {
         public DrawingType Id;
@@ -29,13 +30,10 @@ public class GalleryView : MonoBehaviour
     [Header("Painting Display Wall")]
     [SerializeField] private PaintingInfo[] paintingSlots;
 
+    [FormerlySerializedAs("completionPopup")]
     [Header("Completion Popup")]
-    [SerializeField] private GameObject completionPopup;
-    [SerializeField] private Image completionImage;
-    [SerializeField] private TextMeshProUGUI completionTitleText;
-    [SerializeField] private TextMeshProUGUI completionPriceText;
-    [SerializeField] private Button completionCloseButton;
-    
+    [SerializeField] private GalleryCompletionPopupView galleryCompletionPopup;
+
     [Header("Create Animation")]
     [SerializeField] private CreateArtAnimationView createArtAnimationView;
 
@@ -48,13 +46,7 @@ public class GalleryView : MonoBehaviour
         
         promotionButton.onClick.AddListener(OnPromotionButtonClicked);
             
-        
-        if (completionCloseButton != null)
-            completionCloseButton.onClick.AddListener(HideCompletionPopup);
-
-        if (completionPopup != null)
-            completionPopup.SetActive(false);
-
+        galleryCompletionPopup.CloseClicked += CloseCompletionPopup;
         promotionButton.gameObject.SetActive(false);
     }
 
@@ -62,10 +54,8 @@ public class GalleryView : MonoBehaviour
     {
         createArtButton.OnClick -= OnCreateArtClicked;
         
+        galleryCompletionPopup.CloseClicked -= CloseCompletionPopup;
         promotionButton.onClick.RemoveListener(OnPromotionButtonClicked);
-            
-        if (completionCloseButton != null)
-            completionCloseButton.onClick.RemoveListener(HideCompletionPopup);
     }
 
     private void OnCreateArtClicked() => CreateArtClicked?.Invoke();
@@ -74,7 +64,17 @@ public class GalleryView : MonoBehaviour
     public void SetCreateArtCost(string text)
     {
         if (createArtButton != null)
+        {
             createArtButton.SetCostText(text);
+        }
+    }
+
+    public void SetCreateArtButtonVisible(bool visible)
+    {
+        if (createArtButton != null)
+        {
+            createArtButton.gameObject.SetActive(visible);
+        }
     }
 
     public void UpdateProgress(Painting inProgress)
@@ -96,32 +96,11 @@ public class GalleryView : MonoBehaviour
 
     public void ShowCompletionPopup(Painting painting)
     {
-        if (completionPopup == null)
-        {
-            return;
-        }
-
-        completionPopup.SetActive(true);
-
-        if (completionImage != null)
-        {
-            completionImage.sprite = painting.Image;
-        }
-        if (completionTitleText != null)
-        {
-            completionTitleText.text = painting.Title;
-        }
-        if (completionPriceText != null)
-        {
-            completionPriceText.text = $"Value: ${painting.BasePrice}";
-        }
+        galleryCompletionPopup.SetData(painting);
+        galleryCompletionPopup.Open();
+        UIManager.Instance.HideHudView();
     }
-
-    public void HideCompletionPopup()
-    {
-        if (completionPopup != null)
-            completionPopup.SetActive(false);
-    }
+    
 
     /// <summary>
     /// Activate and set the sprite for the painting slot matching the given DrawingType.
@@ -169,5 +148,11 @@ public class GalleryView : MonoBehaviour
         {
             RevealPainting(drawingType, sprite);
         }
+    }
+    
+    public void CloseCompletionPopup()
+    {
+        galleryCompletionPopup.Close();
+        UIManager.Instance.ShowHudView();
     }
 }

@@ -34,7 +34,9 @@ public class GalleryManager : MonoBehaviour
         foreach (var p in _paintings.Values)
         {
             if (p.State == PaintingState.InProgress)
+            {
                 return p;
+            }
         }
         return null;
     }
@@ -71,14 +73,16 @@ public class GalleryManager : MonoBehaviour
     private Painting CreateNewPainting(GameManager gm)
     {
         string title;
+        string description = "";
         Sprite sprite = null;
         int basePrice;
         DrawingType drawingType = default;
 
-        var entry = gm.DataManager != null ? gm.DataManager.GetRandomDrawingEntry() : null;
+        var entry = gm.DataManager != null ? GetNextAvailableDrawingEntry(gm.DataManager) : null;
         if (entry != null)
         {
             title = string.IsNullOrEmpty(entry.Name) ? $"Untitled #{_nextPaintingId}" : entry.Name;
+            description = entry.Description;
             sprite = entry.Sprite;
             basePrice = Mathf.Max(1, entry.Price);
             drawingType = entry.Type;
@@ -95,9 +99,78 @@ public class GalleryManager : MonoBehaviour
         basePrice = Mathf.Max(1, basePrice);
 
         string id = $"painting_{_nextPaintingId++}";
-        var painting = new Painting(id, drawingType, title, sprite, basePrice);
+        var painting = new Painting(id, drawingType, title, description, sprite, basePrice);
         _paintings.Add(id, painting);
         return painting;
+    }
+
+    /// <summary>
+    /// 取得下一個尚未擁有的畫作條目（隨機選取）。
+    /// </summary>
+    private DrawingData.DrawingEntry GetNextAvailableDrawingEntry(DataManager dataManager)
+    {
+        if (dataManager == null || dataManager.DrawingCount == 0)
+        {
+            return null;
+        }
+
+        var ownedTypes = new HashSet<DrawingType>();
+        foreach (var p in _paintings.Values)
+        {
+            ownedTypes.Add(p.DrawingType);
+        }
+
+        var availableEntries = new List<DrawingData.DrawingEntry>();
+        for (int i = 0; i < dataManager.DrawingCount; i++)
+        {
+            var entry = dataManager.GetDrawingEntry(i);
+            if (entry != null && !ownedTypes.Contains(entry.Type))
+            {
+                availableEntries.Add(entry);
+            }
+        }
+
+        if (availableEntries.Count == 0)
+        {
+            return null;
+        }
+
+        return availableEntries[Random.Range(0, availableEntries.Count)];
+    }
+
+    /// <summary>
+    /// 檢查是否所有畫作都已完成（沒有可創作的新畫作）。
+    /// </summary>
+    public bool AreAllPaintingsCompleted()
+    {
+        var gm = GameManager.Instance;
+        if (gm == null || gm.DataManager == null)
+        {
+            return false;
+        }
+
+        var dataManager = gm.DataManager;
+        if (dataManager.DrawingCount == 0)
+        {
+            return true;
+        }
+
+        var ownedTypes = new HashSet<DrawingType>();
+        foreach (var p in _paintings.Values)
+        {
+            ownedTypes.Add(p.DrawingType);
+        }
+
+        for (int i = 0; i < dataManager.DrawingCount; i++)
+        {
+            var entry = dataManager.GetDrawingEntry(i);
+            if (entry != null && !ownedTypes.Contains(entry.Type))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>

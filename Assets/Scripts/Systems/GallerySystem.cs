@@ -34,21 +34,14 @@ public class GallerySystem : PanelBase
 
     private void Start()
     {
-        if (galleryLobby != null)
-            galleryLobby.OnEnterClicked += OnEnterGalleryClicked;
+        galleryLobby.OnEnterClicked += OnEnterGalleryClicked;
         
-        if (galleryView != null)
-        {
-            galleryView.CreateArtClicked += OnCreateArtClickedAsync;
-            galleryView.PromotionClicked += OnPromotionClicked;
-        }
+        galleryView.CreateArtClicked += OnCreateArtClickedAsync;
+        galleryView.PromotionClicked += OnPromotionClicked;
 
-        if (promotionView != null)
-        {
-            promotionView.OnCloseClicked += HidePromotionView;
-            promotionView.OnPromotionClicked += OnPromotePaintingByType;
-            promotionView.Hide();
-        }
+        promotionView.OnCloseClicked += HidePromotionView;
+        promotionView.OnPromotionClicked += OnPromotePaintingByType;
+        promotionView.Hide();
 
         UpdateCostLabels();
         ShowLobbyOnly();
@@ -102,8 +95,6 @@ public class GallerySystem : PanelBase
     {
         var gm = GameManager.Instance;
         var ui = UIManager.Instance;
-        if (gm == null || GalleryManager.Instance == null || galleryView == null || ui == null)
-            return;
 
         if (gm.HasBlocksCreation())
         {
@@ -118,8 +109,6 @@ public class GallerySystem : PanelBase
         
         createArtAnimationView.Open();
         var (result, painting) = GalleryManager.Instance.CreatePainting();
-
-        
         
         await UniTask.WaitForSeconds(2);
         createArtAnimationView.Close();
@@ -230,6 +219,9 @@ public class GallerySystem : PanelBase
         if (galleryView != null)
         {
             galleryView.SetCreateArtCost(gm.Settings.PaintingFatigueCost.ToString());
+
+            bool allCompleted = GalleryManager.Instance != null && GalleryManager.Instance.AreAllPaintingsCompleted();
+            galleryView.SetCreateArtButtonVisible(!allCompleted);
         }
     }
 
