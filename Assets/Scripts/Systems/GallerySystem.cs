@@ -40,7 +40,7 @@ public class GallerySystem : PanelBase
         if (galleryView != null)
         {
             galleryView.CreateArtClicked += OnCreateArtClickedAsync;
-            galleryView.SettingsClicked += OnSettingsClicked;
+            galleryView.PromotionClicked += OnPromotionClicked;
         }
 
         if (promotionView != null)
@@ -140,19 +140,18 @@ public class GallerySystem : PanelBase
     // Promotion View
     // =============================================
 
-    private void OnSettingsClicked()
+    private void OnPromotionClicked()
     {
-        if (promotionView == null || GalleryManager.Instance == null) return;
-
         var completed = GalleryManager.Instance.GetCompletedPaintings();
         promotionView.Refresh(completed);
         promotionView.Show();
+        UIManager.Instance.HideHudView();
     }
 
     private void HidePromotionView()
     {
-        if (promotionView != null)
-            promotionView.Hide();
+        promotionView.Hide();
+        UIManager.Instance.ShowHudView();
     }
 
     private void OnPromotePaintingByType(DrawingType drawingType)
@@ -312,7 +311,7 @@ public class GallerySystem : PanelBase
         if (galleryView != null)
         {
             galleryView.CreateArtClicked -= OnCreateArtClickedAsync;
-            galleryView.SettingsClicked -= OnSettingsClicked;
+            galleryView.PromotionClicked -= OnPromotionClicked;
         }
         if (promotionView != null)
         {

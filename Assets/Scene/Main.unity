@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GalleryView
   createArtButton: {fileID: 3798199052813427661}
-  promotionButton: {fileID: 0}
+  promotionButton: {fileID: 5047121662860703007}
   progressPanel: {fileID: 0}
   progressText: {fileID: 0}
   progressBar: {fileID: 0}
@@ -533,6 +533,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1251801466}
     m_Modifications:
+    - target: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+      propertyPath: drawingType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1256612414151141241, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1634,7 +1638,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 17972813}
   m_HandleRect: {fileID: 17972812}
   m_Direction: 0
-  m_Value: 0
+  m_Value: -0.00000061035155
   m_Size: 0.9166667
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3100,7 +3104,7 @@ MonoBehaviour:
   inventoryListParent: {fileID: 0}
   displayListParent: {fileID: 0}
   paintingEntryPrefab: {fileID: 0}
-  promotionView: {fileID: 0}
+  promotionView: {fileID: 1799282075}
   createArtAnimationView: {fileID: 1717647544}
 --- !u!1001 &853310742
 PrefabInstance:
@@ -4227,6 +4231,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3554896260726872923, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
   m_PrefabInstance: {fileID: 1238705300}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1238705302 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+  m_PrefabInstance: {fileID: 1238705300}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869ccd9656f5522468600198e526896b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PromotionCell
 --- !u!1 &1239489947
 GameObject:
   m_ObjectHideFlags: 0
@@ -4921,6 +4936,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1251801466}
     m_Modifications:
+    - target: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+      propertyPath: drawingType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1256612414151141241, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5083,6 +5102,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3554896260726872923, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
   m_PrefabInstance: {fileID: 1392811281}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1392811283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+  m_PrefabInstance: {fileID: 1392811281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869ccd9656f5522468600198e526896b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PromotionCell
+--- !u!114 &1407454547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+  m_PrefabInstance: {fileID: 112080816}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869ccd9656f5522468600198e526896b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PromotionCell
 --- !u!1001 &1442457696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5091,6 +5132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1251801466}
     m_Modifications:
+    - target: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+      propertyPath: drawingType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1256612414151141241, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5265,6 +5310,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3554896260726872923, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
   m_PrefabInstance: {fileID: 1442457696}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1442457698 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+  m_PrefabInstance: {fileID: 1442457696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869ccd9656f5522468600198e526896b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PromotionCell
 --- !u!1 &1449749401
 GameObject:
   m_ObjectHideFlags: 0
@@ -5291,18 +5347,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1449749401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1799282074}
+  m_Father: {fileID: 1614814369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1169, y: 535}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 50, y: 100}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1449749403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5390,6 +5446,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3554896260726872923, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
   m_PrefabInstance: {fileID: 2525737401139059427}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1517052955 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+  m_PrefabInstance: {fileID: 2525737401139059427}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869ccd9656f5522468600198e526896b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PromotionCell
 --- !u!1 &1535373296
 GameObject:
   m_ObjectHideFlags: 0
@@ -5670,6 +5737,7 @@ RectTransform:
   m_Children:
   - {fileID: 728864673}
   - {fileID: 517645339}
+  - {fileID: 1449749402}
   m_Father: {fileID: 1799282074}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6663,7 +6731,6 @@ RectTransform:
   m_Children:
   - {fileID: 2050118418}
   - {fileID: 1614814369}
-  - {fileID: 1449749402}
   m_Father: {fileID: 834496275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6685,7 +6752,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PromotionView
   scrollRect: {fileID: 1614814370}
   closeButton: {fileID: 1449749403}
-  cells: []
+  cells:
+  - {fileID: 1517052955}
+  - {fileID: 1407454547}
+  - {fileID: 1392811283}
+  - {fileID: 1442457698}
+  - {fileID: 1238705302}
 --- !u!1 &1844554325
 GameObject:
   m_ObjectHideFlags: 0
@@ -7864,6 +7936,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1251801466}
     m_Modifications:
+    - target: {fileID: 1139743646581738693, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
+      propertyPath: drawingType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1256612414151141241, guid: a611fe0dae057fb45ac6ddc80cbcb66a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8181,6 +8257,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 18673151}
     m_Modifications:
+    - target: {fileID: 443303168116027743, guid: 8c8e173e7ff37714c83bccac457210d6, type: 3}
+      propertyPath: m_text
+      value: "\u30D7\u30ED\u30E2\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
     - target: {fileID: 6977204230451731819, guid: 8c8e173e7ff37714c83bccac457210d6, type: 3}
       propertyPath: m_Name
       value: PromotionButton
@@ -8275,6 +8355,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8081123069667699929, guid: 8c8e173e7ff37714c83bccac457210d6, type: 3}
   m_PrefabInstance: {fileID: 5047121662860703005}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5047121662860703007 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2608103466367407071, guid: 8c8e173e7ff37714c83bccac457210d6, type: 3}
+  m_PrefabInstance: {fileID: 5047121662860703005}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &5203739833716670450
 PrefabInstance:
   m_ObjectHideFlags: 0

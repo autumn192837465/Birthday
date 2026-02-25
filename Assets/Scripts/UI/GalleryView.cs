@@ -40,7 +40,7 @@ public class GalleryView : MonoBehaviour
     [SerializeField] private CreateArtAnimationView createArtAnimationView;
 
     public event Action CreateArtClicked;
-    public event Action SettingsClicked;
+    public event Action PromotionClicked;
 
     private void Awake()
     {
@@ -54,6 +54,8 @@ public class GalleryView : MonoBehaviour
 
         if (completionPopup != null)
             completionPopup.SetActive(false);
+
+        promotionButton.gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -67,7 +69,7 @@ public class GalleryView : MonoBehaviour
     }
 
     private void OnCreateArtClicked() => CreateArtClicked?.Invoke();
-    private void OnPromotionButtonClicked() => SettingsClicked?.Invoke();
+    private void OnPromotionButtonClicked() => PromotionClicked?.Invoke();
 
     public void SetCreateArtCost(string text)
     {
@@ -146,6 +148,9 @@ public class GalleryView : MonoBehaviour
     public void RefreshPaintingWall(IReadOnlyList<(DrawingType drawingType, Sprite sprite)> completed)
     {
         if (paintingSlots == null) return;
+
+        int paintingCount = completed?.Count ?? 0;
+        promotionButton.gameObject.SetActive(paintingCount > 0);
 
         foreach (var slot in paintingSlots)
         {

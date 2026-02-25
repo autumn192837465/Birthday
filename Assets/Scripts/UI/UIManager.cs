@@ -265,4 +265,14 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.EnableInput(true);
         AddUIEvents();
     }
+    
+    public void ShowHudView()
+    {
+        hudView.gameObject.SetActive(true);
+    }
+    
+    public void HideHudView()
+    {
+        hudView.gameObject.SetActive(false);
+    }
 }

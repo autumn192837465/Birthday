@@ -80,7 +80,9 @@ public class PromotionView : MonoBehaviour
             foreach (var p in completedPaintings)
             {
                 if (!paintingsByType.ContainsKey(p.DrawingType))
+                {
                     paintingsByType[p.DrawingType] = p;
+                }
             }
         }
 

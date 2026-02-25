@@ -18,6 +18,8 @@ MonoBehaviour:
   PaintingBasePriceMin: 80
   PaintingBasePriceMax: 250
   MaxDisplaySlots: 5
+  MaxPaintingProgress: 100
+  MinPaintingProgress: 100
   BaseRentChance: 0.3
   BaseSellChance: 0.05
   RentIncomeMultiplier: 0.1
