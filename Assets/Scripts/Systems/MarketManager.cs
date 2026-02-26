@@ -55,7 +55,7 @@ public class MarketManager : MonoBehaviour
         ProcessRentedPaintings(gallery, settings, gm, ref result);
 
         gallery.PurgeSoldPaintings();
-        gallery.ResetAllPromotions();
+        gallery.DecreasePromotionDays();
 
         return result;
     }

@@ -26,7 +26,9 @@ public class Painting
     public PaintingState State;
     public int RentDaysLeft;
     public float Progress;
-    public bool IsPromoted;
+    public int PromotionDaysLeft;
+
+    public bool IsPromoted => PromotionDaysLeft > 0;
 
     public Painting(string id, DrawingType drawingType, string title, string description, Sprite image, int basePrice)
     {
@@ -39,6 +41,6 @@ public class Painting
         State = PaintingState.InProgress;
         RentDaysLeft = 0;
         Progress = 0f;
-        IsPromoted = false;
+        PromotionDaysLeft = 0;
     }
 }

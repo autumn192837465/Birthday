@@ -230,25 +230,41 @@ public class GalleryManager : MonoBehaviour
         return true;
     }
 
+    private const int PromotionDuration = 3;
+
     /// <summary>
     /// Toggle promotion on a displayed painting. Returns true if toggled successfully.
     /// </summary>
     public bool TogglePaintingPromotion(string paintingId)
     {
         if (!_paintings.TryGetValue(paintingId, out var painting) || painting.State != PaintingState.Displayed)
+        {
             return false;
+        }
 
-        painting.IsPromoted = !painting.IsPromoted;
+        if (painting.PromotionDaysLeft > 0)
+        {
+            painting.PromotionDaysLeft = 0;
+        }
+        else
+        {
+            painting.PromotionDaysLeft = PromotionDuration;
+        }
         return true;
     }
 
     /// <summary>
-    /// Reset all paintings' promotion flags. Called after nightly market processing.
+    /// Decrease promotion days for all paintings by 1. Called after nightly market processing.
     /// </summary>
-    public void ResetAllPromotions()
+    public void DecreasePromotionDays()
     {
         foreach (var p in _paintings.Values)
-            p.IsPromoted = false;
+        {
+            if (p.PromotionDaysLeft > 0)
+            {
+                p.PromotionDaysLeft--;
+            }
+        }
     }
 
     public List<Painting> GetInventoryPaintings()
@@ -298,7 +314,7 @@ public class GalleryManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 依 DrawingType 切換推廣狀態（允許對已完成的畫作進行推廣）。
+    /// 依 DrawingType 設定推廣（允許對已完成的畫作進行推廣，持續 3 天）。
     /// </summary>
     public bool TogglePaintingPromotionByType(DrawingType drawingType)
     {
@@ -308,7 +324,14 @@ public class GalleryManager : MonoBehaviour
                 p.State != PaintingState.InProgress && 
                 p.State != PaintingState.Sold)
             {
-                p.IsPromoted = !p.IsPromoted;
+                if (p.PromotionDaysLeft > 0)
+                {
+                    p.PromotionDaysLeft = 0;
+                }
+                else
+                {
+                    p.PromotionDaysLeft = PromotionDuration;
+                }
                 return true;
             }
         }

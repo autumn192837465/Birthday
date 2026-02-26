@@ -154,15 +154,17 @@ public class GallerySystem : PanelBase
 
         if (painting.IsPromoted)
         {
-            gm.ShowMessage($"\"{painting.Title}\" 今晚已經推廣過了！");
+            gm.ShowMessage($"\"{painting.Title}\" 推廣中！（剩餘 {painting.PromotionDaysLeft} 天）");
             return;
         }
 
         if (!gm.SpendMoney(gm.Settings.PromotionCost))
+        {
             return;
+        }
 
         gallery.TogglePaintingPromotionByType(drawingType);
-        gm.ShowMessage($"\"{painting.Title}\" 推廣成功！租售機率加倍！");
+        gm.ShowMessage($"\"{painting.Title}\" 推廣成功！租售機率加倍（持續 3 天）！");
         promotionView.UpdatePromotionState(drawingType, true);
     }
 
