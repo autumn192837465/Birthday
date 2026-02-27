@@ -44,11 +44,13 @@ public class GameSettings : ScriptableObject
     [Tooltip("Daily rent income as a fraction of BasePrice.")]
     public float RentIncomeMultiplier = 0.1f;
 
-    [Tooltip("Minimum days a painting stays rented.")]
-    public int MinRentDays = 2;
+    [Tooltip("Minimum daily probability (0-1) that a rented painting is returned.")]
+    [Range(0f, 1f)]
+    public float DailyReturnChanceMin = 0.15f;
 
-    [Tooltip("Maximum days a painting stays rented.")]
-    public int MaxRentDays = 5;
+    [Tooltip("Maximum daily probability (0-1) that a rented painting is returned.")]
+    [Range(0f, 1f)]
+    public float DailyReturnChanceMax = 0.4f;
 
     [Tooltip("Sell price = BasePrice * this multiplier.")]
     public float SellPriceMultiplier = 10f;

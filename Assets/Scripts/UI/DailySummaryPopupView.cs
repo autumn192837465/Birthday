@@ -69,34 +69,24 @@ public class DailySummaryPopupView : AnimatorBase
 
     private void UpdateUI(int dayCount)
     {
-        if (titleText != null)
-        {
-            titleText.text = $"第 {dayCount} 天結算";
-        }
+        titleText.text = $"{dayCount}日目の精算";
 
         int totalIncome = _currentResult.TotalRentIncome + _currentResult.TotalSellIncome;
         bool hasActivity = totalIncome > 0 || 
                           _currentResult.NewlyRentedTitles.Count > 0 || 
                           _currentResult.ReturnedTitles.Count > 0;
 
-        if (summaryText != null)
-        {
-            summaryText.text = BuildSummaryText(hasActivity);
-        }
+        summaryText.text = BuildSummaryText(hasActivity);
 
-        if (totalIncomeText != null)
+        if (totalIncome > 0)
         {
-            if (totalIncome > 0)
-            {
-                totalIncomeText.text = $"總收入：${totalIncome}";
-                totalIncomeText.gameObject.SetActive(true);
-            }
-            else
-            {
-                totalIncomeText.gameObject.SetActive(false);
-            }
+            totalIncomeText.text = $"総収入：{totalIncome}円";
+            totalIncomeText.gameObject.SetActive(true);
         }
-
+        else
+        {
+            totalIncomeText.gameObject.SetActive(false);
+        }
         UpdateDetailSections();
     }
 

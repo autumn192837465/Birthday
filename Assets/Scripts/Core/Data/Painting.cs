@@ -23,6 +23,9 @@ public class Painting
     public Sprite Image;
     public int BasePrice;
     public PaintingState State;
+    /// <summary>
+    /// Reserved. Return is determined by daily probability (GameSettings.DailyReturnChanceMin/Max), not by day count.
+    /// </summary>
     public int RentDaysLeft;
     public float Progress;
     public int PromotionDaysLeft;

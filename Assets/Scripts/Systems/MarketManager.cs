@@ -85,7 +85,7 @@ public class MarketManager : MonoBehaviour
             if (Random.value < rentChance)
             {
                 painting.State = PaintingState.Rented;
-                painting.RentDaysLeft = Random.Range(settings.MinRentDays, settings.MaxRentDays + 1);
+                painting.RentDaysLeft = 0;
                 result.NewlyRentedTitles.Add(painting.Title);
             }
         }
@@ -103,10 +103,11 @@ public class MarketManager : MonoBehaviour
             gm.EarnMoney(rentIncome);
             result.TotalRentIncome += rentIncome;
 
-            painting.RentDaysLeft--;
-            if (painting.RentDaysLeft <= 0)
+            float returnChance = Random.Range(settings.DailyReturnChanceMin, settings.DailyReturnChanceMax);
+            if (Random.value < returnChance)
             {
                 painting.State = PaintingState.Displayed;
+                painting.RentDaysLeft = 0;
                 result.ReturnedTitles.Add(painting.Title);
             }
         }
