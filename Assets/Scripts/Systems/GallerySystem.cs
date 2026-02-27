@@ -18,12 +18,10 @@ public class GallerySystem : PanelBase
     [SerializeField] private GalleryView galleryView;
 
     [Header("Info Display")]
-    [SerializeField] private TextMeshProUGUI inventoryCountText;
     [SerializeField] private TextMeshProUGUI displayedCountText;
     [SerializeField] private TextMeshProUGUI rentedCountText;
 
     [Header("Painting Lists")]
-    [SerializeField] private Transform inventoryListParent;
     [SerializeField] private Transform displayListParent;
     [SerializeField] private GameObject paintingEntryPrefab;
 
@@ -169,30 +167,6 @@ public class GallerySystem : PanelBase
     }
 
     // =============================================
-    // Display / Remove from wall
-    // =============================================
-
-    public void OnDisplayPaintingClicked(string paintingId)
-    {
-        if (GalleryManager.Instance == null) return;
-
-        if (GalleryManager.Instance.DisplayPainting(paintingId))
-        {
-            RefreshUI();
-        }
-    }
-
-    public void OnRemoveFromDisplayClicked(string paintingId)
-    {
-        if (GalleryManager.Instance == null) return;
-
-        if (GalleryManager.Instance.RemoveFromDisplay(paintingId))
-        {
-            RefreshUI();
-        }
-    }
-
-    // =============================================
     // UI Refresh
     // =============================================
 
@@ -240,36 +214,33 @@ public class GallerySystem : PanelBase
         var gallery = GalleryManager.Instance;
         if (gallery == null) return;
 
-        var settings = GameManager.Instance?.Settings;
-
-        if (inventoryCountText != null)
-            inventoryCountText.text = $"Inventory: {gallery.GetInventoryPaintings().Count}";
-
         if (displayedCountText != null)
         {
             int displayed = gallery.GetDisplayedPaintings().Count;
-            int max = settings != null ? settings.MaxDisplaySlots : 0;
-            displayedCountText.text = $"Displayed: {displayed}/{max}";
+            displayedCountText.text = $"Displayed: {displayed}";
         }
 
         if (rentedCountText != null)
+        {
             rentedCountText.text = $"Rented: {gallery.GetRentedPaintings().Count}";
+        }
     }
 
     private void RebuildPaintingLists()
     {
         if (paintingEntryPrefab == null) return;
 
-        RebuildList(inventoryListParent, GalleryManager.Instance.GetInventoryPaintings(), true);
-        RebuildList(displayListParent, GalleryManager.Instance.GetDisplayedPaintings(), false);
+        RebuildList(displayListParent, GalleryManager.Instance.GetDisplayedPaintings());
     }
 
-    private void RebuildList(Transform parent, List<Painting> paintings, bool isInventory)
+    private void RebuildList(Transform parent, List<Painting> paintings)
     {
         if (parent == null) return;
 
         for (int i = parent.childCount - 1; i >= 0; i--)
+        {
             Destroy(parent.GetChild(i).gameObject);
+        }
 
         foreach (var painting in paintings)
         {
@@ -284,17 +255,9 @@ public class GallerySystem : PanelBase
             {
                 var image = entry.GetComponentInChildren<Image>();
                 if (image != null)
+                {
                     image.sprite = painting.Image;
-            }
-
-            var button = entry.GetComponentInChildren<Button>();
-            if (button != null)
-            {
-                string id = painting.ID;
-                if (isInventory)
-                    button.onClick.AddListener(() => OnDisplayPaintingClicked(id));
-                else
-                    button.onClick.AddListener(() => OnRemoveFromDisplayClicked(id));
+                }
             }
         }
     }

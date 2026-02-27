@@ -61,7 +61,7 @@ public class GalleryManager : MonoBehaviour
         if (painting.Progress >= 100f)
         {
             painting.Progress = 100f;
-            painting.State = PaintingState.Inventory;
+            painting.State = PaintingState.Displayed;
             gm.ShowMessage($"Completed \"{painting.Title}\" (Value: ${painting.BasePrice})!");
             return (CreateResult.Completed, painting);
         }
@@ -194,41 +194,6 @@ public class GalleryManager : MonoBehaviour
         return result;
     }
 
-    /// <summary>
-    /// Move a painting from Inventory to a Display slot.
-    /// </summary>
-    public bool DisplayPainting(string paintingId)
-    {
-        if (!_paintings.TryGetValue(paintingId, out var painting) || painting.State != PaintingState.Inventory)
-            return false;
-
-        var settings = GameManager.Instance?.Settings;
-        if (settings == null) return false;
-
-        int displayedCount = 0;
-        foreach (var p in _paintings.Values)
-            if (p.State == PaintingState.Displayed) displayedCount++;
-        if (displayedCount >= settings.MaxDisplaySlots)
-        {
-            GameManager.Instance.ShowMessage("Display wall is full!");
-            return false;
-        }
-
-        painting.State = PaintingState.Displayed;
-        return true;
-    }
-
-    /// <summary>
-    /// Move a painting from Display back to Inventory.
-    /// </summary>
-    public bool RemoveFromDisplay(string paintingId)
-    {
-        if (!_paintings.TryGetValue(paintingId, out var painting) || painting.State != PaintingState.Displayed)
-            return false;
-
-        painting.State = PaintingState.Inventory;
-        return true;
-    }
 
     private const int PromotionDuration = 3;
 
@@ -265,14 +230,6 @@ public class GalleryManager : MonoBehaviour
                 p.PromotionDaysLeft--;
             }
         }
-    }
-
-    public List<Painting> GetInventoryPaintings()
-    {
-        var list = new List<Painting>();
-        foreach (var p in _paintings.Values)
-            if (p.State == PaintingState.Inventory) list.Add(p);
-        return list;
     }
 
     public List<Painting> GetDisplayedPaintings()

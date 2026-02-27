@@ -45,6 +45,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PanelInfo shopPanelInfo;
     [SerializeField] private GameObject gameClearPanel;
 
+    [Header("Daily Summary Popup")]
+    [SerializeField] private DailySummaryPopupView dailySummaryPopup;
+
     private PanelInfo? _currentPanelInfo;
 
     // 儲存委派參考以便正確取消訂閱
@@ -277,4 +280,33 @@ public class UIManager : MonoBehaviour
     {
         hudView.gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// 顯示每日結算 popup，並等待用戶關閉。
+    /// </summary>
+    public async Awaitable ShowDailySummaryPopupAsync(MarketResult result, int dayCount)
+    {
+        if (dailySummaryPopup == null)
+        {
+            return;
+        }
+
+        var tcs = new System.Threading.Tasks.TaskCompletionSource<bool>();
+
+        void OnPopupClosed()
+        {
+            dailySummaryPopup.OnCloseClicked -= OnPopupClosed;
+            tcs.TrySetResult(true);
+        }
+
+        dailySummaryPopup.OnCloseClicked += OnPopupClosed;
+        dailySummaryPopup.ShowResult(result, dayCount);
+
+        await tcs.Task;
+    }
+
+    /// <summary>
+    /// 檢查每日結算 popup 是否已設定。
+    /// </summary>
+    public bool HasDailySummaryPopup => dailySummaryPopup != null;
 }

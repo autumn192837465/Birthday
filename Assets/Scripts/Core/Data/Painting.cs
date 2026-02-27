@@ -4,7 +4,6 @@ using UnityEngine.Serialization;
 public enum PaintingState
 {
     InProgress,
-    Inventory,
     Displayed,
     Rented,
     Sold

@@ -169,15 +169,14 @@ public class GameManager : MonoBehaviour
     public async Awaitable Sleep()
     {
         EnableInput(false);
-        await uiManager.FadeOutAsync(2);
+        await uiManager.FadeOutAsync(1.5f);
         uiManager.ToMainView();
 
         // Process nightly gallery market before advancing the day
+        MarketResult? marketResult = null;
         if (MarketManager.Instance != null)
         {
-            var result = MarketManager.Instance.ProcessDailyMarket();
-            string summary = MarketManager.FormatResult(result);
-            ShowMessage(summary);
+            marketResult = MarketManager.Instance.ProcessDailyMarket();
         }
 
         ResetFatigue();
@@ -185,6 +184,17 @@ public class GameManager : MonoBehaviour
         await Awaitable.WaitForSecondsAsync(1);
         await uiManager.FadeInAsync(2);
         EnableInput(true);
+
+        // Show daily summary popup after fade in
+        if (marketResult.HasValue && uiManager.HasDailySummaryPopup)
+        {
+            await uiManager.ShowDailySummaryPopupAsync(marketResult.Value, DayCount);
+        }
+        else if (marketResult.HasValue)
+        {
+            string summary = MarketManager.FormatResult(marketResult.Value);
+            ShowMessage(summary);
+        }
     }
 
     /// <summary>

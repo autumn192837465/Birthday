@@ -46,7 +46,6 @@ public class MarketManager : MonoBehaviour
 
         var gm = GameManager.Instance;
         var gallery = GalleryManager.Instance;
-        if (gm == null || gallery == null) return result;
 
         var settings = gm.Settings;
         float rentChanceMultiplier = gm.GetTotalRentChanceMultiplier();
