@@ -15,7 +15,7 @@ public class GalleryView : MonoBehaviour
     public class PaintingInfo
     {
         public DrawingType Id;
-        public Image Image;
+        public GameObject Paint;
     }
 
     [Header("Actions")]
@@ -111,10 +111,9 @@ public class GalleryView : MonoBehaviour
 
         foreach (var slot in paintingSlots)
         {
-            if (slot.Id == drawingType && slot.Image != null)
+            if (slot.Id == drawingType)
             {
-                slot.Image.gameObject.SetActive(true);
-                slot.Image.sprite = sprite;
+                slot.Paint.gameObject.SetActive(true);
                 return;
             }
         }
@@ -133,10 +132,7 @@ public class GalleryView : MonoBehaviour
 
         foreach (var slot in paintingSlots)
         {
-            if (slot.Image != null)
-            {
-                slot.Image.gameObject.SetActive(false);
-            }
+            slot.Paint.gameObject.SetActive(false);
         }
 
         if (completed == null)
