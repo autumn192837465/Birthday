@@ -1,9 +1,48 @@
 fileFormatVersion: 2
 guid: 74ea17f7e9a0eb54b85475890e1e9dfa
 TextureImporter:
-  fileIDToRecycleName: {}
+  internalIDToNameTable:
+  - first:
+      213: -6200226125184731754
+    second: AllIn1VfxCustomEditorImage_0
+  - first:
+      213: -8487089772186734566
+    second: AllIn1VfxCustomEditorImage_1
+  - first:
+      213: -357013302735945387
+    second: AllIn1VfxCustomEditorImage_2
+  - first:
+      213: -2130607886544067689
+    second: AllIn1VfxCustomEditorImage_3
+  - first:
+      213: -6339380316023101810
+    second: AllIn1VfxCustomEditorImage_4
+  - first:
+      213: 6091697495021786128
+    second: AllIn1VfxCustomEditorImage_5
+  - first:
+      213: -532411568362207957
+    second: AllIn1VfxCustomEditorImage_6
+  - first:
+      213: 9048624918401201669
+    second: AllIn1VfxCustomEditorImage_7
+  - first:
+      213: 6166611309002649704
+    second: AllIn1VfxCustomEditorImage_8
+  - first:
+      213: 1565249943109975559
+    second: AllIn1VfxCustomEditorImage_9
+  - first:
+      213: -3704454596045887070
+    second: AllIn1VfxCustomEditorImage_10
+  - first:
+      213: -7257356403052584663
+    second: AllIn1VfxCustomEditorImage_11
+  - first:
+      213: 6673171726585089765
+    second: AllIn1VfxCustomEditorImage_12
   externalObjects: {}
-  serializedVersion: 9
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,9 +59,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -31,16 +73,16 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -54,11 +96,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -68,28 +116,353 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_0
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 13
+        width: 51
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6957449703f54f9a0800000000000000
+      internalID: -6200226125184731754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_1
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 13
+        width: 17
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1075f791dcc73a80800000000000000
+      internalID: -8487089772186734566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_2
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 14
+        width: 16
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 551c55eea42ab0bf0800000000000000
+      internalID: -357013302735945387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_3
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 14
+        width: 32
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79325e66a6f8e62e0800000000000000
+      internalID: -2130607886544067689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_4
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 14
+        width: 21
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e86e657a03ff508a0800000000000000
+      internalID: -6339380316023101810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_5
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 14
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01419e5b89e0a8450800000000000000
+      internalID: 6091697495021786128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_6
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 13
+        width: 59
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b254679df7e7c98f0800000000000000
+      internalID: -532411568362207957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_7
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 13
+        width: 58
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5063d0feb6c239d70800000000000000
+      internalID: 9048624918401201669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_8
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 13
+        width: 33
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 860720d3054349550800000000000000
+      internalID: 6166611309002649704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_9
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 13
+        width: 44
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70e35cbb782e8b510800000000000000
+      internalID: 1565249943109975559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_10
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 14
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a92f140c22279cc0800000000000000
+      internalID: -3704454596045887070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_11
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 13
+        width: 24
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 921e4a37dc0b84b90800000000000000
+      internalID: -7257356403052584663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllIn1VfxCustomEditorImage_12
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 0
+        width: 38
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eec840545edb9c50800000000000000
+      internalID: 6673171726585089765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID: bf1e0ded89bd87a479b6a14f0332b30d
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
-  spritePackingTag: 
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      AllIn1VfxCustomEditorImage_0: -6200226125184731754
+      AllIn1VfxCustomEditorImage_1: -8487089772186734566
+      AllIn1VfxCustomEditorImage_10: -3704454596045887070
+      AllIn1VfxCustomEditorImage_11: -7257356403052584663
+      AllIn1VfxCustomEditorImage_12: 6673171726585089765
+      AllIn1VfxCustomEditorImage_2: -357013302735945387
+      AllIn1VfxCustomEditorImage_3: -2130607886544067689
+      AllIn1VfxCustomEditorImage_4: -6339380316023101810
+      AllIn1VfxCustomEditorImage_5: 6091697495021786128
+      AllIn1VfxCustomEditorImage_6: -532411568362207957
+      AllIn1VfxCustomEditorImage_7: 9048624918401201669
+      AllIn1VfxCustomEditorImage_8: 6166611309002649704
+      AllIn1VfxCustomEditorImage_9: 1565249943109975559
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 206665
-  packageName: All In 1 Vfx Toolkit
-  packageVersion: 2.22
-  assetPath: Assets/Plugins/AllIn1VfxToolkit/Editor/Texture/AllIn1VfxCustomEditorImage.png
-  uploadId: 847792
