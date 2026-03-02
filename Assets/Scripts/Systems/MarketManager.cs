@@ -34,9 +34,19 @@ public class MarketManager : MonoBehaviour
     /// <summary>
     /// Run the nightly market simulation on all displayed and rented paintings.
     /// Per-painting promotion is read from painting.IsPromoted and reset after processing.
+    /// Returns null when there are no displayed and no rented paintings (nothing to process).
     /// </summary>
-    public MarketResult ProcessDailyMarket()
+    public MarketResult? ProcessDailyMarket()
     {
+        var gallery = GalleryManager.Instance;
+        var displayed = gallery.GetDisplayedPaintings();
+        var rented = gallery.GetRentedPaintings();
+
+        if (displayed.Count == 0 && rented.Count == 0)
+        {
+            return null;
+        }
+
         var result = new MarketResult
         {
             NewlyRentedTitles = new List<string>(),
@@ -45,8 +55,6 @@ public class MarketManager : MonoBehaviour
         };
 
         var gm = GameManager.Instance;
-        var gallery = GalleryManager.Instance;
-
         var settings = gm.Settings;
         float rentChanceMultiplier = gm.GetTotalRentChanceMultiplier();
 

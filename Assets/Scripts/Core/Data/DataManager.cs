@@ -7,6 +7,7 @@ public class DataManager : MonoBehaviour
 {
     [SerializeField] private TarotData tarotData;
     [SerializeField] private DrawingData drawingData;
+    [SerializeField] private ShopData shopData;
 
     /// <summary>啟動時由 GameManager 呼叫。</summary>
     public void Initialize()
@@ -15,6 +16,8 @@ public class DataManager : MonoBehaviour
             tarotData.Initialize();
         if (drawingData != null)
             drawingData.Initialize();
+        if (shopData != null)
+            shopData.Initialize();
     }
 
     /// <summary>取得該塔羅類型的圖片，未設定則回傳 null。</summary>
@@ -56,5 +59,28 @@ public class DataManager : MonoBehaviour
     public DrawingData.DrawingEntry GetDrawingEntryByType(DrawingType type)
     {
         return drawingData != null ? drawingData.GetEntryByType(type) : null;
+    }
+
+    // === Shop Data ===
+
+    /// <summary>取得商店商品筆數。</summary>
+    public int ShopCount => shopData != null ? shopData.Count : 0;
+
+    /// <summary>依索引取得商店條目。</summary>
+    public ShopData.ShopEntry GetShopEntry(int index)
+    {
+        return shopData != null ? shopData.GetEntry(index) : null;
+    }
+
+    /// <summary>依 ShopItemType 取得商店條目。</summary>
+    public ShopData.ShopEntry GetShopEntryByType(ShopItemType type)
+    {
+        return shopData != null ? shopData.GetEntryByType(type) : null;
+    }
+
+    /// <summary>取得商店商品最低價格。若無商品則回傳 int.MaxValue。</summary>
+    public int GetShopMinPrice()
+    {
+        return shopData != null ? shopData.GetMinPrice() : int.MaxValue;
     }
 }

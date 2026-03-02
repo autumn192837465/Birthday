@@ -62,10 +62,4 @@ public class GameSettings : ScriptableObject
     [Tooltip("Cost to draw a fortune card.")]
     public int FortuneCost = 200;
 
-    [Header("Shop")]
-    [Tooltip("Gift names displayed on buttons.")]
-    public string[] GiftNames = new string[] { "Teddy Bear", "Music Box", "Birthday Cake" };
-
-    [Tooltip("Gift prices matching GiftNames array.")]
-    public int[] GiftPrices = new int[] { 500, 800, 1200 };
 }

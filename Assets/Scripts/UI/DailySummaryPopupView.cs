@@ -80,7 +80,7 @@ public class DailySummaryPopupView : AnimatorBase
 
         if (totalIncome > 0)
         {
-            totalIncomeText.text = $"総収入：{totalIncome}円";
+            totalIncomeText.text = $"今日の収入：{totalIncome}円";
             totalIncomeText.gameObject.SetActive(true);
         }
         else
@@ -94,15 +94,15 @@ public class DailySummaryPopupView : AnimatorBase
     {
         if (!hasActivity)
         {
-            return "今晚畫廊沒有任何活動...\n明天繼續加油！";
+            return "今夜のギャラリーは特に動きがありませんでした…\n明日も頑張ろう！";
         }
 
         var sb = new StringBuilder();
 
         if (_currentResult.TotalRentIncome > 0)
         {
-            sb.AppendLine($"<color=#4CAF50>【租金收入】</color>");
-            sb.AppendLine($"收取租金：${_currentResult.TotalRentIncome}");
+            sb.AppendLine($"<color=#4CAF50>【レンタル収入】</color>");
+            sb.AppendLine($"レンタル収入：${_currentResult.TotalRentIncome}");
             sb.AppendLine();
         }
 
@@ -111,28 +111,28 @@ public class DailySummaryPopupView : AnimatorBase
             sb.AppendLine($"<color=#2196F3>【新租賃】</color>");
             foreach (var title in _currentResult.NewlyRentedTitles)
             {
-                sb.AppendLine($"• \"{title}\" 被租出去了！");
+                sb.AppendLine($"• \"{title}\" がレンタルされました！");
             }
             sb.AppendLine();
         }
 
         if (_currentResult.SoldTitles.Count > 0)
         {
-            sb.AppendLine($"<color=#FF9800>【賣出！】</color>");
+            sb.AppendLine($"<color=#FF9800>【売却！】</color>");
             foreach (var title in _currentResult.SoldTitles)
             {
-                sb.AppendLine($"• \"{title}\" 已售出！");
+                sb.AppendLine($"• \"{title}\" が売れました！");
             }
-            sb.AppendLine($"賣出收入：${_currentResult.TotalSellIncome}");
+            sb.AppendLine($"売却収入：${_currentResult.TotalSellIncome}");
             sb.AppendLine();
         }
 
         if (_currentResult.ReturnedTitles.Count > 0)
         {
-            sb.AppendLine($"<color=#9C27B0>【歸還】</color>");
+            sb.AppendLine($"<color=#9C27B0>【返却】</color>");
             foreach (var title in _currentResult.ReturnedTitles)
             {
-                sb.AppendLine($"• \"{title}\" 租約到期，已歸還");
+                sb.AppendLine($"• \"{title}\" は返却されました");
             }
         }
 

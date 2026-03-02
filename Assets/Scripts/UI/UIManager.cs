@@ -157,11 +157,31 @@ public class UIManager : MonoBehaviour
     public void RefreshHUD()
     {
         var gm = GameManager.Instance;
-        if (gm == null) return;
+        if (gm == null)
+        {
+            return;
+        }
 
         hudView.SetMoney(gm.Money);
         hudView.SetFatigue(gm.Fatigue, gm.Settings.MaxFatigue);
         hudView.SetDay(gm.DayCount);
+
+        UpdateShopIconVisibility(gm);
+    }
+
+    /// <summary>
+    /// 根據金錢是否足夠購買最低價商品來顯示/隱藏 Shop Icon。
+    /// </summary>
+    private void UpdateShopIconVisibility(GameManager gm)
+    {
+        if (gm.DataManager == null)
+        {
+            return;
+        }
+
+        int minPrice = gm.DataManager.GetShopMinPrice();
+        bool canAfford = gm.Money >= minPrice;
+        shopPanelInfo.MainViewIcon.gameObject.SetActive(canAfford);
     }
 
     /// <summary>

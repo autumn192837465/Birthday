@@ -20,11 +20,11 @@ MonoBehaviour:
   MaxDisplaySlots: 5
   MaxPaintingProgress: 100
   MinPaintingProgress: 100
-  BaseRentChance: 0.3
+  BaseRentChance: 1
   BaseSellChance: 0.05
   RentIncomeMultiplier: 0.1
-  MinRentDays: 2
-  MaxRentDays: 5
+  DailyReturnChanceMin: 0.15
+  DailyReturnChanceMax: 0.2
   SellPriceMultiplier: 10
   PromotionCost: 300
   FortuneCost: 200

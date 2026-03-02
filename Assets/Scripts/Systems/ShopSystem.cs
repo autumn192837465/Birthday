@@ -1,113 +1,182 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
 
 /// <summary>
 /// Shop system: buy gifts to trigger the "Game Clear" ending.
-/// 3 gift buttons with different prices.
+/// Uses shop data from DataManager to display items with prices and sprites.
 /// </summary>
 public class ShopSystem : PanelBase
 {
-    [Header("Gift Button References")]
-    [SerializeField] private Button[] giftButtons;
-    [SerializeField] private TextMeshProUGUI[] giftButtonTexts;
+    [Header("Shop Slots")]
+    [SerializeField] private ShopSlot[] shopSlots;
 
-    [Header("Gift Preview")]
-    [SerializeField] private Image[] giftPreviewImages;
-    [SerializeField] private Sprite[] giftSprites;
+    private bool _slotsSubscribed;
+    private DataManager _dataManager;
 
     private void Start()
     {
-        SetupGiftButtons();
+        _dataManager = GameManager.Instance != null ? GameManager.Instance.DataManager : null;
+        SetupShopSlots();
     }
 
     /// <summary>
-    /// Initialize gift button text with names and prices from GameSettings.
+    /// Initialize shop slots with data from DataManager.
+    /// Updates sprite and price for each slot based on its ItemType.
     /// </summary>
-    private void SetupGiftButtons()
+    private void SetupShopSlots()
     {
-        var gm = GameManager.Instance;
-        if (gm == null) return;
-
-        for (int i = 0; i < giftButtons.Length; i++)
-        {
-            if (i >= gm.Settings.GiftNames.Length || i >= gm.Settings.GiftPrices.Length)
-                break;
-
-            int giftIndex = i;
-
-            // Set button text
-            if (giftButtonTexts != null && i < giftButtonTexts.Length)
-            {
-                giftButtonTexts[i].text = $"{gm.Settings.GiftNames[i]}\n${gm.Settings.GiftPrices[i]}";
-            }
-
-            // Set preview image
-            if (giftPreviewImages != null && i < giftPreviewImages.Length
-                && giftSprites != null && i < giftSprites.Length)
-            {
-                giftPreviewImages[i].sprite = giftSprites[i];
-            }
-
-            // Add click listener
-            if (giftButtons != null && i < giftButtons.Length)
-            {
-                giftButtons[i].onClick.RemoveAllListeners();
-                giftButtons[i].onClick.AddListener(() => OnGiftButtonClicked(giftIndex));
-            }
-        }
-    }
-
-    /// <summary>
-    /// Called when a gift button is clicked.
-    /// </summary>
-    public void OnGiftButtonClicked(int giftIndex)
-    {
-        var gm = GameManager.Instance;
-        if (gm == null) return;
-
-        if (giftIndex >= gm.Settings.GiftPrices.Length) return;
-
-        int price = gm.Settings.GiftPrices[giftIndex];
-        string giftName = gm.Settings.GiftNames[giftIndex];
-
-        // Check if player can afford it
-        if (!gm.SpendMoney(price))
+        if (shopSlots == null || _dataManager == null)
         {
             return;
         }
 
-        // Play purchase animation
-        PlayPurchaseAnimation(giftIndex, () =>
+        foreach (var slot in shopSlots)
         {
-            // Trigger Game Clear
-            gm.ShowMessage($"You bought a {giftName}! Happy Birthday!");
-
-            if (UIManager.Instance != null)
+            var entry = _dataManager.GetShopEntryByType(slot.ItemType);
+            if (entry == null)
             {
-                UIManager.Instance.ShowGameClear(giftName);
+                continue;
             }
-        });
+
+            UpdateSlotVisual(slot, entry);
+
+            if (slot.CostButton != null && !_slotsSubscribed)
+            {
+                var itemType = slot.ItemType;
+                slot.CostButton.OnClick += () => OnShopItemClicked(itemType);
+            }
+        }
+
+        _slotsSubscribed = true;
     }
 
-    /// <summary>
-    /// Animate the gift button on purchase.
-    /// </summary>
-    private void PlayPurchaseAnimation(int giftIndex, TweenCallback onComplete)
+    private void UpdateSlotVisual(ShopSlot slot, ShopData.ShopEntry entry)
     {
-        if (giftButtons == null || giftIndex >= giftButtons.Length)
+        if (slot == null || entry == null)
         {
-            onComplete?.Invoke();
             return;
         }
 
-        Transform btnTransform = giftButtons[giftIndex].transform;
+        if (slot.Icon != null)
+        {
+            slot.Icon.sprite = entry.Sprite;
+        }
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(btnTransform.DOScale(Vector3.one * 1.2f, 0.2f).SetEase(Ease.OutQuad));
-        seq.Append(btnTransform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack));
-        seq.AppendInterval(0.2f);
-        seq.OnComplete(onComplete);
+        if (slot.CostButton != null)
+        {
+            slot.CostButton.SetCostText($"{entry.Price}");
+        }
+    }
+
+    /// <summary>
+    /// Refresh all shop slots with current data.
+    /// Call this when shop data might have changed.
+    /// </summary>
+    public void RefreshShopDisplay()
+    {
+        if (shopSlots == null || _dataManager == null)
+        {
+            return;
+        }
+
+        foreach (var slot in shopSlots)
+        {
+            var entry = _dataManager.GetShopEntryByType(slot.ItemType);
+            if (entry != null)
+            {
+                UpdateSlotVisual(slot, entry);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Update a specific slot's sprite and price by ItemType.
+    /// </summary>
+    public void UpdateSlot(ShopItemType itemType, Sprite sprite, int price)
+    {
+        if (shopSlots == null)
+        {
+            return;
+        }
+
+        foreach (var slot in shopSlots)
+        {
+            if (slot.ItemType == itemType)
+            {
+                if (slot.Icon != null)
+                {
+                    slot.Icon.sprite = sprite;
+                }
+
+                if (slot.CostButton != null && _dataManager != null)
+                {
+                    var entry = _dataManager.GetShopEntryByType(itemType);
+                    string name = entry?.Name ?? itemType.ToString();
+                    slot.CostButton.SetCostText($"{price}");
+                }
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called when a shop item is clicked.
+    /// </summary>
+    public void OnShopItemClicked(ShopItemType itemType)
+    {
+        var gm = GameManager.Instance;
+        if (gm == null || _dataManager == null)
+        {
+            return;
+        }
+
+        var entry = _dataManager.GetShopEntryByType(itemType);
+        if (entry == null)
+        {
+            return;
+        }
+
+        if (!gm.SpendMoney(entry.Price))
+        {
+            return;
+        }
+
+        ShopSlot clickedSlot = GetSlotByType(itemType);
+        if (clickedSlot != null)
+        {
+            clickedSlot.SetSoldOut();
+        }
+
+        gm.ShowMessage($"You bought a {entry.Name}! Happy Birthday!");
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowGameClear(entry.Name);
+        }
+    }
+
+    private ShopSlot GetSlotByType(ShopItemType itemType)
+    {
+        if (shopSlots == null)
+        {
+            return null;
+        }
+
+        foreach (var slot in shopSlots)
+        {
+            if (slot.ItemType == itemType)
+            {
+                return slot;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Animate the shop slot on purchase.
+    /// </summary>
+    private void PlayPurchaseAnimation(ShopSlot slot, TweenCallback onComplete)
+    {
+        onComplete?.Invoke();
     }
 }
