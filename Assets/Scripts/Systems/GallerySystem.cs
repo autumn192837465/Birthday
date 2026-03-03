@@ -30,8 +30,10 @@ public class GallerySystem : PanelBase
 
     [SerializeField] private CreateArtAnimationView createArtAnimationView;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+        
         galleryLobby.OnEnterClicked += OnEnterGalleryClicked;
         
         galleryView.CreateArtClicked += OnCreateArtClickedAsync;
@@ -110,7 +112,7 @@ public class GallerySystem : PanelBase
         
         await UniTask.WaitForSeconds(2);
         createArtAnimationView.Close();
-
+        
         await UniTask.WaitUntil(() => createArtAnimationView.IsClosed);
         
         gm.EnableInput(true);

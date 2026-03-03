@@ -195,6 +195,10 @@ public class GameManager : MonoBehaviour
             string summary = MarketManager.FormatResult(marketResult.Value);
             ShowMessage(summary);
         }
+        else
+        {
+            ShowMessage($"Good morning! Day {DayCount} begins.");
+        }
     }
 
     /// <summary>

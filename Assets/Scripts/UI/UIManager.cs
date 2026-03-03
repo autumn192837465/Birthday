@@ -31,9 +31,8 @@ public class UIManager : MonoBehaviour
     [Header("HUD Elements")]
     [SerializeField] private HudView hudView;
 
-    [Header("Message Toast")]
-    [SerializeField] private CanvasGroup messagePanel;
-    [SerializeField] private TextMeshProUGUI messageText;
+    [Header("Notification")]
+    [SerializeField] private NotificationUI notificationUI;
 
     [Header("Screen Fade")]
     [SerializeField] private CanvasGroup fadeOverlay;
@@ -137,13 +136,6 @@ public class UIManager : MonoBehaviour
             fadeOverlay.blocksRaycasts = false;
         }
 
-        // Initialize message panel hidden
-        if (messagePanel != null)
-        {
-            messagePanel.alpha = 0f;
-            messagePanel.blocksRaycasts = false;
-        }
-
         // Hide game clear panel
         if (gameClearPanel != null)
             gameClearPanel.SetActive(false);
@@ -232,23 +224,12 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Display a toast message that auto-fades.
+    /// Display a notification message that auto-fades.
+    /// Delegates to NotificationUI which handles kill-and-restart on overlap.
     /// </summary>
     public void ShowToast(string message)
     {
-        if (messagePanel == null || messageText == null) return;
-
-        // Kill any existing toast animation
-        DOTween.Kill(messagePanel);
-
-        messageText.text = message;
-        messagePanel.alpha = 0f;
-        messagePanel.blocksRaycasts = false;
-
-        Sequence seq = DOTween.Sequence().SetId(messagePanel);
-        seq.Append(messagePanel.DOFade(1f, 0.3f));
-        seq.AppendInterval(2f);
-        seq.Append(messagePanel.DOFade(0f, 0.3f));
+        notificationUI?.ShowNotification(message);
     }
 
     /// <summary>
