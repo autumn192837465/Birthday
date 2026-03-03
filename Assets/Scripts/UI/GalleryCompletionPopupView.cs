@@ -45,6 +45,7 @@ public class GalleryCompletionPopupView : AnimatorBase
         }
         
         completionImage.sprite = painting.Image;
+        completionImage.SetNativeSize();
         titleText.text = painting.Title;
         descriptionText.text = painting.Description;
 
