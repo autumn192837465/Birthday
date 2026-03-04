@@ -16,7 +16,7 @@ public class TheHermitCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("The Hermit: Take the day off... no creating today.");
+        gm.ShowMessage("隠者：今日は休もう…創作はお休み。");
     }
 
     public override void OnDayAdvanced()

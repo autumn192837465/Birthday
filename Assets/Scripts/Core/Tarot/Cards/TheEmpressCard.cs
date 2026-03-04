@@ -16,7 +16,7 @@ public class TheEmpressCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("The Empress: All earnings x2 for 3 days!");
+        gm.ShowMessage("女帝：3日間、すべての収益が2倍！");
     }
 
     public override void OnDayAdvanced()

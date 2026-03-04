@@ -62,11 +62,9 @@ public class GalleryManager : MonoBehaviour
         {
             painting.Progress = 100f;
             painting.State = PaintingState.Displayed;
-            gm.ShowMessage($"Completed \"{painting.Title}\" (Value: ${painting.BasePrice})!");
             return (CreateResult.Completed, painting);
         }
-
-        gm.ShowMessage($"Painting \"{painting.Title}\" in progress... {painting.Progress:F0}%");
+        
         return (CreateResult.InProgress, painting);
     }
 

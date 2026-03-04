@@ -16,7 +16,7 @@ public class TheFoolCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("The Fool: Oops! Next 3 paintings lose 10% value.");
+        gm.ShowMessage("愚者：おっと！次の3作品の価値が10%低下。");
     }
 
     public override void OnPaintingCreated()

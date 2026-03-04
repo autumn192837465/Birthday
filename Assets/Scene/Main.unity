@@ -263,7 +263,6 @@ MonoBehaviour:
   - Id: 4
     Paint: {fileID: 1556644008}
   galleryCompletionPopup: {fileID: 1295450737}
-  createArtAnimationView: {fileID: 1717647544}
 --- !u!1 &44470531
 GameObject:
   m_ObjectHideFlags: 0
@@ -8541,7 +8540,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateArtAnimationView
   openSoundFeedbacks: {fileID: 0}
   closeSoundFeedbacks: {fileID: 0}
-  displayDuration: 2
 --- !u!1 &1719830751
 GameObject:
   m_ObjectHideFlags: 0

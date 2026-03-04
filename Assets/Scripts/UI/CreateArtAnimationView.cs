@@ -6,27 +6,4 @@ using UnityEngine;
 /// </summary>
 public class CreateArtAnimationView : AnimatorBase
 {
-    [SerializeField] private float displayDuration = 2f;
-
-    /// <summary>
-    /// 播放動畫：Open → 等待 displayDuration 秒 → Close。
-    /// 使用 Awaitable 讓調用方可以選擇 await 此方法。
-    /// </summary>
-    public async Awaitable PlayAnimationAsync()
-    {
-        ClearAllAction();
-        
-        Open();
-        
-        await Awaitable.WaitForSecondsAsync(displayDuration);
-
-        
-        
-        Close();
-
-        while(!IsClosed)
-        {
-            await Awaitable.NextFrameAsync();
-        }
-    }
 }

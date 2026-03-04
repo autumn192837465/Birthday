@@ -18,8 +18,8 @@ MonoBehaviour:
   PaintingBasePriceMin: 80
   PaintingBasePriceMax: 250
   MaxDisplaySlots: 5
-  MaxPaintingProgress: 100
-  MinPaintingProgress: 100
+  MaxPaintingProgress: 20
+  MinPaintingProgress: 30
   BaseRentChance: 1
   BaseSellChance: 0.05
   RentIncomeMultiplier: 0.1
@@ -28,8 +28,3 @@ MonoBehaviour:
   SellPriceMultiplier: 10
   PromotionCost: 300
   FortuneCost: 200
-  GiftNames:
-  - Teddy Bear
-  - Music Box
-  - Birthday Cake
-  GiftPrices: f401000020030000b0040000

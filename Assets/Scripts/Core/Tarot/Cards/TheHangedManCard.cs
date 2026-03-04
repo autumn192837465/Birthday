@@ -18,6 +18,6 @@ public class TheHangedManCard : TarotCardBase
     {
         int loss = Mathf.Min(20, gm.Money); // Never go below 0
         gm.DeductMoney(loss);
-        gm.ShowMessage($"The Hanged Man: Lost ${loss}... but it's just pocket change!");
+        gm.ShowMessage($"吊るされた男：${loss}を失った…でも大した額じゃない！");
     }
 }

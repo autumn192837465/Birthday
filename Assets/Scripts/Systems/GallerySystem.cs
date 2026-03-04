@@ -98,12 +98,14 @@ public class GallerySystem : PanelBase
 
         if (gm.HasBlocksCreation())
         {
-            gm.ShowMessage("The Hermit says: rest today. No creating allowed!");
+            gm.ShowMessage("隠者：今日は休もう。創作は禁止！");
             return;
         }
 
         if (!gm.AddFatigue(gm.Settings.PaintingFatigueCost))
+        {
             return;
+        }
 
         gm.EnableInput(false);
         
@@ -112,9 +114,13 @@ public class GallerySystem : PanelBase
         
         await UniTask.WaitForSeconds(2);
         createArtAnimationView.Close();
-        
         await UniTask.WaitUntil(() => createArtAnimationView.IsClosed);
-        
+
+        if (result == CreateResult.InProgress)
+        {
+            gm.ShowMessage($"「{painting.Title}」制作中… {painting.Progress:F0}%");
+        }
+            
         gm.EnableInput(true);
         
         if (result == CreateResult.Completed)

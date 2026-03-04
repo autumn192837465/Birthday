@@ -20,7 +20,7 @@ public class WheelOfFortuneCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("Wheel of Fortune: Your gallery is buzzing with interest!");
+        gm.ShowMessage("運命の輪：ギャラリーに注目が集まっている！");
     }
 
     public override void OnDayAdvanced()

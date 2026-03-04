@@ -33,10 +33,7 @@ public class GalleryView : MonoBehaviour
     [FormerlySerializedAs("completionPopup")]
     [Header("Completion Popup")]
     [SerializeField] private GalleryCompletionPopupView galleryCompletionPopup;
-
-    [Header("Create Animation")]
-    [SerializeField] private CreateArtAnimationView createArtAnimationView;
-
+    
     public event Action CreateArtClicked;
     public event Action PromotionClicked;
 

@@ -13,6 +13,6 @@ public class TwoOfPentaclesCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("Two of Pentacles: The stars are balanced. Nothing happens.");
+        gm.ShowMessage("ペンタクルの2：星のバランスが取れている。何も起きない。");
     }
 }

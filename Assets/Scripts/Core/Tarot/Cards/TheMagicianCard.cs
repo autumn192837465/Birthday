@@ -16,7 +16,7 @@ public class TheMagicianCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("The Magician: Create art without getting tired today!");
+        gm.ShowMessage("魔術師：今日は疲れずに芸術を創造できる！");
     }
 
     public override void OnDayAdvanced()

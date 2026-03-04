@@ -15,6 +15,6 @@ public class TheStarCard : TarotCardBase
     public override void OnApply(GameManager gm)
     {
         gm.ResetFatigue();
-        gm.ShowMessage("The Star: Fatigue fully healed!");
+        gm.ShowMessage("星：疲労が完全に回復！");
     }
 }

@@ -16,7 +16,7 @@ public class TenOfPentaclesCard : TarotCardBase
 
     public override void OnApply(GameManager gm)
     {
-        gm.ShowMessage("Ten of Pentacles: Painting value +10% for 3 days!");
+        gm.ShowMessage("ペンタクルの10：3日間、作品の価値+10%！");
     }
 
     public override void OnDayAdvanced()
