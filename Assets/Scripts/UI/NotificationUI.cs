@@ -20,11 +20,8 @@ public class NotificationUI : MonoBehaviour
 
     private void Awake()
     {
-        if (canvasGroup != null)
-        {
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-        }
+        canvasGroup.alpha = 0f;
+        canvasGroup.blocksRaycasts = false;
     }
 
     private void OnDestroy()
