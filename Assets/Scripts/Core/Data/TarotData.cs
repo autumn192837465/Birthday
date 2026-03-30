@@ -17,8 +17,7 @@ public class TarotData : ScriptableObject
         public Sprite Sprite;
         
         public string Name;
-
-        [Tooltip("效果說明。")]
+        
         [TextArea(4, 8)]
         public string Description;
     }

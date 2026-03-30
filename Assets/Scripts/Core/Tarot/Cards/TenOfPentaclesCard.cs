@@ -14,11 +14,6 @@ public class TenOfPentaclesCard : TarotCardBase
     public override bool IsExpired => remainingDays <= 0;
     public override float PaintingValueMultiplier => 1.10f;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("ペンタクルの10：3日間、作品の価値+10%！");
-    }
-
     public override void OnDayAdvanced()
     {
         remainingDays--;

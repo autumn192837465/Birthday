@@ -15,6 +15,5 @@ public class AceOfPentaclesCard : TarotCardBase
     public override void OnApply(GameManager gm)
     {
         gm.AddMoney(100);
-        gm.ShowMessage("ペンタクルのエース：+$100！");
     }
 }

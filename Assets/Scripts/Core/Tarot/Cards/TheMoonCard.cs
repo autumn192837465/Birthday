@@ -14,11 +14,6 @@ public class TheMoonCard : TarotCardBase
     public override bool IsExpired => dayPassed;
     public override float RentChanceMultiplier => 0.5f;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("月：今夜は遊び好きの幽霊がお客を驚かせている！");
-    }
-
     public override void OnDayAdvanced()
     {
         dayPassed = true;

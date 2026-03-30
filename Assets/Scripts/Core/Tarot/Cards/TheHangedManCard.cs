@@ -18,6 +18,5 @@ public class TheHangedManCard : TarotCardBase
     {
         int loss = Mathf.Min(20, gm.Money); // Never go below 0
         gm.DeductMoney(loss);
-        gm.ShowMessage($"吊るされた男：${loss}を失った…でも大した額じゃない！");
     }
 }

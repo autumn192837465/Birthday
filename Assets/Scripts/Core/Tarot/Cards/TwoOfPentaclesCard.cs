@@ -10,9 +10,4 @@ public class TwoOfPentaclesCard : TarotCardBase
     public override string Symbol => "...";
 
     public override bool IsExpired => true;
-
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("ペンタクルの2：星のバランスが取れている。何も起きない。");
-    }
 }

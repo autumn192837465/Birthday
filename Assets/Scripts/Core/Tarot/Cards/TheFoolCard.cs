@@ -14,11 +14,6 @@ public class TheFoolCard : TarotCardBase
     public override bool IsExpired => remainingSessions <= 0;
     public override float PaintingValueMultiplier => 0.9f;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("愚者：おっと！次の3作品の価値が10%低下。");
-    }
-
     public override void OnPaintingCreated()
     {
         remainingSessions--;

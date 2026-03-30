@@ -14,11 +14,6 @@ public class TheMagicianCard : TarotCardBase
     public override bool IsExpired => dayPassed;
     public override bool BlocksFatigue => true;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("魔術師：今日は疲れずに芸術を創造できる！");
-    }
-
     public override void OnDayAdvanced()
     {
         dayPassed = true;

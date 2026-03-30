@@ -18,11 +18,6 @@ public class WheelOfFortuneCard : TarotCardBase
     /// </summary>
     public override float RentChanceMultiplier => consumed ? 1f : 2f;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("運命の輪：ギャラリーに注目が集まっている！");
-    }
-
     public override void OnDayAdvanced()
     {
         consumed = true;

@@ -14,11 +14,6 @@ public class TheHermitCard : TarotCardBase
     public override bool IsExpired => dayPassed;
     public override bool BlocksCreation => true;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("隠者：今日は休もう…創作はお休み。");
-    }
-
     public override void OnDayAdvanced()
     {
         dayPassed = true;

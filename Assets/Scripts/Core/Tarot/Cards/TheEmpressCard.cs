@@ -14,11 +14,6 @@ public class TheEmpressCard : TarotCardBase
     public override bool IsExpired => remainingDays <= 0;
     public override float EarningsMultiplier => 2f;
 
-    public override void OnApply(GameManager gm)
-    {
-        gm.ShowMessage("女帝：3日間、すべての収益が2倍！");
-    }
-
     public override void OnDayAdvanced()
     {
         remainingDays--;

@@ -10,7 +10,6 @@ using TMPro;
 public class TarotSystem : PanelBase
 {
     [Header("Entry (before draw)")]
-    [SerializeField] private GameObject entryView;
     [SerializeField] private Button playButton;
     [SerializeField] private TextMeshProUGUI costText;
 
@@ -20,7 +19,6 @@ public class TarotSystem : PanelBase
 
     [Header("Result View (after pick)")]
     [SerializeField] private TarotResultView tarotResultView;
-    [SerializeField] private Button resultConfirmButton;
     
     private readonly List<TarotType> _drawPool = new List<TarotType>(3);
 
@@ -62,11 +60,6 @@ public class TarotSystem : PanelBase
             playButton.onClick.AddListener(OnPlayClicked);
         }
 
-        if (resultConfirmButton != null)
-        {
-            resultConfirmButton.onClick.AddListener(OnResultConfirmClicked);
-        }
-
         ShowEntryOnly();
     }
 
@@ -100,31 +93,21 @@ public class TarotSystem : PanelBase
         if (tarotTable != null)
             tarotTable.OnCardSelected -= OnCardSelected;
         if (playButton != null) playButton.onClick.RemoveAllListeners();
-        if (resultConfirmButton != null) resultConfirmButton.onClick.RemoveAllListeners();
     }
 
     private void ShowEntryOnly()
     {
-        if (entryView != null) entryView.SetActive(true);
-        if (tarotTableView != null) tarotTableView.SetActive(false);
+        tarotTableView.SetActive(false);
     }
 
     private void ShowTarotTableOnly()
     {
-        if (entryView != null) entryView.SetActive(false);
-        if (tarotTableView != null) tarotTableView.SetActive(true);
+        tarotTableView.SetActive(true);
     }
 
     private void ShowResultOnly()
     {
-        if (entryView != null)
-        {
-            entryView.SetActive(false);
-        }
-        if (tarotTableView != null)
-        {
-            tarotTableView.SetActive(false);
-        }
+        tarotTableView.SetActive(false);
     }
 
     /// <summary>
@@ -158,22 +141,16 @@ public class TarotSystem : PanelBase
             _drawPool.Add(t);
         }
 
-        if (tarotTable != null)
-        {
-            tarotTable.InitializeTableAsync(_drawPool);
-            tarotTable.OnCardSelected += OnCardSelected;
-        }
+        await tarotTable.InitializeTableAsync(_drawPool);
+        tarotTable.OnCardSelected += OnCardSelected;
+        
         gm.EnableInput(true);
 
     }
 
     private void OnCardSelected(TarotCard card)
     {
-        if (tarotTable != null)
-        {
-            tarotTable.OnCardSelected -= OnCardSelected;
-        }
-
+        tarotTable.OnCardSelected -= OnCardSelected;
         _ = ShowCardAsync(card);
     }
 
@@ -186,6 +163,7 @@ public class TarotSystem : PanelBase
         var gm = GameManager.Instance;
         gm.ApplyTarotCard(card.AssignedType);
 
+        tarotResultView.gameObject.SetActive(true);
         tarotResultView.InitializeUI(card.AssignedType);
         tarotResultView.Open();
         AddTarotResultViewEvents();
