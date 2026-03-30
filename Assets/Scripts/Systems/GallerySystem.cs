@@ -98,7 +98,7 @@ public class GallerySystem : PanelBase
 
         if (gm.HasBlocksCreation())
         {
-            gm.ShowMessage("隠者：今日は休もう。創作は禁止！");
+            gm.ShowMessage(GameMessages.HermitBlocksCreation);
             return;
         }
 
@@ -118,7 +118,7 @@ public class GallerySystem : PanelBase
 
         if (result == CreateResult.InProgress)
         {
-            gm.ShowMessage($"「{painting.Title}」制作中… {painting.Progress:F0}%");
+            gm.ShowMessage(GameMessages.PaintingInProgress(painting.Title, painting.Progress));
         }
             
         gm.EnableInput(true);
@@ -160,7 +160,7 @@ public class GallerySystem : PanelBase
 
         if (painting.IsPromoted)
         {
-            gm.ShowMessage($"\"{painting.Title}\" 推廣中！（剩餘 {painting.PromotionDaysLeft} 天）");
+            gm.ShowMessage(GameMessages.PromotionAlreadyActive(painting.Title, painting.PromotionDaysLeft));
             return;
         }
 
@@ -170,7 +170,7 @@ public class GallerySystem : PanelBase
         }
 
         gallery.TogglePaintingPromotionByType(drawingType);
-        gm.ShowMessage($"\"{painting.Title}\" 推廣成功！租售機率加倍（持續 3 天）！");
+        gm.ShowMessage(GameMessages.PromotionSuccess(painting.Title));
         promotionView.UpdatePromotionState(drawingType, true);
     }
 
@@ -182,17 +182,20 @@ public class GallerySystem : PanelBase
     {
         UpdateCostLabels();
         UpdateCounts();
-        UpdateProgress();
         RefreshPaintingWall();
+        UpdateProgress();
         RebuildPaintingLists();
     }
 
     private void RefreshPaintingWall()
     {
-        if (galleryView == null || GalleryManager.Instance == null) return;
+        if (galleryView == null || GalleryManager.Instance == null)
+        {
+            return;
+        }
 
-        var completed = GalleryManager.Instance.GetCompletedPaintingsForWall();
-        galleryView.RefreshPaintingWall(completed);
+        
+        galleryView.RefreshPaintingWall();
     }
 
     private void UpdateCostLabels()

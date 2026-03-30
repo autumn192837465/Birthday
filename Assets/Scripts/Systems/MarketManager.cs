@@ -126,20 +126,6 @@ public class MarketManager : MonoBehaviour
     /// </summary>
     public static string FormatResult(MarketResult result)
     {
-        var parts = new List<string>();
-
-        if (result.TotalRentIncome > 0)
-            parts.Add($"Rent collected: ${result.TotalRentIncome}");
-
-        if (result.NewlyRentedTitles.Count > 0)
-            parts.Add($"Newly rented: {string.Join(", ", result.NewlyRentedTitles)}");
-
-        if (result.SoldTitles.Count > 0)
-            parts.Add($"SOLD: {string.Join(", ", result.SoldTitles)} (+${result.TotalSellIncome})");
-
-        if (result.ReturnedTitles.Count > 0)
-            parts.Add($"Returned: {string.Join(", ", result.ReturnedTitles)}");
-
-        return parts.Count > 0 ? string.Join(" | ", parts) : "Quiet night... no gallery activity.";
+        return GameMessages.FormatMarketResult(result);
     }
 }

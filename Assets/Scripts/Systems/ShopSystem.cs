@@ -147,7 +147,7 @@ public class ShopSystem : PanelBase
             clickedSlot.SetSoldOut();
         }
 
-        gm.ShowMessage($"{entry.Name}を購入しました！誕生日おめでとう！");
+        gm.ShowMessage(GameMessages.ShopPurchaseBirthday(entry.Name));
 
         if (UIManager.Instance != null)
         {

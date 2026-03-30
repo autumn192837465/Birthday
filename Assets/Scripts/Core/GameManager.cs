@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     public int Money { get; private set; } = 1000;
     public int Fatigue { get; private set; } = 0;
     public int DayCount { get; private set; } = 1;
+
+    /// <summary>Game day index when the player last completed a tarot reading (same as <see cref="DayCount"/> when read).</summary>
+    public int LastTarotFortuneDay { get; private set; } = 0;
     
     public DataManager DataManager => dataManager;
 
@@ -101,7 +104,7 @@ public class GameManager : MonoBehaviour
 
         if (multiplier > 1f)
         {
-            ShowMessage($"Bonus! +${finalAmount} (x{multiplier:F1})");
+            ShowMessage(GameMessages.EarnMoneyBonus(finalAmount, multiplier));
         }
     }
 
@@ -130,7 +133,7 @@ public class GameManager : MonoBehaviour
     {
         if (Money < amount)
         {
-            ShowMessage("Not enough money!");
+            ShowMessage(GameMessages.InsufficientMoney);
             return false;
         }
 
@@ -151,13 +154,13 @@ public class GameManager : MonoBehaviour
     {
         if (HasBlocksFatigue())
         {
-            ShowMessage("Magic power! No fatigue consumed.");
+            ShowMessage(GameMessages.MagicPowerNoFatigue);
             return true;
         }
 
         if (Fatigue + amount > Settings.MaxFatigue)
         {
-            ShowMessage("Too tired! You need to sleep first.");
+            ShowMessage(GameMessages.TooTiredNeedSleep);
             return false;
         }
 
@@ -192,12 +195,11 @@ public class GameManager : MonoBehaviour
         }
         else if (marketResult.HasValue)
         {
-            string summary = MarketManager.FormatResult(marketResult.Value);
-            ShowMessage(summary);
+            ShowMessage(GameMessages.FormatMarketResult(marketResult.Value));
         }
         else
         {
-            ShowMessage($"Good morning! Day {DayCount} begins.");
+            ShowMessage(GameMessages.GoodMorningDay(DayCount));
         }
     }
 
@@ -362,6 +364,32 @@ public class GameManager : MonoBehaviour
     public void ShowMessage(string message)
     {
         OnShowMessage?.Invoke(message);
+    }
+
+    /// <summary>True if the player already completed a tarot reading on the current in-game day.</summary>
+    public bool HasTarotFortuneToday()
+    {
+        return LastTarotFortuneDay == DayCount;
+    }
+
+    /// <summary>
+    /// If already read tarot today: shows <see cref="ShowMessage"/> and returns true (caller should abort).
+    /// </summary>
+    public bool TryRejectTarotFortuneBecauseAlreadyDoneToday()
+    {
+        if (!HasTarotFortuneToday())
+        {
+            return false;
+        }
+
+        ShowMessage(GameMessages.TarotFortuneAlreadyDoneToday);
+        return true;
+    }
+
+    /// <summary>Call when a tarot reading is fully completed (card chosen and applied).</summary>
+    public void RecordTarotFortuneToday()
+    {
+        LastTarotFortuneDay = DayCount;
     }
 
     private void NotifyStatsChanged()

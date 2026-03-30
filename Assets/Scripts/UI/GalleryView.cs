@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,6 +17,7 @@ public class GalleryView : MonoBehaviour
     {
         public DrawingType Id;
         public GameObject Paint;
+        public CanvasGroup CanvasGroup;
     }
 
     [Header("Actions")]
@@ -88,7 +90,9 @@ public class GalleryView : MonoBehaviour
         if (progressText != null)
             progressText.text = $"\"{inProgress.Title}\" - {inProgress.Progress:F0}%";
         if (progressBar != null)
+        {
             progressBar.value = inProgress.Progress / 100f;
+        }
     }
 
     public void ShowCompletionPopup(Painting painting)
@@ -117,27 +121,66 @@ public class GalleryView : MonoBehaviour
     }
 
     /// <summary>
-    /// Refresh the painting wall: hide all slots, then show each completed painting by DrawingType.
-    /// Pass the result of GalleryManager.GetCompletedPaintingsForWall().
+    /// 同步牆面：已完成格 alpha=1；進行中格 alpha=Progress/100；其餘 alpha=0。
+    /// 並依 <see cref="GalleryManager.GetCompletedPaintingsForWall"/> 呼叫 <see cref="RevealPainting"/>。
     /// </summary>
-    public void RefreshPaintingWall(IReadOnlyList<(DrawingType drawingType, Sprite sprite)> completed)
+    public void RefreshPaintingWall()
     {
-        if (paintingSlots == null) return;
-
-        int paintingCount = completed?.Count ?? 0;
-        promotionButton.gameObject.SetActive(paintingCount > 0);
-
-        foreach (var slot in paintingSlots)
-        {
-            slot.Paint.gameObject.SetActive(false);
-        }
-
-        if (completed == null)
+        var gallery = GalleryManager.Instance;
+        if (gallery == null || paintingSlots == null)
         {
             return;
         }
 
-        foreach (var (drawingType, sprite) in completed)
+        var paintings = gallery.GetPaintings();
+        List<Painting> completedPaintings = paintings.Values.Where(p => p.State != PaintingState.InProgress).ToList();
+        if (promotionButton != null)
+        {
+            promotionButton.gameObject.SetActive(completedPaintings.Count > 0);
+        }
+
+        var completedForWall = gallery.GetCompletedPaintingsForWall();
+        var completedTypes = new HashSet<DrawingType>();
+        foreach (var (drawingType, _) in completedForWall)
+        {
+            completedTypes.Add(drawingType);
+        }
+
+        Painting inProgress = gallery.GetInProgressPainting();
+
+        foreach (var slot in paintingSlots)
+        {
+            if (slot == null)
+            {
+                continue;
+            }
+
+            bool isCompleted = completedTypes.Contains(slot.Id);
+            bool isInProgress = inProgress != null && inProgress.DrawingType == slot.Id;
+
+            if (slot.CanvasGroup != null)
+            {
+                if (isCompleted)
+                {
+                    slot.CanvasGroup.alpha = 1f;
+                }
+                else if (isInProgress)
+                {
+                    slot.CanvasGroup.alpha = Mathf.Clamp01(inProgress.Progress / 100f);
+                }
+                else
+                {
+                    slot.CanvasGroup.alpha = 0f;
+                }
+            }
+
+            if (slot.Paint != null)
+            {
+                slot.Paint.SetActive(isCompleted || isInProgress);
+            }
+        }
+
+        foreach (var (drawingType, sprite) in completedForWall)
         {
             RevealPainting(drawingType, sprite);
         }

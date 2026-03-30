@@ -181,15 +181,28 @@ public class GalleryManager : MonoBehaviour
         foreach (var p in _paintings.Values)
         {
             if (p.State == PaintingState.Sold || p.State == PaintingState.InProgress)
+            {
                 continue;
+            }
+            
             if (seen.Contains(p.DrawingType))
+            {
                 continue;
+            }
+            
             if (p.Image == null)
+            {
                 continue;
+            }
             seen.Add(p.DrawingType);
             result.Add((p.DrawingType, p.Image));
         }
         return result;
+    }
+    
+    public Dictionary<string, Painting> GetPaintings()
+    {
+        return _paintings;
     }
 
 

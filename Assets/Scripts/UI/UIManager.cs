@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
         // 初始化委派
         _onHomeClicked = () => _ = ShowPanelAsync(PanelType.Home);
         _onGalleryClicked = () => _ = ShowPanelAsync(PanelType.Gallery);
-        _onTarotClicked = () => _ = ShowPanelAsync(PanelType.Tarot);
+        _onTarotClicked = () => _ = OnTarotIconClickedAsync();
         _onShopClicked = () => _ = ShowPanelAsync(PanelType.Shop);
 
         AddUIEvents();
@@ -87,6 +87,17 @@ public class UIManager : MonoBehaviour
     private void OnDestroy()
     {
         RemoveUIEvents();
+    }
+
+    private async Awaitable OnTarotIconClickedAsync()
+    {
+        var gm = GameManager.Instance;
+        if (gm != null && gm.TryRejectTarotFortuneBecauseAlreadyDoneToday())
+        {
+            return;
+        }
+
+        await ShowPanelAsync(PanelType.Tarot);
     }
 
     /// <summary>

@@ -122,6 +122,11 @@ public class TarotSystem : PanelBase
             return;
         }
 
+        if (gm.TryRejectTarotFortuneBecauseAlreadyDoneToday())
+        {
+            return;
+        }
+
         if (!gm.SpendMoney(gm.Settings.FortuneCost))
         {
             return;
@@ -157,11 +162,11 @@ public class TarotSystem : PanelBase
     private async Awaitable ShowCardAsync(TarotCard card)
     {
         await card.FlipCardAsync();
-        await Awaitable.WaitForSecondsAsync(0.5f);
-        
+
         ITarotEffect effect = TarotCardFactory.Create(card.AssignedType);
         var gm = GameManager.Instance;
         gm.ApplyTarotCard(card.AssignedType);
+        gm.RecordTarotFortuneToday();
 
         tarotResultView.gameObject.SetActive(true);
         tarotResultView.InitializeUI(card.AssignedType);
