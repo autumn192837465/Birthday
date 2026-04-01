@@ -12,9 +12,10 @@ public class HudView : MonoBehaviour
         moneyText.text = amount.ToString();
     }
 
-    public void SetFatigue(int amount, int maxFatigue)
+    /// <summary>Display remaining stamina vs today's effective maximum.</summary>
+    public void SetStamina(int current, int effectiveMax)
     {
-        fatigueText.text = $"{amount}/{maxFatigue}";
+        fatigueText.text = $"{current}/{effectiveMax}";
     }
     
     public void SetDay(int day)

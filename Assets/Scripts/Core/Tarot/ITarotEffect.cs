@@ -45,8 +45,8 @@ public interface ITarotEffect
     /// <summary>If true, the player cannot create art today.</summary>
     bool BlocksCreation { get; }
 
-    /// <summary>If true, creating art does not consume fatigue.</summary>
-    bool BlocksFatigue { get; }
+    /// <summary>If true, creating art does not consume stamina.</summary>
+    bool SkipsStaminaCost { get; }
 
     /// <summary>Multiplier on rent chance during nightly market. 1.0 = normal, 0.5 = halved.</summary>
     float RentChanceMultiplier { get; }

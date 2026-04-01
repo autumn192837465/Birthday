@@ -20,7 +20,16 @@ public class GameManager : MonoBehaviour
 
     // === Player Stats ===
     public int Money { get; private set; } = 1000;
-    public int Fatigue { get; private set; } = 0;
+
+    /// <summary>Remaining stamina (depletes when creating art; 0 = exhausted).</summary>
+    public int CurrentStamina { get; private set; }
+
+    /// <summary>Maximum stamina for the current day (morning events may raise above base).</summary>
+    public int EffectiveMaxStamina { get; private set; }
+
+    /// <summary>Multiplier on painting stamina cost (e.g. stiff neck morning event).</summary>
+    public float PaintingCostMultiplier { get; private set; } = 1f;
+
     public int DayCount { get; private set; } = 1;
 
     /// <summary>Game day index when the player last completed a tarot reading (same as <see cref="DayCount"/> when read).</summary>
@@ -59,6 +68,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        int baseMax = Settings.BaseMaxStamina;
+        EffectiveMaxStamina = baseMax;
+        CurrentStamina = baseMax;
+        PaintingCostMultiplier = 1f;
         NotifyStatsChanged();
     }
 
@@ -73,7 +86,10 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4)) scale = 4;
         else if (Input.GetKeyDown(KeyCode.Alpha5)) scale = 5;
 
-        if (scale == 0) return;
+        if (scale == 0)
+        {
+            return;
+        }
 
         if (shift)
         {
@@ -143,30 +159,93 @@ public class GameManager : MonoBehaviour
     }
 
     // =============================================
-    // Fatigue Operations
+    // Stamina Operations
     // =============================================
 
     /// <summary>
-    /// Add fatigue. Returns false if it would exceed max.
-    /// Respects BlocksFatigue modifier from active effects.
+    /// Base max stamina from settings (before morning event modifiers).
     /// </summary>
-    public bool AddFatigue(int amount)
+    public int GetBaseMaxStamina()
     {
-        if (HasBlocksFatigue())
+        return Settings.BaseMaxStamina;
+    }
+
+    /// <summary>
+    /// Stamina cost for one painting step after morning multipliers (e.g. stiff neck).
+    /// </summary>
+    public int GetPaintingStaminaCost()
+    {
+        return Mathf.Max(1, Mathf.RoundToInt(Settings.PaintingStaminaCost * PaintingCostMultiplier));
+    }
+
+    /// <summary>
+    /// Consume stamina for an action. Returns false if not enough stamina.
+    /// Respects SkipsStaminaCost from active tarot effects.
+    /// </summary>
+    public bool TryConsumeStamina(int amount)
+    {
+        if (HasSkipsStaminaCost())
         {
-            ShowMessage(GameMessages.MagicPowerNoFatigue);
+            ShowMessage(GameMessages.MagicPowerNoStaminaCost);
             return true;
         }
 
-        if (Fatigue + amount > Settings.MaxFatigue)
+        if (CurrentStamina < amount)
         {
-            ShowMessage(GameMessages.TooTiredNeedSleep);
+            ShowMessage(GameMessages.ExhaustedNeedSleep);
             return false;
         }
 
-        Fatigue += amount;
+        CurrentStamina -= amount;
         NotifyStatsChanged();
         return true;
+    }
+
+    /// <summary>
+    /// Restore stamina to the current effective maximum (Star card, etc.).
+    /// </summary>
+    public void RestoreStaminaToFull()
+    {
+        CurrentStamina = EffectiveMaxStamina;
+        NotifyStatsChanged();
+    }
+
+    /// <summary>
+    /// Sets current and max stamina for the day (used by morning events).
+    /// </summary>
+    public void SetDailyStaminaState(int currentStamina, int effectiveMaxStamina)
+    {
+        effectiveMaxStamina = Mathf.Max(1, effectiveMaxStamina);
+        CurrentStamina = Mathf.Clamp(currentStamina, 0, effectiveMaxStamina);
+        EffectiveMaxStamina = effectiveMaxStamina;
+        NotifyStatsChanged();
+    }
+
+    /// <summary>
+    /// Sets painting cost multiplier for the day (stiff neck event).
+    /// </summary>
+    public void SetPaintingCostMultiplier(float multiplier)
+    {
+        PaintingCostMultiplier = Mathf.Max(0.01f, multiplier);
+        NotifyStatsChanged();
+    }
+
+    /// <summary>
+    /// Default morning when no <see cref="MorningEventManager"/> is present: full stamina, base cap, normal cost.
+    /// </summary>
+    public void ApplyDefaultMorningStamina()
+    {
+        PaintingCostMultiplier = 1f;
+        int baseMax = Settings.BaseMaxStamina;
+        SetDailyStaminaState(baseMax, baseMax);
+    }
+
+    /// <summary>
+    /// Check if the player cannot act due to stamina.
+    /// </summary>
+    public bool IsExhausted()
+    {
+        return CurrentStamina <= 0;
     }
 
     public async Awaitable Sleep()
@@ -182,42 +261,45 @@ public class GameManager : MonoBehaviour
             marketResult = MarketManager.Instance.ProcessDailyMarket();
         }
 
-        ResetFatigue();
         AdvanceDay();
+
+        if (MorningEventManager.Instance != null)
+        {
+            MorningEventManager.Instance.TriggerDailyEvent();
+        }
+        else
+        {
+            ApplyDefaultMorningStamina();
+        }
+
         await Awaitable.WaitForSecondsAsync(1);
         await uiManager.FadeInAsync(2);
-        EnableInput(true);
+        // Keep input blocked until morning toast (if any) and market UI finish.
 
-        // Show daily summary popup after fade in
+        bool hasMorningEvent = MorningEventManager.Instance != null &&
+            MorningEventManager.Instance.CurrentActiveMorningEvent != null;
+
+        if (hasMorningEvent)
+        {
+            var ev = MorningEventManager.Instance.CurrentActiveMorningEvent;
+            string morningText = $"{ev.EventName}\n{ev.Description}";
+            await ShowMessageAndWaitAsync(morningText);
+        }
+
+        EnableInput(true);
+        
         if (marketResult.HasValue && uiManager.HasDailySummaryPopup)
         {
             await uiManager.ShowDailySummaryPopupAsync(marketResult.Value, DayCount);
         }
         else if (marketResult.HasValue)
         {
-            ShowMessage(GameMessages.FormatMarketResult(marketResult.Value));
+            await ShowMessageAndWaitAsync(GameMessages.FormatMarketResult(marketResult.Value));
         }
-        else
+        else if (!hasMorningEvent)
         {
-            ShowMessage(GameMessages.GoodMorningDay(DayCount));
+            await ShowMessageAndWaitAsync(GameMessages.GoodMorningDay(DayCount));
         }
-    }
-
-    /// <summary>
-    /// Reset fatigue to 0 (Sleep or Star card).
-    /// </summary>
-    public void ResetFatigue()
-    {
-        Fatigue = 0;
-        NotifyStatsChanged();
-    }
-
-    /// <summary>
-    /// Check if the player is too fatigued to act.
-    /// </summary>
-    public bool IsTooTired()
-    {
-        return Fatigue >= Settings.MaxFatigue;
     }
 
     // =============================================
@@ -250,10 +332,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ApplyTarotCard(TarotType type)
     {
-        if (type == TarotType.None) return;
+        if (type == TarotType.None)
+        {
+            return;
+        }
 
         ITarotEffect card = TarotCardFactory.Create(type);
-        if (card == null) return;
+        if (card == null)
+        {
+            return;
+        }
 
         // Apply instant effects
         card.OnApply(this);
@@ -297,10 +385,10 @@ public class GameManager : MonoBehaviour
         return multiplier;
     }
 
-    /// <summary>True if any active effect blocks fatigue cost.</summary>
-    public bool HasBlocksFatigue()
+    /// <summary>True if any active effect skips stamina cost for creating art.</summary>
+    public bool HasSkipsStaminaCost()
     {
-        return activeEffects.Any(e => e.BlocksFatigue);
+        return activeEffects.Any(e => e.SkipsStaminaCost);
     }
 
     /// <summary>True if any active effect blocks painting creation.</summary>
@@ -336,7 +424,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public string GetActiveEffectsDisplay()
     {
-        if (activeEffects.Count == 0) return "";
+        if (activeEffects.Count == 0)
+        {
+            return "";
+        }
 
         var names = activeEffects.Select(e => e.CardName);
         return string.Join(", ", names);
@@ -364,6 +455,19 @@ public class GameManager : MonoBehaviour
     public void ShowMessage(string message)
     {
         OnShowMessage?.Invoke(message);
+    }
+
+    /// <summary>
+    /// Same toast channel as <see cref="ShowMessage"/>, but waits until the notification animation completes.
+    /// </summary>
+    public async Awaitable ShowMessageAndWaitAsync(string message)
+    {
+        if (uiManager == null)
+        {
+            return;
+        }
+
+        await uiManager.ShowToastAndWaitAsync(message);
     }
 
     /// <summary>True if the player already completed a tarot reading on the current in-game day.</summary>

@@ -12,14 +12,6 @@ using UnityEngine.Serialization;
 /// </summary>
 public class GalleryView : MonoBehaviour
 {
-    [Serializable]
-    public class PaintingInfo
-    {
-        public DrawingType Id;
-        public GameObject Paint;
-        public CanvasGroup CanvasGroup;
-    }
-
     [Header("Actions")]
     [SerializeField] private CostButton createArtButton;
     [SerializeField] private Button promotionButton;
@@ -30,7 +22,7 @@ public class GalleryView : MonoBehaviour
     [SerializeField] private Slider progressBar;
 
     [Header("Painting Display Wall")]
-    [SerializeField] private PaintingInfo[] paintingSlots;
+    [SerializeField] private PaintingSlot[] paintingSlots;
 
     [FormerlySerializedAs("completionPopup")]
     [Header("Completion Popup")]
@@ -178,6 +170,33 @@ public class GalleryView : MonoBehaviour
             {
                 slot.Paint.SetActive(isCompleted || isInProgress);
             }
+
+            bool hasSoldForSlot = false;
+            bool hasRentedForSlot = false;
+            foreach (var kv in paintings)
+            {
+                if (kv.Value.DrawingType != slot.Id)
+                {
+                    continue;
+                }
+                if (kv.Value.State == PaintingState.Sold)
+                {
+                    hasSoldForSlot = true;
+                }
+                else if (kv.Value.State == PaintingState.Rented)
+                {
+                    hasRentedForSlot = true;
+                }
+            }
+            if (isInProgress)
+            {
+                hasSoldForSlot = false;
+                hasRentedForSlot = false;
+            }
+
+            
+            slot.Sold.SetActive(hasSoldForSlot);
+            slot.Rented.SetActive(hasRentedForSlot);
         }
 
         foreach (var (drawingType, sprite) in completedForWall)

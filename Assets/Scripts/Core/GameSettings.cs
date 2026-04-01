@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// ScriptableObject holding all game configuration values.
@@ -11,13 +12,15 @@ public class GameSettings : ScriptableObject
     [Tooltip("ScriptableObject 儲存塔羅牌圖、名稱、敘述。由 DataManager 使用。")]
     public TarotData TarotData;
 
-    [Header("Fatigue")]
-    [Tooltip("Maximum fatigue before the player must sleep.")]
-    public int MaxFatigue = 100;
+    [Header("Stamina")]
+    [Tooltip("Base maximum stamina (full bar). Morning events may raise effective max for the day.")]
+    [FormerlySerializedAs("MaxFatigue")]
+    public int BaseMaxStamina = 100;
 
     [Header("Gallery")]
-    [Tooltip("Fatigue added per painting created.")]
-    public int PaintingFatigueCost = 30;
+    [Tooltip("Stamina consumed per painting creation step.")]
+    [FormerlySerializedAs("PaintingFatigueCost")]
+    public int PaintingStaminaCost = 30;
 
     [Tooltip("Minimum base price for a newly created painting.")]
     public int PaintingBasePriceMin = 80;

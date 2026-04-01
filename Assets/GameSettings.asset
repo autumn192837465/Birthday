@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
   TarotData: {fileID: 0}
-  MaxFatigue: 100
-  PaintingFatigueCost: 50
+  BaseMaxStamina: 100
+  PaintingStaminaCost: 50
   PaintingBasePriceMin: 80
   PaintingBasePriceMax: 250
   MaxDisplaySlots: 5
-  MaxPaintingProgress: 20
-  MinPaintingProgress: 40
+  MaxPaintingProgress: 100
+  MinPaintingProgress: 100
   BaseRentChance: 0.5
   BaseSellChance: 0.05
   RentIncomeMultiplier: 0.1

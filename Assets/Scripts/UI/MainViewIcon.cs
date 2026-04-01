@@ -40,24 +40,27 @@ public class MainViewIcon : MonoBehaviour
 
     public void OnPointerDown()
     {
+        /*
         if (pointerUpFeedback.IsPlaying)
         {
             pointerUpFeedback.StopFeedbacks();
         }
         
-        pointerDownFeedback.PlayFeedbacks();
+        pointerDownFeedback.PlayFeedbacks();*/
         uiEffect.enabled = true;
         tooltips.SetActive(true);
     }
 
     public void OnPointerUp()
     {
+        /*
         if (pointerDownFeedback.IsPlaying)
         {
             pointerDownFeedback.StopFeedbacks();
         }
         
         pointerUpFeedback.PlayFeedbacks();
+        */
         uiEffect.enabled = false;
         tooltips.SetActive(false);
     }

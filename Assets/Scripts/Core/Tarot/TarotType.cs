@@ -12,10 +12,10 @@ public enum TarotType
     WheelOfFortune,   // Next displayed painting is instantly rented
 
     // === Positive: Gallery ===
-    TheMagician,      // Creating art costs no fatigue (today only)
+    TheMagician,      // Creating art costs no stamina (today only)
 
     // === Positive: Health ===
-    TheStar,          // Instantly reset fatigue to 0
+    TheStar,          // Instantly restore stamina to full
 
     // === Neutral ===
     TwoOfPentacles,   // No effect (balanced, nothing happens)

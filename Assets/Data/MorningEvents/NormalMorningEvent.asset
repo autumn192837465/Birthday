@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c27680d3641744ed941a5f9b5639fa5, type: 3}
+  m_Name: NormalMorningEvent
+  m_EditorClassIdentifier: Assembly-CSharp::NormalEventSO
+  EventName: "\u5B8C\u74A7\u306A\u30B3\u30FC\u30D2\u30FC"
+  Description: "\u4ECA\u671D\u6DF9\u308C\u305F\u30B3\u30FC\u30D2\u30FC\u306F\u5B8C\u74A7\u306A\u5473\uFF01\u4ECA\u65E5\u3082\u30DE\u30A4\u30DA\u30FC\u30B9\u306B\u697D\u3057\u304F\u7D75\u3092\u63CF\u3053\u3046\u3002"
+  Weight: 1

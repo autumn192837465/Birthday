@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public static class GameMessages
 {
     public const string InsufficientMoney = "お金が足りません！";
-    public const string MagicPowerNoFatigue = "魔力のおかげで、疲労は消費されませんでした。";
-    public const string TooTiredNeedSleep = "疲れすぎです。先に寝てください。";
+    public const string MagicPowerNoStaminaCost = "魔力のおかげで、スタミナは消費されませんでした。";
+    public const string ExhaustedNeedSleep = "スタミナが足りません。先に寝てください。";
     public const string TarotFortuneAlreadyDoneToday = "本日はすでに占いを行いました。今日はもう占えません。";
     public const string HermitBlocksCreation = "隠者：今日は休もう。創作は禁止！";
 

@@ -22,7 +22,7 @@ public abstract class TarotCardBase : ITarotEffect
     // === Passive Modifiers (all default to neutral) ===
     public virtual float EarningsMultiplier => 1f;
     public virtual bool BlocksCreation => false;
-    public virtual bool BlocksFatigue => false;
+    public virtual bool SkipsStaminaCost => false;
     public virtual float RentChanceMultiplier => 1f;
     public virtual float PaintingValueMultiplier => 1f;
 }

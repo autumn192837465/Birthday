@@ -102,7 +102,7 @@ public class GallerySystem : PanelBase
             return;
         }
 
-        if (!gm.AddFatigue(gm.Settings.PaintingFatigueCost))
+        if (!gm.TryConsumeStamina(gm.GetPaintingStaminaCost()))
         {
             return;
         }
@@ -205,7 +205,7 @@ public class GallerySystem : PanelBase
 
         if (galleryView != null)
         {
-            galleryView.SetCreateArtCost(gm.Settings.PaintingFatigueCost.ToString());
+            galleryView.SetCreateArtCost(gm.GetPaintingStaminaCost().ToString());
 
             bool allCompleted = GalleryManager.Instance != null && GalleryManager.Instance.AreAllPaintingsCompleted();
             galleryView.SetCreateArtButtonVisible(!allCompleted);

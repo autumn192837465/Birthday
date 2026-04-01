@@ -40,7 +40,7 @@ public class CostButton : MonoBehaviour
         buttonText.text = text;
     }
     
-    /// <summary>Set the full button label (e.g. "Create Art (Fatigue +5)" or "Promote ($100)").</summary>
+    /// <summary>Set the full button label (e.g. "Create Art (Stamina -5)" or "Promote ($100)").</summary>
     public void SetCostText(string text)
     {
         costText.text = text;         

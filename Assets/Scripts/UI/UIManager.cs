@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Handles HUD updates, screen transitions, and toast messages.
@@ -166,7 +165,7 @@ public class UIManager : MonoBehaviour
         }
 
         hudView.SetMoney(gm.Money);
-        hudView.SetFatigue(gm.Fatigue, gm.Settings.MaxFatigue);
+        hudView.SetStamina(gm.CurrentStamina, gm.EffectiveMaxStamina);
         hudView.SetDay(gm.DayCount);
 
         UpdateShopIconVisibility(gm);
@@ -241,6 +240,19 @@ public class UIManager : MonoBehaviour
     public void ShowToast(string message)
     {
         notificationUI?.ShowNotification(message);
+    }
+
+    /// <summary>
+    /// Shows a toast and waits until its fade-out completes (same timing as <see cref="ShowToast"/>).
+    /// </summary>
+    public async Awaitable ShowToastAndWaitAsync(string message)
+    {
+        if (notificationUI == null)
+        {
+            return;
+        }
+
+        await notificationUI.ShowNotificationAndWaitAsync(message);
     }
 
     /// <summary>

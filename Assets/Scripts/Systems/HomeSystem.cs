@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Home is the player's safe haven. Sleeping is always FREE.
-/// Resets fatigue, advances the day, and plays a fade transition.
+/// Advances the day, applies morning events (stamina), and plays a fade transition.
 /// </summary>
 public class HomeSystem : PanelBase
 {

@@ -44,7 +44,7 @@ public class GalleryManager : MonoBehaviour
     /// <summary>
     /// Progress-based painting creation. If no painting is in progress, starts a new one.
     /// Otherwise continues the existing one. Always succeeds — caller is responsible
-    /// for checking fatigue/block conditions before calling.
+    /// for checking stamina/block conditions before calling.
     /// </summary>
     public (CreateResult result, Painting painting) CreatePainting()
     {

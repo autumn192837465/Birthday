@@ -61,6 +61,43 @@ public class NotificationUI : MonoBehaviour
     }
 
     /// <summary>
+    /// Same as <see cref="ShowNotification"/> but waits until the fade-out completes.
+    /// Use when gameplay must pause until the player has seen the full message.
+    /// </summary>
+    public async Awaitable ShowNotificationAndWaitAsync(string message)
+    {
+        if (canvasGroup == null || notificationText == null)
+        {
+            return;
+        }
+
+        _sequence?.Kill();
+
+        notificationText.text = message;
+        canvasGroup.alpha = 0f;
+        canvasGroup.blocksRaycasts = false;
+
+        var tcs = new System.Threading.Tasks.TaskCompletionSource<bool>();
+
+        _sequence = DOTween.Sequence();
+        _sequence.Append(canvasGroup.DOFade(1f, FadeInDuration));
+        _sequence.AppendInterval(HoldDuration);
+        _sequence.Append(canvasGroup.DOFade(0f, FadeOutDuration));
+        _sequence.OnComplete(() =>
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.blocksRaycasts = false;
+            }
+
+            tcs.TrySetResult(true);
+        });
+        _sequence.Play();
+
+        await tcs.Task;
+    }
+
+    /// <summary>
     /// Immediately hide the notification with a short fade out.
     /// </summary>
     public void Hide()

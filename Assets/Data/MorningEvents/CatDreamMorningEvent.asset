@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac3b7521cf734528a7f37e9a6766b32, type: 3}
+  m_Name: CatDreamMorningEvent
+  m_EditorClassIdentifier: Assembly-CSharp::CatDreamEventSO
+  EventName: "\u306D\u3053\u5929\u56FD"
+  Description: "\u3075\u308F\u3075\u308F\u306A\u732B\u3061\u3083\u3093\u305F\u3061\u306B\u56F2\u307E\u308C\u308B\u5922\u3092\u898B\u305F\u3002\u5E78\u305B\u306A\u6C17\u5206\u3067\u3001\u4ECA\u65E5\u306F\u3044\u3064\u3082\u3088\u308A\u9811\u5F35\u308C\u305D\u3046\uFF01"
+  Weight: 1
+  effectiveMaxStaminaMultiplier: 1.2
