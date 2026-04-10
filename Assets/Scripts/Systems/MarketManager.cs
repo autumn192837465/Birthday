@@ -21,6 +21,15 @@ public class MarketManager : MonoBehaviour
 {
     public static MarketManager Instance { get; private set; }
 
+    /// <summary>加在 <see cref="GameSettings.BaseRentChance"/> 上的商店加成（可累加）。</summary>
+    public float BaseRentChance { get; set; }
+
+    /// <summary>加在 <see cref="GameSettings.BaseSellChance"/> 上的商店加成（可累加）。</summary>
+    public float BaseSellChance { get; set; }
+
+    /// <summary>乘在租賃／售出收入上的商店倍率。</summary>
+    public float IncomeMultiplier { get; set; } = 1f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -77,12 +86,14 @@ public class MarketManager : MonoBehaviour
         foreach (var painting in displayed)
         {
             float promotionMultiplier = painting.IsPromoted ? 2f : 1f;
-            float sellChance = settings.BaseSellChance * promotionMultiplier;
-            float rentChance = settings.BaseRentChance * promotionMultiplier * rentChanceMultiplier;
+            float sellChance = (settings.BaseSellChance + BaseSellChance) * promotionMultiplier;
+            float rentChance = (settings.BaseRentChance + BaseRentChance) * promotionMultiplier * rentChanceMultiplier;
+            sellChance = Mathf.Clamp01(sellChance);
+            rentChance = Mathf.Clamp01(rentChance);
 
             if (Random.value < sellChance)
             {
-                int sellPrice = Mathf.RoundToInt(painting.BasePrice * settings.SellPriceMultiplier);
+                int sellPrice = Mathf.RoundToInt(painting.BasePrice * settings.SellPriceMultiplier * IncomeMultiplier);
                 painting.State = PaintingState.Sold;
                 gm.EarnMoney(sellPrice);
                 result.SoldTitles.Add(painting.Title);
@@ -107,7 +118,7 @@ public class MarketManager : MonoBehaviour
 
         foreach (var painting in rented)
         {
-            int rentIncome = Mathf.RoundToInt(painting.BasePrice * settings.RentIncomeMultiplier);
+            int rentIncome = Mathf.RoundToInt(painting.BasePrice * settings.RentIncomeMultiplier * IncomeMultiplier);
             gm.EarnMoney(rentIncome);
             result.TotalRentIncome += rentIncome;
 

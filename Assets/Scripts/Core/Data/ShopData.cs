@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// ScriptableObject storing shop item entries: name, description, sprite, and price.
+/// ScriptableObject that aggregates <see cref="ShopItemSO"/> references.
+/// Each entry delegates display/commerce data to its <see cref="ShopItemSO"/>.
 /// Create via Assets > Create > Game > Shop Data.
 /// </summary>
 [CreateAssetMenu(fileName = "ShopData", menuName = "Game/Shop Data")]
@@ -10,12 +11,13 @@ public class ShopData : ScriptableObject
     [System.Serializable]
     public class ShopEntry
     {
-        public ShopItemType Type;
-        public string Name;
-        [TextArea(2, 4)]
-        public string Description;
-        public Sprite Sprite;
-        public int Price;
+        public ShopItemSO Item;
+
+        public ShopItemType Type => Item != null ? Item.ItemType : default;
+        public string Name => Item != null ? Item.ItemName : "";
+        public string Description => Item != null ? Item.Description : "";
+        public Sprite Sprite => Item != null ? Item.Sprite : null;
+        public int Price => Item != null ? Item.Price : 0;
     }
 
     [Header("Shop Items")]
@@ -49,7 +51,7 @@ public class ShopData : ScriptableObject
         }
         foreach (var entry in _entries)
         {
-            if (entry.Type == type)
+            if (entry.Item != null && entry.Type == type)
             {
                 return entry;
             }

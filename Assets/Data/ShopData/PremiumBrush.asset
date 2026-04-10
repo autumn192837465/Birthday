@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13dbf09b922f84d7891d013e81d0e30a, type: 3}
+  m_Name: PremiumBrush
+  m_EditorClassIdentifier: Assembly-CSharp::PremiumBrushItemSO
+  ItemName: "\u6700\u9AD8\u7D1A\u306E\u7B46\u30BB\u30C3\u30C8"
+  Description: "\u9B54\u6CD5\u306E\u3088\u3046\u306B\u30B9\u30E9\u30B9\u30E9\u63CF\u3051\u308B\u9B54\u6CD5\u306E\u7B46\u3002\u7D75\u3092\u63CF\u304F\u306E\u304C\u3082\u3063\u3068\u697D\u3057\u304F\u306A\u3063\u3066\u3001\u75B2\u308C\u306B\u304F\u304F\u306A\u308B\u3088\uFF01\uFF08\u5236\u4F5C\u306E\u4F53\u529B\u6D88\u8CBB\u304C20%\u6E1B\u5C11\u3057\u307E\u3059\uFF09"
+  Sprite: {fileID: 1706349748029551880, guid: 30671a46f6480473583ae285ae331dbc, type: 3}
+  Price: 200
+  ItemType: 0

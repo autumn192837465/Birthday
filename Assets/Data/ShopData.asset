@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: ShopData
   m_EditorClassIdentifier: Assembly-CSharp::ShopData
   entries:
-  - Type: 0
-    Name: "\u30D8\u30A2\u30D0\u30FC\u30E0 997 "
-    Description: 
-    Sprite: {fileID: -322123658782343617, guid: e72932ce741bfdc439cce1256a9aadb6, type: 3}
-    Price: 1000
+  - Item: {fileID: 11400000, guid: d9f19eab59da64e31b5565deb55f5c20, type: 2}
+  - Item: {fileID: 11400000, guid: 4150b59dbace74bdaa00e78d821b3ec2, type: 2}
+  - Item: {fileID: 11400000, guid: 1cab180c8d88240f9a03011ee09bc937, type: 2}
+  - Item: {fileID: 11400000, guid: aa6d1715073844c33903cda2f9585552, type: 2}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc745dde8342140c1871a4420861489a, type: 3}
+  m_Name: FluffyChair
+  m_EditorClassIdentifier: Assembly-CSharp::FluffyChairItemSO
+  ItemName: "\u3075\u308F\u3075\u308F\u306E\u5C02\u7528\u30C1\u30A7\u30A2"
+  Description: "\u96F2\u306E\u4E0A\u306B\u5EA7\u3063\u3066\u3044\u308B\u3088\u3046\u306A\u6700\u9AD8\u306E\u5EA7\u308A\u5FC3\u5730\u3002\u9577\u6642\u9593\u5EA7\u3063\u3066\u3082\u3078\u3063\u3061\u3083\u3089\uFF01\uFF08\u6700\u5927\u4F53\u529B\u304C20\u30A2\u30C3\u30D7\u3057\u307E\u3059\uFF09"
+  Sprite: {fileID: 535665040123341335, guid: 1dc29412466eb4d5dad3346fceb0d9b1, type: 3}
+  Price: 200
+  ItemType: 1

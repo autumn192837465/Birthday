@@ -15,6 +15,9 @@ public class GalleryManager : MonoBehaviour
 {
     public static GalleryManager Instance { get; private set; }
 
+    /// <summary>商店筆刷等：乘在作畫體力消耗上（與 <see cref="GameManager.PaintingCostMultiplier"/> 相乘）。</summary>
+    public float PaintingCostMultiplier { get; set; } = 1f;
+
     private readonly Dictionary<string, Painting> _paintings = new Dictionary<string, Painting>();
     private int _nextPaintingId = 1;
 

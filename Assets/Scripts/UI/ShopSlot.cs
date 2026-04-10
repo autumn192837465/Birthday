@@ -6,6 +6,10 @@ public class ShopSlot : MonoBehaviour
     public const string SoldOutText = "売り切れ";
 
     public ShopItemType ItemType;
+
+    [Tooltip("綁定 ShopItemSO 資產，有值時走 PurchaseItem 流程（新道具系統）。")]
+    public ShopItemSO ShopItemSO;
+
     public CostButton CostButton;
     public Image Icon;
 

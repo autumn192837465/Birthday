@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     /// <summary>Maximum stamina for the current day (morning events may raise above base).</summary>
     public int EffectiveMaxStamina { get; private set; }
 
+    /// <summary>商店等永久加成：加在 <see cref="GameSettings.BaseMaxStamina"/> 上（對應設計文件中的 Max Fatigue 上限）。</summary>
+    public int MaxFatigue { get; set; }
+
     /// <summary>Multiplier on painting stamina cost (e.g. stiff neck morning event).</summary>
     public float PaintingCostMultiplier { get; private set; } = 1f;
 
@@ -40,12 +43,26 @@ public class GameManager : MonoBehaviour
     // === Active Tarot Effects ===
     private readonly List<ITarotEffect> activeEffects = new List<ITarotEffect>();
 
+    // === Purchased Shop Items ===
+    private readonly HashSet<ShopItemType> _purchasedItems = new HashSet<ShopItemType>();
+
+    /// <summary>檢查該道具類型是否已購買。</summary>
+    public bool IsItemPurchased(ShopItemType type) => _purchasedItems.Contains(type);
+
+    /// <summary>標記該道具類型為已購買。</summary>
+    public void MarkItemPurchased(ShopItemType type)
+    {
+        _purchasedItems.Add(type);
+        OnItemPurchased?.Invoke(type);
+    }
+
     /// <summary>Read-only view of all active tarot effects.</summary>
     public IReadOnlyList<ITarotEffect> ActiveEffects => activeEffects;
 
     // === Events ===
     public event Action OnStatsChanged;
     public event Action<string> OnShowMessage;
+    public event Action<ShopItemType> OnItemPurchased;
 
     // =============================================
     // Lifecycle
@@ -68,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        int baseMax = Settings.BaseMaxStamina;
+        int baseMax = GetBaseMaxStamina();
         EffectiveMaxStamina = baseMax;
         CurrentStamina = baseMax;
         PaintingCostMultiplier = 1f;
@@ -163,11 +180,26 @@ public class GameManager : MonoBehaviour
     // =============================================
 
     /// <summary>
-    /// Base max stamina from settings (before morning event modifiers).
+    /// Base max stamina from settings plus permanent shop bonus (<see cref="MaxFatigue"/>).
     /// </summary>
     public int GetBaseMaxStamina()
     {
-        return Settings.BaseMaxStamina;
+        return Settings.BaseMaxStamina + MaxFatigue;
+    }
+
+    /// <summary>
+    /// 在 <see cref="MaxFatigue"/> 已增加後，同步提升當日體力上限與當前體力。
+    /// </summary>
+    public void RefreshStaminaAfterMaxFatigueIncrease(int delta)
+    {
+        if (delta <= 0)
+        {
+            return;
+        }
+
+        EffectiveMaxStamina += delta;
+        CurrentStamina += delta;
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -175,7 +207,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int GetPaintingStaminaCost()
     {
-        return Mathf.Max(1, Mathf.RoundToInt(Settings.PaintingStaminaCost * PaintingCostMultiplier));
+        float galleryBrush = GalleryManager.Instance != null
+            ? GalleryManager.Instance.PaintingCostMultiplier
+            : 1f;
+
+        return Mathf.Max(1, Mathf.RoundToInt(Settings.PaintingStaminaCost * PaintingCostMultiplier * galleryBrush));
     }
 
     /// <summary>
@@ -236,7 +272,7 @@ public class GameManager : MonoBehaviour
     public void ApplyDefaultMorningStamina()
     {
         PaintingCostMultiplier = 1f;
-        int baseMax = Settings.BaseMaxStamina;
+        int baseMax = GetBaseMaxStamina();
         SetDailyStaminaState(baseMax, baseMax);
     }
 

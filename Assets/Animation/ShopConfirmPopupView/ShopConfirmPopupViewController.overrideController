@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShopConfirmPopupViewController
+  m_Controller: {fileID: 9100000, guid: d0300d811ac2afc4882c5577bc61a8b5, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e94322407b3497e4794a5b5541aafbec, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e22b95467356d4f8d8426ab76dbd0eed, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d70f4f5117173b347a96366941631b31, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ed0c2e6b12b40495c8ce93c15ed83057, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2cc49dbfe51c9b54a9ab42bd943425a7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9e20f9bf28cb74ae1b9a9477f04d7a75, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7248fe60d52050d4c937b85927d7965e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d527c6b57179a4fb8b5d3049c6c43708, type: 2}
