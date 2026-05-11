@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ce911fddebd4c4685340ec40eb2b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HudItemCell
-  icon: {fileID: 0}
+  icon: {fileID: 5909720400804520457}
 --- !u!222 &6912913297836866699
 CanvasRenderer:
   m_ObjectHideFlags: 0

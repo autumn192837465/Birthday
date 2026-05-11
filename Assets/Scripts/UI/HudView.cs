@@ -1,18 +1,18 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class HudView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI moneyText;
-    [SerializeField] private TextMeshProUGUI fatigueText;
-    [SerializeField] private TextMeshProUGUI dayText;
+    [Header("Stat Cells")]
+    [SerializeField] private HudItemCell moneyCell;
+    [SerializeField] private HudItemCell fatigueCell;
+    [SerializeField] private HudItemCell dayCell;
 
     [Header("Inventory")]
     [SerializeField] private Transform inventoryContainer;
     [SerializeField] private HudItemCell itemCellPrefab;
 
-    private readonly Dictionary<ShopItemType, HudItemCell> _cells = new Dictionary<ShopItemType, HudItemCell>();
+    private readonly HashSet<ShopItemType> _createdCells = new HashSet<ShopItemType>();
 
     private void OnEnable()
     {
@@ -44,7 +44,7 @@ public class HudView : MonoBehaviour
 
         foreach (ShopItemType type in System.Enum.GetValues(typeof(ShopItemType)))
         {
-            if (gm.IsItemPurchased(type) && !_cells.ContainsKey(type))
+            if (gm.IsItemPurchased(type) && !_createdCells.Contains(type))
             {
                 CreateCell(type);
             }
@@ -53,18 +53,27 @@ public class HudView : MonoBehaviour
 
     public void SetMoney(int amount)
     {
-        moneyText.text = amount.ToString();
+        if (moneyCell != null)
+        {
+            moneyCell.SetText(amount.ToString());
+        }
     }
 
     /// <summary>Display remaining stamina vs today's effective maximum.</summary>
     public void SetStamina(int current, int effectiveMax)
     {
-        fatigueText.text = $"{current}/{effectiveMax}";
+        if (fatigueCell != null)
+        {
+            fatigueCell.SetText($"{current}/{effectiveMax}");
+        }
     }
 
     public void SetDay(int day)
     {
-        dayText.text = $"Day {day}";
+        if (dayCell != null)
+        {
+            dayCell.SetText($"Day {day}");
+        }
     }
 
     public void Show()
@@ -79,7 +88,7 @@ public class HudView : MonoBehaviour
 
     private void HandleItemPurchased(ShopItemType type)
     {
-        if (_cells.ContainsKey(type))
+        if (_createdCells.Contains(type))
         {
             return;
         }
@@ -108,9 +117,8 @@ public class HudView : MonoBehaviour
 
         HudItemCell cell = Instantiate(itemCellPrefab, inventoryContainer);
         cell.Setup(entry.Sprite, entry.Description);
-        cell.OnClicked += description => gm.ShowMessage(description);
 
-        _cells[type] = cell;
+        _createdCells.Add(type);
     }
 }
     
